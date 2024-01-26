@@ -1,8 +1,24 @@
 const express = require('express');
+const session = require('express-session');
+const { validationResult } = require('express-validator');
+const bcrypt = require('bcrypt');
+
 const router = express.Router();
-const { registerAccount } = require('../Controller/accountController');
+const { registerAccount,registerValidator } = require('../Controller/accountController');
+
 
 // Register user route
-router.post('/register', registerAccount);
+router.post('/register', registerValidator, async (req, res) => {
+    // Kiểm tra các lỗi hợp lệ
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    else{
+        const { email, fullname, password} = req.body;
+    // Gọi hàm xử lý đăng ký từ controller
+        await registerAccount(req, res);
+    }
+  });
 
 module.exports = router;
