@@ -35,13 +35,6 @@ CREATE TABLE `activity` (
   `account_id` integer(11) NOT NULL
 );
 
-CREATE TABLE `detailactivity` (
-  `id` integer(11) NOT NULL ,
-  `date` datetime NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `calo` float NOT NULL,
-  `activity_id` integer(11) NOT NULL
-);
 
 CREATE TABLE `weight` (
   `id` integer(11) NOT NULL,
@@ -58,7 +51,5 @@ ALTER TABLE `watertracker` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (
 ALTER TABLE `period` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `activity` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
-
-ALTER TABLE `detailactivity` ADD FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`);
 
 ALTER TABLE `weight` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);

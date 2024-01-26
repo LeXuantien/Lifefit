@@ -14,20 +14,17 @@ const userController = {
         if (err) {
           return res.status(500).json({ error: 'Internal Server Error' });
         }
-
         if (!user) {
+          return res.status(401).json({ error: 'Invalid credential' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
           return res.status(401).json({ error: 'Invalid credentials' });
         }
-
-        // Compare the provided password with the hashed password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (isPasswordValid) {
-          req.session.userId = user.id;
-          res.status(200).json({ message: 'Login successful' });
-        } else {
-          res.status(401).json({ error: 'Invalid credentials' });
-        }
+        req.session.userId = user.id;
+        res.status(200).json({ message: 'Login successful' });
       });
     } catch (err) {
       console.error('Error during login:', err);
@@ -38,21 +35,26 @@ const userController = {
   inforprofile: async (req, res) => {
     try {
       const { gender, height, wakeuptime, sleepingtime } = req.body;
-      const userId = req.session.userId;
-
+      console.log(gender);
+      const Id = req.session?.userId;
+      
       // Call the createprofile function with the provided information
       const profile = await userModel.createprofile({
         gender,
         height,
-        userId,
+        Id,
         wakeuptime,
         sleepingtime,
       });
-
+  
+      if (!profile) {
+        return res.status(500).json({ error: 'Failed to create profile' });
+      }
+  
       res.status(201).json({ message: 'Successfully', profile: profile });
     } catch (error) {
-      console.error('Error', error);
-      res.status(500).json({ message: 'Internal server error' });
+      console.error('Error during inforprofile:', error);
+      /*res.status(500).json({ message: 'Internal Server Error' });*/
     }
   },
 };

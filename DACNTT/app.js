@@ -10,6 +10,14 @@ const port = 3000;
 // Middleware for parsing JSON requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: '123456', // Replace with a strong secret
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 // Use accountRouter for account-related routes
 app.use('/api', accountRouter);
 app.use('/api', authRouter);
