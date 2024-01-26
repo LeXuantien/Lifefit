@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const userModel = require('../Model/authModel');
+const { Result } = require('express-validator');
 
 const userController = {
   login: async (req, res) => {
@@ -24,39 +25,13 @@ const userController = {
           return res.status(401).json({ error: 'Invalid credentials' });
         }
         req.session.userId = user.id;
-        res.status(200).json({ message: 'Login successful' });
+        const id=req.session.userId ;
+        res.json({ userId: id, message: 'Login successful' });
       });
     } catch (err) {
       console.error('Error during login:', err);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-
-  inforprofile: async (req, res) => {
-    try {
-      const { gender, height, wakeuptime, sleepingtime } = req.body;
-      console.log(gender);
-      const Id = req.session?.userId;
-      
-      // Call the createprofile function with the provided information
-      const profile = await userModel.createprofile({
-        gender,
-        height,
-        Id,
-        wakeuptime,
-        sleepingtime,
-      });
-  
-      if (!profile) {
-        return res.status(500).json({ error: 'Failed to create profile' });
-      }
-  
-      res.status(201).json({ message: 'Successfully', profile: profile });
-    } catch (error) {
-      console.error('Error during inforprofile:', error);
-      /*res.status(500).json({ message: 'Internal Server Error' });*/
-    }
-  },
 };
-
 module.exports = userController;

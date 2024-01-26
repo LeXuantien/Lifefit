@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const accountRouter = require('./router/registerRouter');
 const authRouter = require('./router/authRouter');
+const profileRouter = require('./router/profileRouter');
 const forgotpasswordRouter = require('./router/forgotpasswordRouter');
 const app = express();
 const port = 3000;
@@ -21,6 +22,7 @@ app.use(
 // Use accountRouter for account-related routes
 app.use('/api', accountRouter);
 app.use('/api', authRouter);
+app.use('/api', profileRouter);
 app.use('/api',forgotpasswordRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
