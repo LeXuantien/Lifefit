@@ -33,6 +33,25 @@ const getProfile = (account_id, callback) => {
     }
   })
 };
+const updateProfile = (account_id, updatedProfileData, callback) => {
+  const { gender, height, wakeup_time, sleeping_time } = updatedProfileData;
+  const sql = "UPDATE profile SET gender = ?, height = ?, wakeup_time = ?, sleeping_time = ? WHERE account_id = ?";
+
+  db.query(sql, [gender, height, wakeup_time, sleeping_time, account_id], (err, result) => {
+    if (typeof callback === 'function') {
+      if (err) {
+        console.error(err);
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    } else {
+      console.error('Callback is not a function');
+    }
+  });
+};
 module.exports = {
-  saveProfile,getProfile
+  saveProfile,
+  getProfile,
+  updateProfile
 };

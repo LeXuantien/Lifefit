@@ -1,9 +1,9 @@
 const session = require('express-session');
-const profileModel = require('../Model/profileModel');
+const weightModel = require('../Model/weightModel');
 
-const inforprofile = async (req) => {
-  const userId = req.session.userId; // or req.session.userID
-  const { gender, height, wakeup_time, sleeping_time } = req.body;
+const inforweight = async (req) => {
+  const userId = req.session.userId; 
+  const { goal, Date, weight, } = req.body;
 
   if (!userId) {
     console.log('Unauthorized: userId is not defined');
@@ -11,16 +11,16 @@ const inforprofile = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    profileModel.saveProfile(userId, { gender, height, wakeup_time, sleeping_time }, (err, result) => {
+    weightModel.creatweight(userId, { goal, Date, weight }, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));
       }
-      resolve('Profile posted successfully');
+      resolve('successfully');
     });
   });
 };
-const getProfile = async (req) => {
+const getWeight = async (req) => {
   const userId = req.session.userId; 
 
   if (!userId) {
@@ -30,7 +30,7 @@ const getProfile = async (req) => {
 
  
   return new Promise((resolve, reject) => {
-    profileModel.getProfile(userId, (err, result) => { 
+    weightModel.getweight(userId, (err, result) => { 
       if (err) {
         console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
@@ -39,7 +39,7 @@ const getProfile = async (req) => {
     });
   });
 };
-const updateProfile = async (req, updatedProfileData) => {
+const updateWeight= async (req, updatedWeigthData) => {
   const userId = req.session.userId; 
 
   if (!userId) {
@@ -48,7 +48,7 @@ const updateProfile = async (req, updatedProfileData) => {
   }
 
   return new Promise((resolve, reject) => {
-    profileModel.updateProfile(userId, updatedProfileData, (err, result) => {
+    weightModel.updateweight(userId, updatedWeigthData, (err, result) => {
       console.log('Inside profileModel.updateProfile callback');
 
       if (err) {
@@ -58,12 +58,31 @@ const updateProfile = async (req, updatedProfileData) => {
       }
 
       console.log('res is defined after callback');
-      resolve(result);
+      resolve('successfully');
     });
   });
 };
+const deleteWeight = async (req) => {
+    const userId = req.session.userId; 
+  
+    if (!userId) {
+      console.log('Unauthorized: userId is not defined');
+      throw new Error('Unauthorized - Session ID is not valid');
+    }
+  
+   
+    return new Promise((resolve, reject) => {
+      weightModel.deleteweight(userId, (err, result) => { 
+        if (err) {
+          console.error(err);      
+          reject(new Error('Internal Server Error: ' + err.message));
+        }
+        resolve('successfully');
+      });
+    });
+  };
 module.exports = {
-  inforprofile,
-  getProfile,
-  updateProfile
+  inforweight,
+  getWeight,
+  updateWeight
 };
