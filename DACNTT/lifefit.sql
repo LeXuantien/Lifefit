@@ -15,14 +15,12 @@ CREATE TABLE `profile` (
 );
 
 CREATE TABLE `watertracker` (
-  `id` integer(11) NOT NULL,
   `watergoal` float NOT NULL,
   `dategoal` datetime NOT NULL,
   `account_id` integer(11) NOT NULL
 );
 
 CREATE TABLE `period` (
-  `id` integer(11) NOT NULL,
   `datestarted` datetime NOT NULL,
   `dateend` datetime NOT NULL,
   `account_id` integer(11) NOT NULL,
@@ -30,18 +28,30 @@ CREATE TABLE `period` (
 );
 
 CREATE TABLE `activity` (
-  `id` integer(11) NOT NULL ,
+  `date` datetime NOT NULL,
+  `name` varchar(255) NOT NULL,
   `goal` float NOT NULL,
+  `calo` float NOT NULL,
   `account_id` integer(11) NOT NULL
 );
 
-
 CREATE TABLE `weight` (
-  `id` integer(11) NOT NULL,
   `goal` float NOT NULL,
   `Date` datetime NOT NULL,
   `weight` float NOT NULL,
   `account_id` integer(11) NOT NULL
+);
+
+CREATE TABLE `diet` (
+  `goal` integer(15) NOT NULL ,
+  `date_diet` datetime PRIMARY KEY NOT NULL,
+  `account_id` integer(11) NOT NULL
+);
+
+CREATE TABLE `dietdetail` (
+  `name` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `diet_date` datetime  NOT NULL
 );
 
 ALTER TABLE `profile` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
@@ -53,3 +63,7 @@ ALTER TABLE `period` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `activity` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `weight` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+
+ALTER TABLE `diet` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+
+ALTER TABLE `dietdetail` ADD FOREIGN KEY (`diet_date`) REFERENCES `diet` (`date_diet`);

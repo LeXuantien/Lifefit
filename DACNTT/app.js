@@ -5,6 +5,7 @@ const accountRouter = require('./router/registerRouter');
 const authRouter = require('./router/authRouter');
 const profileRouter = require('./router/profileRouter');
 const weigthRouter= require('./router/weigthRouter');
+const dietRouter= require('./router/dietRouter');
 const forgotpasswordRouter = require('./router/forgotpasswordRouter');
 const app = express();
 const port = 3000;
@@ -25,6 +26,7 @@ app.use('/api', accountRouter);
 app.use('/api', authRouter);
 app.use('/api', profileRouter);
 app.use('/api', weigthRouter);
+app.use('/api', dietRouter);
 app.use('/api',forgotpasswordRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
