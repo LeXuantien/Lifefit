@@ -1,8 +1,17 @@
 const nodemailer = require('nodemailer');
+const otpGenerator = require('otp-generator');
 const UserModel = require('../Model/forgotpassword');
 
+// Cấu hình transporter email
 const transporter = nodemailer.createTransport({
-  // Cấu hình transport email
+  service: 'gmail',
+  host:"smtp.gmail.com",
+  port:587,
+  secure: false,
+  auth: {
+    user: 'tienle120302@gmail.com', 
+    pass: 'zswu thej bjal ktzg' 
+  }
 });
 
 async function sendOTP(req, res) {
@@ -17,11 +26,8 @@ async function sendOTP(req, res) {
 
     const generatedOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
 
-    // Lưu OTP vào cơ sở dữ liệu
-    await UserModel.updateOTP(email, generatedOTP);
-
     const mailOptions = {
-      from: 'your-email@gmail.com',
+      from: 'tienle120302@gmail.com', 
       to: email,
       subject: 'Your OTP Code',
       text: `Your OTP code is: ${generatedOTP}`,

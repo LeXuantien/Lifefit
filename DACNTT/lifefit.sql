@@ -54,6 +54,7 @@ CREATE TABLE `dietdetail` (
   `diet_date` datetime  NOT NULL
 );
 
+
 ALTER TABLE `profile` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `watertracker` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
