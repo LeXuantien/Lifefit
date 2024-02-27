@@ -17,6 +17,7 @@ const infordiet = async (req) => {
         reject(new Error('Internal Server Error: ' + err.message));
       }
       resolve('successfully');
+      res.render('/');
     });
   });
 };

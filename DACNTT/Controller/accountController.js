@@ -18,17 +18,15 @@ const registerValidator = [
 ];
 
 async function registerAccount(req, res) {
-  const { email, fullname, password,confirmpassword} = req.body;
+  const { email, fullname,birthday, password,confirmpassword} = req.body;
 
   try {
-    
-
-    // Hash the password before storing it
+   
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user with hashed password
-    const newAccount = await account.create({ email, fullname, password: hashedPassword });
-    res.status(201).json({ message: 'Account registered successfully', account: newAccount });
+    const newAccount = await account.create({ email, fullname,birthday, password: hashedPassword });
+    res.status(201).json({ message: 'Account registered successfully' });
+   res.redirect('/');
   } catch (error) {
     console.error('Error creating account:', error);
     res.status(500).json({ message: 'Internal server error' });

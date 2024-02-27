@@ -7,7 +7,7 @@ const userController = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      // Kiểm tra tính hợp lệ đầu vào
+   
       if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });
       }
@@ -27,6 +27,7 @@ const userController = {
         req.session.userId = user.id;
         const id=req.session.userId ;
         res.json({ userId: id, message: 'Login successful' });
+        res.redirect('/');
       });
     } catch (err) {
       console.error('Error during login:', err);

@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
 const UserModel = require('../Model/forgotpassword');
 
-// Cấu hình transporter email
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host:"smtp.gmail.com",
@@ -39,6 +39,7 @@ async function sendOTP(req, res) {
     console.error('Error sending OTP email:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
 
-module.exports = { sendOTP };
+
+module.exports = { sendOTP,resetpassword };
