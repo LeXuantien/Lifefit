@@ -26,7 +26,7 @@ async function registerAccount(req, res) {
 
     const newAccount = await account.create({ email, fullname,birthday, password: hashedPassword });
     res.status(201).json({ message: 'Account registered successfully' });
-   res.redirect('/');
+  
   } catch (error) {
     console.error('Error creating account:', error);
     res.status(500).json({ message: 'Internal server error' });

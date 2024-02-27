@@ -15,8 +15,8 @@ router.post('/register', registerValidator, async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     else{
-        const { email, fullname, password} = req.body;
-    // Gọi hàm xử lý đăng ký từ controller
+        const { email, fullname,birthday, password} = req.body;
+   
         await registerAccount(req, res);
     }
   });

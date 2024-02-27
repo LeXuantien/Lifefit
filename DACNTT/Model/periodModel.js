@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const savePeriod = (account_id, periodData, callback) => {
-  const { datestarted, dateend, account_id, note} = profileData;
+  const { datestarted, dateend, note} = profileData;
   const sql = "INSERT INTO period (datestarted, dateend, account_id, note) VALUES (?, ?, ?, ?)";
 
   db.query(sql, [datestarted, dateend, account_id, note], (err, result) => {
@@ -34,7 +34,7 @@ const getPeriod = (account_id, callback) => {
   })
 };
 const updatePeriod = (account_id, updatedPeriodData, callback) => {
-  const { datestarted, dateend, account_id, note} = updatedPeriodData;
+  const { datestarted, dateend, note} = updatedPeriodData;
   const sql = "UPDATE period SET datestarted = ?, dateend = ?, account_id = ?, note = ? WHERE account_id = ?";
 
   db.query(sql, [datestarted, dateend, account_id, note, account_id], (err, result) => {

@@ -42,4 +42,4 @@ async function sendOTP(req, res) {
 };
 
 
-module.exports = { sendOTP,resetpassword };
+module.exports = { sendOTP };

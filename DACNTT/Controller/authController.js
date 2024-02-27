@@ -27,7 +27,7 @@ const userController = {
         req.session.userId = user.id;
         const id=req.session.userId ;
         res.json({ userId: id, message: 'Login successful' });
-        res.redirect('/');
+        
       });
     } catch (err) {
       console.error('Error during login:', err);
