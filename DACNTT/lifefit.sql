@@ -19,7 +19,10 @@ CREATE TABLE `watertracker` (
   `dategoal` datetime NOT NULL,
   `account_id` integer(11) NOT NULL
 );
-
+CREATE TABLE `notification`(
+  `time_noti` TIME 
+  `account_id` integer(11) NOT NULL
+)
 CREATE TABLE `period` (
   `datestarted` datetime NOT NULL,
   `dateend` datetime NOT NULL,

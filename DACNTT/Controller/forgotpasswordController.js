@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
+const bcrypt = require('bcrypt');
 const UserModel = require('../Model/forgotpassword');
 
 
@@ -14,6 +15,9 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+let resetPasswordEmail = '';
+let inforotp = {};
+
 async function sendOTP(req, res) {
   const { email } = req.body;
 
@@ -24,8 +28,13 @@ async function sendOTP(req, res) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const generatedOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-
+    resetPasswordEmail = email;
+    const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+    console.log(generatedOTP);
+    inforotp[email] = {
+      otp: generatedOTP,
+      timestamp: Date.now()
+    };
     const mailOptions = {
       from: 'tienle120302@gmail.com', 
       to: email,
@@ -41,5 +50,61 @@ async function sendOTP(req, res) {
   }
 };
 
+async function otpAuthen(req, res) {
+  const { otp } = req.body;
+  const email = resetPasswordEmail;
+  try {
+    const user = await UserModel.getUserByEmail(email);
 
-module.exports = { sendOTP };
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const cachedOTP = inforotp[email];
+    if (!cachedOTP || cachedOTP.otp !== otp) {
+      return res.status(400).json({ message: 'Invalid OTP' });
+    }
+
+    const otpTimestamp = cachedOTP.timestamp;
+    const currentTime = Date.now();
+    const otpValidityDuration = 3 * 60 * 1000; 
+    if (currentTime - otpTimestamp > otpValidityDuration) {
+      return res.status(400).json({ message: 'Expired OTP' });
+    }
+    delete inforotp[email];
+    res.status(200).json({ message: 'successfully' });
+  } catch (error) {
+    console.error('Error', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+async function updatePassword(req, res) {
+  const { newPassword, confirmPassword } = req.body;
+  const email = resetPasswordEmail;
+  
+ 
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: 'New password and confirm password do not match' });
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+  try {
+    const user = await UserModel.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    await UserModel.updatepassword(email, hashedPassword);
+
+    delete inforotp[email];
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+module.exports = { sendOTP,otpAuthen,updatePassword };

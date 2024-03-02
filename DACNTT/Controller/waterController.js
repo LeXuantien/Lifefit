@@ -1,27 +1,27 @@
 const session = require('express-session');
-const dietModel = require('../Model/dietModel');
+const waterModel = require('../Model/waterModel');
 
-const infordiet = async (req) => {
+const inforwater = async (req) => {
   const userId = req.session.userId; 
-  const {  goal, date_diet } = req.body;
+  const {watergoal, dategoal } = req.body;
 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
+    console.log('Unauthorized: user is not defined');
     throw new Error('Unauthorized - Session ID is not valid');
   }
 
   return new Promise((resolve, reject) => {
-    dietModel.creatediet(userId, { goal, date_diet}, (err, result) => {
+    waterModel.createwater(userId, { watergoal, dategoal}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));
       }
       resolve('successfully');
-      //res.render('/');
+     // res.render('/');
     });
   });
 };
-const getdiet = async (req) => {
+const getwater = async (req) => {
   const userId = req.session.userId; 
 
   if (!userId) {
@@ -31,7 +31,7 @@ const getdiet = async (req) => {
 
  
   return new Promise((resolve, reject) => {
-    dietModel.getdiet(userId, (err, result) => { 
+    waterModel.getwater(userId, (err, result) => { 
       if (err) {
         console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
@@ -40,7 +40,7 @@ const getdiet = async (req) => {
     });
   });
 };
-const updatediet= async (req, updateddietData) => {
+const updatedwater= async (req, updatedwaterData) => {
   const userId = req.session.userId; 
 
   if (!userId) {
@@ -49,7 +49,7 @@ const updatediet= async (req, updateddietData) => {
   }
 
   return new Promise((resolve, reject) => {
-    dietModel.updatediet(userId, updateddietData, (err, result) => {
+    waterModel.updatedwater(userId, updatedwaterData, (err, result) => {
       console.log('Inside profileModel.updateProfile callback');
 
       if (err) {
@@ -64,7 +64,7 @@ const updatediet= async (req, updateddietData) => {
   });
 };
 module.exports = {
-  infordiet,
-  getdiet,
-  updatediet
+  inforwater,
+  getwater,
+  updatedwater
 };
