@@ -2,7 +2,7 @@ CREATE TABLE `account` (
   `id` integer(11) PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255) UNIQUE NOT NULL,
   `fullname` varchar(255) NOT NULL,
-  `birthday` datetime NOT NULL,
+  `birthday` date NOT NULL,
   `password` varchar(100) NOT NULL
 );
 
@@ -20,9 +20,9 @@ CREATE TABLE `watertracker` (
   `account_id` integer(11) NOT NULL
 );
 CREATE TABLE `notification`(
-  `time_noti` TIME 
+  `time_noti` TIME,
   `account_id` integer(11) NOT NULL
-)
+);
 CREATE TABLE `period` (
   `datestarted` datetime NOT NULL,
   `dateend` datetime NOT NULL,
@@ -61,6 +61,7 @@ CREATE TABLE `dietdetail` (
 ALTER TABLE `profile` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `watertracker` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+ALTER TABLE `notification` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `period` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
@@ -71,3 +72,4 @@ ALTER TABLE `weight` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `diet` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `dietdetail` ADD FOREIGN KEY (`diet_date`) REFERENCES `diet` (`date_diet`);
+

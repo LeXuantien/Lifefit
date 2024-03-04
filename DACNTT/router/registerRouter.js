@@ -4,21 +4,24 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
 const router = express.Router();
-const { registerAccount,registerValidator } = require('../Controller/accountController');
+const {registerValidator}=require('../Controller/accountController');
+const accountController = require('../Controller/accountController');
 
 
-// Register user route
+
 router.post('/register', registerValidator, async (req, res) => {
-    // Kiểm tra các lỗi hợp lệ
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  } else {
+    try {
+      await accountController.registerAccount(req, res); // Gọi hàm registerAccount để xử lý yêu cầu đăng ký
+    } catch (error) {
+      console.error('Error registering account:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-    else{
-        const { email, fullname,birthday, password} = req.body;
-   
-        await registerAccount(req, res);
-    }
-  });
+  }
+});
+router.post('/otpaccount', accountController.otpAuthen);
 
 module.exports = router;

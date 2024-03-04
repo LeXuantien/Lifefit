@@ -12,6 +12,8 @@ const waterRouter= require('./router/waterRouter');
 const app = express();
 const port = 3000;
 
+const cors = require('cors');
+app.use(cors());
 // Middleware for parsing JSON requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

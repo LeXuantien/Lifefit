@@ -67,9 +67,9 @@ async function otpAuthen(req, res) {
 
     const otpTimestamp = cachedOTP.timestamp;
     const currentTime = Date.now();
-    const otpValidityDuration = 3 * 60 * 1000; 
+    const otpValidityDuration = 60 * 1000; 
     if (currentTime - otpTimestamp > otpValidityDuration) {
-      return res.status(400).json({ message: 'Expired OTP' });
+      return res.status(400).json({ message: 'Error Expired OTP' });
     }
     delete inforotp[email];
     res.status(200).json({ message: 'successfully' });
