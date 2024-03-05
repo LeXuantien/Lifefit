@@ -3,16 +3,14 @@ CREATE TABLE `account` (
   `email` varchar(255) UNIQUE NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `birthday` date NOT NULL,
-  `password` varchar(100) NOT NULL
-);
-
-CREATE TABLE `profile` (
-  `gender` integer NOT NULL,
-  `height` integer NOT NULL,
-  `account_id` integer(11) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `gender` integer NULL,
+  `height` integer  NULL,
   `wakeup_time` datetime DEFAULT Null,
   `sleeping_time` datetime DEFAULT Null
 );
+
+
 
 CREATE TABLE `watertracker` (
   `watergoal` float NOT NULL,
@@ -58,7 +56,6 @@ CREATE TABLE `dietdetail` (
 );
 
 
-ALTER TABLE `profile` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `watertracker` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `notification` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);

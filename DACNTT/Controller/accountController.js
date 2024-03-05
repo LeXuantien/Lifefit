@@ -49,7 +49,7 @@ async function registerAccount(req, res) {
     
     
     const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-    console.log(generatedOTP);
+    
     inforotp[email] = {
       otp: generatedOTP,
       timestamp: Date.now()
@@ -73,10 +73,6 @@ async function otpAuthen(req, res) {
   const { otp } = req.body;
   try {
     const email = inforemail;
-    const fullname = inforfullname;
-    const birthday = inforbirthday;
-    const password = inforpassword;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const cachedOTP = inforotp[email];
     if (!cachedOTP || cachedOTP.otp !== otp) {
@@ -89,10 +85,27 @@ async function otpAuthen(req, res) {
     if (currentTime - otpTimestamp > otpValidityDuration) {
       return res.status(400).json({ message: 'Error Expired OTP' });
     }
-    delete inforotp[email];
+    delete inforotp[email]
+    res.status(200).json({ message: 'successfully' });
+  } catch (error) {
+    console.error('Error', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+async function saveAccount(req, res) {
+  const { gender, height, wakeup_time, sleeping_time } = req.body;
+  try {
+    const email = inforemail;
+    const fullname = inforfullname;
+    const birthday = inforbirthday;
+    const password = inforpassword;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  
-    const newAccount = await account.create({ email, fullname, birthday, password: hashedPassword });
+    const newAccount = await account.create({ email, fullname, birthday, password: hashedPassword,gender, height, wakeup_time, sleeping_time });
+    delete inforemail;
+    delete inforfullname;
+    delete inforbirthday;
+    delete inforpassword
     res.status(200).json({ message: 'successfully' });
   } catch (error) {
     console.error('Error', error);
@@ -100,7 +113,4 @@ async function otpAuthen(req, res) {
   }
 };
 
-module.exports = { registerAccount, otpAuthen, registerValidator };
-
-
-module.exports = { registerAccount,otpAuthen, registerValidator };
+module.exports = { registerAccount, otpAuthen,saveAccount, registerValidator };

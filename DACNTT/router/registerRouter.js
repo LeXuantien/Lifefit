@@ -15,7 +15,7 @@ router.post('/register', registerValidator, async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   } else {
     try {
-      await accountController.registerAccount(req, res); // Gọi hàm registerAccount để xử lý yêu cầu đăng ký
+      await accountController.registerAccount(req, res);
     } catch (error) {
       console.error('Error registering account:', error);
       res.status(500).json({ message: 'Internal server error' });
@@ -23,5 +23,6 @@ router.post('/register', registerValidator, async (req, res) => {
   }
 });
 router.post('/otpaccount', accountController.otpAuthen);
+router.post('/saveaccount', accountController.saveAccount);
 
 module.exports = router;
