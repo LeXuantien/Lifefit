@@ -49,15 +49,12 @@ const updatePeriod = async (req, updatedPeriodData) => {
 
   return new Promise((resolve, reject) => {
     periodModel.updatePeriod(userId, updatedPeriodData, (err, result) => {
-      console.log('Inside profileModel.updateProfile callback');
-
+    
       if (err) {
-        console.error(err);
-        console.log('res is defined inside callback');
+        
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
-      console.log('res is defined after callback');
       resolve(result);
     });
   });

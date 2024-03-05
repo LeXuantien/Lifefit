@@ -50,15 +50,12 @@ const updatediet= async (req, updateddietData) => {
 
   return new Promise((resolve, reject) => {
     dietModel.updatediet(userId, updateddietData, (err, result) => {
-      console.log('Inside profileModel.updateProfile callback');
-
+      
       if (err) {
-        console.error(err);
-        console.log('res is defined inside callback');
+       
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
-      console.log('res is defined after callback');
       resolve('successfully');
     });
   });

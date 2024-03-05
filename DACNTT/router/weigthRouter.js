@@ -30,15 +30,13 @@ router.post('/weight', checkSessionMiddleware, async (req, res) => {
 });
 router.get('/getweight', checkSessionMiddleware, async (req, res) => {
   try {
-    // Gọi một hàm xử lý yêu cầu trong controller
+   
     const result = await weigthRouter.getWeight(req);
 
-    // Xử lý kết quả và gửi lại phản hồi
     res.json(result);
   } catch (error) {
     console.error(error);
 
-    // Check for the specific unauthorized error
     if (error.message === 'Unauthorized - Session ID is not valid') {
       res.status(401).send('Unauthorized');
     } else {
@@ -48,7 +46,6 @@ router.get('/getweight', checkSessionMiddleware, async (req, res) => {
 });
 router.put('/updateweight', checkSessionMiddleware, async (req, res) => {
   try {
-    // Get updated profile data from request body
     const { goal, Date, weight } = req.body;
     const updateWeightData = { goal, Date, weight};
 
@@ -62,15 +59,13 @@ router.put('/updateweight', checkSessionMiddleware, async (req, res) => {
 });
 router.get('/deleteweight', checkSessionMiddleware, async (req, res) => {
     try {
-      // Gọi một hàm xử lý yêu cầu trong controller
-      const result = await weigthRouter.getWeight(req);
+    
+      const result = await weigthRouter.deleteWeight(req);
   
-      // Xử lý kết quả và gửi lại phản hồi
       res.json(result);
     } catch (error) {
       console.error(error);
   
-      // Check for the specific unauthorized error
       if (error.message === 'Unauthorized - Session ID is not valid') {
         res.status(401).send('Unauthorized');
       } else {
