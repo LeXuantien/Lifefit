@@ -1,16 +1,10 @@
 const express = require('express');
 const waterRouter = require('../Controller/waterController');
 const router = express.Router();
+const checkMiddleware = require('../utils/Middleware');
 
-const checkSessionMiddleware = (req, res, next) => {
-  if (req.session.userId) {
-    next();
-  } else {
-    next(new Error('Unauthorized - Session ID is not valid'));
-  }
-};
 
-router.post('/water', checkSessionMiddleware, async (req, res) => {
+router.post('/water', checkMiddleware, async (req, res) => {
   try {
     
     const result = await waterRouter.inforwater(req);
@@ -19,14 +13,14 @@ router.post('/water', checkSessionMiddleware, async (req, res) => {
     console.error(error);
 
     
-    if (error.message === 'Unauthorized - Session ID is not valid') {
+    if (error.message === 'Unauthorized ') {
       res.status(401).send('Unauthorized');
     } else {
       res.status(500).send('Internal Server Error');
     }
   }
 });
-router.get('/getwater', checkSessionMiddleware, async (req, res) => {
+router.get('/getwater', checkMiddleware, async (req, res) => {
   try {
   
     const result = await waterRouter.getwater(req);
@@ -35,14 +29,14 @@ router.get('/getwater', checkSessionMiddleware, async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    if (error.message === 'Unauthorized - Session ID is not valid') {
+    if (error.message === 'Unauthorized ') {
       res.status(401).send('Unauthorized');
     } else {
       res.status(500).send('Internal Server Error');
     }
   }
 });
-router.put('/updatedwater', checkSessionMiddleware, async (req, res) => {
+router.put('/updatedwater', checkMiddleware, async (req, res) => {
   try {
     
     const { watergoal, dategoal} = req.body;

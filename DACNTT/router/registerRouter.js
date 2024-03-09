@@ -1,7 +1,6 @@
 const express = require('express');
-const session = require('express-session');
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+const checkMiddleware = require('../utils/Middleware');
 
 const router = express.Router();
 const {registerValidator}=require('../Controller/accountController');
@@ -23,6 +22,6 @@ router.post('/register', registerValidator, async (req, res) => {
   }
 });
 router.post('/otpaccount', accountController.otpAuthen);
-router.post('/saveaccount', accountController.saveAccount);
+router.put('/saveInfor', checkMiddleware, accountController.saveInfor)
 
 module.exports = router;

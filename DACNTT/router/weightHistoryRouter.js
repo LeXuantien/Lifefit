@@ -1,13 +1,13 @@
 const express = require('express');
-const weigthRouter = require('../Controller/weigthController');
+const weigthRouter = require('../Controller/weightHistoryController');
 const router = express.Router();
 const checkMiddleware = require('../utils/Middleware');
 
 
-router.post('/weight', checkMiddleware, async (req, res) => {
+router.post('/weightHistory', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await weigthRouter.inforweight(req);
+    const result = await weigthRouter.inforweighthistory(req);
 
     res.json(result);
   } catch (error) {
@@ -20,10 +20,10 @@ router.post('/weight', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getweight', checkMiddleware, async (req, res) => {
+router.get('/getweightHistory', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await weigthRouter.getWeight(req);
+    const result = await weigthRouter.getweighthistory(req);
 
     res.json(result);
   } catch (error) {
@@ -36,13 +36,13 @@ router.get('/getweight', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updateweight', checkMiddleware, async (req, res) => {
+router.put('/updateweightHistory', checkMiddleware, async (req, res) => {
   try {
     const { goal, Date } = req.body;
     const updateWeightData = { goal, Date};
 
     
-    const result = await weigthRouter.updateWeight(req, updateWeightData);
+    const result = await weigthRouter.updateweighthistory(req, updateWeightData);
     res.json(result);
   } catch (error) {
     console.error(error);

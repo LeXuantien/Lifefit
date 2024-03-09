@@ -1,13 +1,12 @@
-const session = require('express-session');
 const waterModel = require('../Model/waterModel');
 
 const inforwater = async (req) => {
-  const userId = req.session.userId; 
+  const userId = req.userId; 
   const {watergoal, dategoal } = req.body;
 
   if (!userId) {
-    console.log('Unauthorized: user is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {
@@ -17,16 +16,16 @@ const inforwater = async (req) => {
         reject(new Error('Internal Server Error: ' + err.message));
       }
       resolve('successfully');
-     // res.render('/');
+  
     });
   });
 };
 const getwater = async (req) => {
-  const userId = req.session.userId; 
+  const userId = req.userId; 
 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
  
@@ -41,11 +40,11 @@ const getwater = async (req) => {
   });
 };
 const updatedwater= async (req, updatedwaterData) => {
-  const userId = req.session.userId; 
+  const userId = req.userId; 
 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {

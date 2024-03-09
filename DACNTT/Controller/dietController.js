@@ -1,32 +1,30 @@
-const session = require('express-session');
 const dietModel = require('../Model/dietModel');
 
 const infordiet = async (req) => {
-  const userId = req.session.userId; 
-  const {  goal, date_diet } = req.body;
+  const userId = req.userId; 
+  const {  goal } = req.body;
 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized: ');
+    throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {
-    dietModel.creatediet(userId, { goal, date_diet}, (err, result) => {
+    dietModel.creatediet(userId, { goal}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));
       }
       resolve('successfully');
-      //res.render('/');
+      
     });
   });
 };
 const getdiet = async (req) => {
-  const userId = req.session.userId; 
-
+  const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
  
@@ -41,11 +39,11 @@ const getdiet = async (req) => {
   });
 };
 const updatediet= async (req, updateddietData) => {
-  const userId = req.session.userId; 
+  const userId = req.userId; 
 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {

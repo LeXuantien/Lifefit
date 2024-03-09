@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
-const creatweight = (account_id, weightData, callback) => {
-  const { goal, Date, weight} = weightData;
-  const sql = "INSERT INTO weight (goal, Date, weight, account_id) VALUES (?, ?, ?, ?)";
+const creatweight = (account_id, weightData,Date, callback) => {
+  const { goal} = weightData;
+  const sql = "INSERT INTO weight (goal, Date, account_id) VALUES (?, ?, ?)";
 
-  db.query(sql, [goal, Date, weight, account_id], (err, result) => {
+  db.query(sql, [goal, Date, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -34,10 +34,10 @@ const getweight = (account_id, callback) => {
   })
 };
 const updateweight = (account_id, updatedProfileData, callback) => {
-  const { goal, Date, weight } = updatedProfileData;
-  const sql = "UPDATE weight SET goal = ?, Date = ?, weight= ? WHERE account_id = ?";
+  const { goal, Date } = updatedProfileData;
+  const sql = "UPDATE weight SET goal = ?, Date = ?  WHERE account_id = ?";
 
-  db.query(sql, [goal, Date, weight, account_id], (err, result) => {
+  db.query(sql, [goal, Date, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -50,8 +50,8 @@ const updateweight = (account_id, updatedProfileData, callback) => {
     }
   });
 };
-const deleteweight = (account_id, callback) => {
-  const sql = "DELETE * FROM weight WHERE account_id = ?";
+const deleteweighthistory = (weight_id, callback) => {
+  const sql = "DELETE * FROM weight_history WHERE weight_id = ?";
   
   db.query(sql, [account_id], (err, result) => {
     if (typeof callback === 'function') {
@@ -70,5 +70,5 @@ module.exports = {
   creatweight, 
   getweight,
   updateweight,
-  deleteweight
+  deleteweighthistory
 };

@@ -73,7 +73,10 @@ async function otpAuthen(req, res) {
   const { otp } = req.body;
   try {
     const email = inforemail;
-
+    const fullname = inforfullname;
+    const birthday = inforbirthday;
+    const password = inforpassword;
+    const hashedPassword = await bcrypt.hash(password, 10);
     const cachedOTP = inforotp[email];
     if (!cachedOTP || cachedOTP.otp !== otp) {
       return res.status(400).json({ message: 'Invalid OTP' });
@@ -85,6 +88,11 @@ async function otpAuthen(req, res) {
     if (currentTime - otpTimestamp > otpValidityDuration) {
       return res.status(400).json({ message: 'Error Expired OTP' });
     }
+    const newAccount = await account.create({ email, fullname, birthday, password: hashedPassword});
+    delete inforemail;
+    delete inforfullname;
+    delete inforbirthday;
+    delete inforpassword
     delete inforotp[email]
     res.status(200).json({ message: 'successfully' });
   } catch (error) {
@@ -92,25 +100,22 @@ async function otpAuthen(req, res) {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-async function saveAccount(req, res) {
-  const { gender, height, wakeup_time, sleeping_time } = req.body;
+const saveInfor = async (req,res) => {
+  const userId = req.userId; 
+  const { gender, weight, height, wakeup_time, sleeping_time } = req.body;
+  if (!userId) {
+    console.log('Unauthorized: ');
+    throw new Error('Unauthorized ');
+  }
   try {
-    const email = inforemail;
-    const fullname = inforfullname;
-    const birthday = inforbirthday;
-    const password = inforpassword;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newAccount = await account.create({ email, fullname, birthday, password: hashedPassword,gender, height, wakeup_time, sleeping_time });
-    delete inforemail;
-    delete inforfullname;
-    delete inforbirthday;
-    delete inforpassword
+   await account.createProfile(userId,{gender, weight, height, wakeup_time, sleeping_time});
     res.status(200).json({ message: 'successfully' });
   } catch (error) {
     console.error('Error', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+  
+    
 };
 
-module.exports = { registerAccount, otpAuthen,saveAccount, registerValidator };
+module.exports = { registerAccount, otpAuthen, saveInfor,registerValidator };

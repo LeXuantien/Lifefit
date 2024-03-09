@@ -1,9 +1,16 @@
-const bcrypt = require('bcrypt');
-const session = require('express-session');
-const userModel = require('../Model/authModel');
-const { Result } = require('express-validator');
+require('dotenv').config(); 
 
-const userController = {
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const userModel = require('../Model/authModel');
+const secretKey = process.env.SECRET_KEY; 
+
+function generateToken(userId) {
+  const token = jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
+  return token;
+}
+
+const Login = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -11,23 +18,25 @@ const userController = {
       if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });
       }
-      userModel.login(email, password, async (err, user) => {
+      userModel.login(email, password, async (err, userData) => {
         if (err) {
           return res.status(500).json({ error: 'Internal Server Error' });
         }
-        if (!user) {
+        if (!userData) {
           return res.status(401).json({ error: 'Invalid credential' });
         }
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const { id } = userData; 
+
+        const passwordMatch = await bcrypt.compare(password, userData.password);
 
         if (!passwordMatch) {
           return res.status(401).json({ error: 'Invalid credentials' });
         }
-        req.session.userId = user.id;
-        const id=req.session.userId ;
-        res.json({ userId: id, message: 'Login successful' });
-        
+
+        const token = generateToken(id); 
+
+        res.json({ token, message: 'Login successful' });
       });
     } catch (err) {
       console.error('Error during login:', err);
@@ -36,4 +45,4 @@ const userController = {
   },
 };
 
-module.exports = userController;
+module.exports = { Login };

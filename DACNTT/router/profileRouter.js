@@ -1,17 +1,11 @@
 const express = require('express');
 const profileRouter = require('../Controller/profileController');
 const router = express.Router();
-
-const checkSessionMiddleware = (req, res, next) => {
-  if (req.session.userId) {
-    next();
-  } else {
-    next(new Error('Unauthorized - Session ID is not valid'));
-  }
-};
+const checkMiddleware = require('../utils/Middleware');
 
 
-router.get('/getprofile', checkSessionMiddleware, async (req, res) => {
+
+router.get('/getprofile', checkMiddleware, async (req, res) => {
   try {
  const result = await profileRouter.getProfile(req);
 
@@ -19,14 +13,14 @@ router.get('/getprofile', checkSessionMiddleware, async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    if (error.message === 'Unauthorized - Session ID is not valid') {
+    if (error.message === 'Unauthorized ') {
       res.status(401).send('Unauthorized');
     } else {
       res.status(500).send('Internal Server Error');
     }
   }
 });
-router.put('/updateprofile', checkSessionMiddleware, async (req, res) => {
+router.put('/updateprofile', checkMiddleware, async (req, res) => {
   try {
   
     const { email, fullname,birthday, password,gender, height, wakeup_time, sleeping_time } = req.body;

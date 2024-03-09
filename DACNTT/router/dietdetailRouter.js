@@ -1,13 +1,13 @@
 const express = require('express');
-const weigthRouter = require('../Controller/weigthController');
+const dietRouter = require('../Controller/dietdetailController');
 const router = express.Router();
 const checkMiddleware = require('../utils/Middleware');
 
 
-router.post('/weight', checkMiddleware, async (req, res) => {
+router.post('/dietdetail', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await weigthRouter.inforweight(req);
+    const result = await dietRouter.infordietdetail(req);
 
     res.json(result);
   } catch (error) {
@@ -20,10 +20,10 @@ router.post('/weight', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getweight', checkMiddleware, async (req, res) => {
+router.get('/getdietdetail', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await weigthRouter.getWeight(req);
+    const result = await dietRouter.getdietdetail(req);
 
     res.json(result);
   } catch (error) {
@@ -36,29 +36,29 @@ router.get('/getweight', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updateweight', checkMiddleware, async (req, res) => {
+router.put('/updatedietdetail', checkMiddleware, async (req, res) => {
   try {
-    const { goal, Date } = req.body;
-    const updateWeightData = { goal, Date};
+    const { content,diet_date,calo } = req.body;
+    const updatedietdetailData = { content,diet_date,calo};
 
     
-    const result = await weigthRouter.updateWeight(req, updateWeightData);
+    const result = await dietRouter.updatedietdetail(req, updatedietdetailData);
     res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
-router.get('/deleteweight', checkMiddleware, async (req, res) => {
+router.get('/deletedietdetail', checkMiddleware, async (req, res) => {
     try {
     
-      const result = await weigthRouter.deleteWeight(req);
+      const result = await dietRouter.deletedietdetail(req);
   
       res.json(result);
     } catch (error) {
       console.error(error);
   
-      if (error.message === 'Unauthorized - Session ID is not valid') {
+      if (error.message === 'Unauthorized ') {
         res.status(401).send('Unauthorized');
       } else {
         res.status(500).send('Internal Server Error');

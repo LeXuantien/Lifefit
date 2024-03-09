@@ -1,8 +1,9 @@
-const weightModel = require('../Model/weightModel');
+const weightModel = require('../Model/weightHistoryModel');
 const jwt = require('jsonwebtoken');
-const inforweight = async (req) => {
+
+const inforweighthistory = async (req) => {
   const userId = req.userId; 
-  const { goal} = req.body;
+  const { weight, date_recorded} = req.body;
 
   if (!userId) {
     console.log('Unauthorized');
@@ -10,7 +11,7 @@ const inforweight = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    weightModel.creatweight(userId, { goal }, (err, result) => {
+    weightModel.creatweighthistory (userId, {  weight, date_recorded }, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Error: ' + err.message));
@@ -19,16 +20,16 @@ const inforweight = async (req) => {
     });
   });
 };
-const getWeight = async (req) => {
+const getweighthistory = async (req) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized: ');
+    throw new Error('Unauthorized ');
   }
 
  
   return new Promise((resolve, reject) => {
-    weightModel.getweight(userId, (err, result) => { 
+    weightModel.getweighthistory(userId, (err, result) => { 
       if (err) {
         console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
@@ -37,15 +38,16 @@ const getWeight = async (req) => {
     });
   });
 };
-const updateWeight= async (req, updatedWeigthData) => {
+const updateweighthistory= async (req, updatedWeigthData) => {
   const userId = req.userId; 
+  const id = req.params.id;
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized');
   }
 
   return new Promise((resolve, reject) => {
-    weightModel.updateweight(userId, updatedWeigthData, (err, result) => {
+    weightModel.updateweighthistory(id,userId, updatedWeigthData, (err, result) => {
      
 
       if (err) {
@@ -62,8 +64,7 @@ const updateWeight= async (req, updatedWeigthData) => {
   
    
 module.exports = {
-  inforweight,
-  getWeight,
-  updateWeight,
+  inforweighthistory,
+  getweighthistory,updateweighthistory
   
 };
