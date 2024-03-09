@@ -23,8 +23,8 @@ router.get('/getprofile', checkMiddleware, async (req, res) => {
 router.put('/updateprofile', checkMiddleware, async (req, res) => {
   try {
   
-    const { email, fullname,birthday, password,gender, height, wakeup_time, sleeping_time } = req.body;
-    const updatedProfileData = { email, fullname,birthday, password,gender, height, wakeup_time, sleeping_time };
+    const { email, fullname,birthday, gender,weight, height, wakeup_time, sleeping_time } = req.body;
+    const updatedProfileData = { email, fullname,birthday, gender,weight, height, wakeup_time, sleeping_time };
 
     
     const result = await profileRouter.updateProfile(req, updatedProfileData);

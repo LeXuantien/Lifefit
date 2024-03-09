@@ -4,7 +4,7 @@ CREATE TABLE `account` (
   `fullname` varchar(255) NOT NULL,
   `birthday` date NOT NULL,
   `password` varchar(100) NOT NULL,
-  `gender` boolean null ,
+  `gender`  varchar(100) null ,
   `weight` float  NULL,
   `height` float  NULL,
   `wakeup_time` datetime DEFAULT Null,
