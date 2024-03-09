@@ -12,7 +12,7 @@ const createPeriod = async (req) => {
 
   let menstrual_days = [];
   const startDate = new Date(start_date); 
-  if(startDate.getMonth()< new Date().getMonth()){
+  if(startDate.getMonth()< new Date().getMonth() && !end_date){
     console.log('Vui lòng nhập ngày kết thúc ');
     throw new Error('error');
   }
@@ -67,14 +67,16 @@ const updateMenstrualDays = async () => {
         menstrualDaysArray.push(today.toISOString().slice(0, 10));
         await periodModel.updatePeriodByMonthAndYear( menstrualDaysArray);
       }
+      
     }
+    console.log('tc')
   } catch (error) {
     console.error('Error updating menstrual days: ', error);
   }
 };
 
 
-cron.schedule('40 0 * * *', () => {
+cron.schedule('55 14 * * *', () => {
   updateMenstrualDays(); 
 }, {
   timezone: 'Asia/Ho_Chi_Minh'

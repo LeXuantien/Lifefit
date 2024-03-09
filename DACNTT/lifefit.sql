@@ -43,23 +43,16 @@ CREATE TABLE `activityHistory` (
 );
 CREATE TABLE `blood_pressure` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `account_id` integer(11) NOT NULL
-);
-CREATE TABLE `blood_pressureHistory` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `date` datetime NOT NULL,
   `blood_pressure` float NOT NULL,
-  `blood_pressure_id` integer(11) NOT NULL
-);
-CREATE TABLE `Heart` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `account_id` integer(11) NOT NULL
 );
-CREATE TABLE `HeartHistory` (
+
+CREATE TABLE `Heart` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `date` datetime NOT NULL,
   `heartbeat` float NOT NULL,
-  `heart_id` integer(11) NOT NULL
+  `account_id` integer(11) NOT NULL
 );
 
 CREATE TABLE `weight` (
@@ -98,10 +91,8 @@ ALTER TABLE `activity` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`
 ALTER TABLE `activityHistory` ADD FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`);
 
 ALTER TABLE `heart` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
-ALTER TABLE `heartHistory` ADD FOREIGN KEY (`heart_id`) REFERENCES `heart` (`id`);
-
 ALTER TABLE `blood_pressure` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
-ALTER TABLE `blood_pressureHistory` ADD FOREIGN KEY (`blood_pressure_id`) REFERENCES `blood_pressure` (`id`);
+
 
 ALTER TABLE `weight` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `weight_history` ADD  FOREIGN KEY (`weight_id`) REFERENCES `weight` (`id`);

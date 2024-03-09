@@ -11,6 +11,9 @@ const dietdetailRouter= require('./router/dietdetailRouter');
 const forgotpasswordRouter = require('./router/forgotpasswordRouter');
 const periodRouter= require('./router/periodRouter');
 const waterRouter= require('./router/waterRouter');
+const heartRouter= require('./router/heartRouter');
+const blood_pressureRouter= require('./router/blood_pressureRouter');
+const activityRouter= require('./router/activityRouter');
 const app = express();
 const port = 3000;
 
@@ -36,6 +39,9 @@ app.use('/api', dietdetailRouter);
 app.use('/api',forgotpasswordRouter);
 app.use('/api',periodRouter);
 app.use('/api',waterRouter);
+app.use('/api',heartRouter);
+app.use('/api',blood_pressureRouter);
+app.use('/api',activityRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
