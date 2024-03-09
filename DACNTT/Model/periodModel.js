@@ -16,17 +16,21 @@ const Period = {
       }
     });
   },
-  getAllPeriod: (account_id) => {
-    return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM period WHERE account_id = ?';
-      db.query(query,[account_id], (err, results) => {
+ getAllPeriod: (id, callback) => {
+    const sql = "SELECT * FROM period WHERE account_id = ?";
+    
+    db.query(sql, [id], (err, result) => {
+      if (typeof callback === 'function') {
         if (err) {
-          reject(err);
-          return;
+          console.error(err);
+          callback(err, null);
+        } else {
+          callback(null, result);
         }
-        resolve(results);
-      });
-    });
+      } else {
+        console.error('Callback is not a function');
+      }
+    })
   },
   getPeriodByMonthAndYearId: (account_id,month,year) => {
     return new Promise((resolve, reject) => {
@@ -73,16 +77,20 @@ const Period = {
       });
     });
   },
-  updatePeriodByMonthAndYearID: (month,year,menstrual_days) => {
-    return new Promise((resolve, reject) => {
-      const query = 'UPDATE period SET start_date = ?, end_date = ? ,menstrual_days = ?, note = ? WHERE MONTH(start_date) = ? AND YEAR(start_date) = ?';
-      db.query(query, [menstrual_days.join(','), month, year], (err, results) => {
+  updatePeriodByID : (userid,id,menstrual_days, updatedPeriodData, callback) => {
+    const {start_date,end_date,note } = updatedPeriodData;
+    const sql = 'UPDATE period SET start_date = ?, end_date = ? ,menstrual_days = ?, note = ? WHERE account_id = ?  AND id= ?';
+    db.query(sql, [start_date,end_date,menstrual_days.join(','),note,userid,id], (err, result) => {
+      if (typeof callback === 'function') {
         if (err) {
-          reject(err);
-          return;
+          console.error(err);
+          callback(err, null);
+        } else {
+          callback(null, result);
         }
-        resolve(results);
-      });
+      } else {
+        console.error('Callback is not a function');
+      }
     });
   },
 };

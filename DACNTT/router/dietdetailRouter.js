@@ -49,8 +49,9 @@ router.put('/updatedietdetail', checkMiddleware, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-router.get('/deletedietdetail', checkMiddleware, async (req, res) => {
-    try {
+router.get('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
+  const id = req.params.id;
+  try {
     
       const result = await dietRouter.deletedietdetail(req);
   

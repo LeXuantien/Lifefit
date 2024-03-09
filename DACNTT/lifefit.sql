@@ -65,7 +65,6 @@ CREATE TABLE `HeartHistory` (
 CREATE TABLE `weight` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `goal` float NOT NULL,
-  `Date` date  NULL,
   `account_id` integer(11)  UNIQUE NOT NULL
 );
 CREATE TABLE `weight_history` (

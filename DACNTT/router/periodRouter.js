@@ -26,5 +26,16 @@ router.get('/getPeriod', checkMiddleware, async (req, res, next) => {
     next(error);
   }
 });
+router.put('/updateperiod/:id', checkMiddleware, async (req, res) => {
+  const id = req.params.id;
+  try {
+ 
+    const result = await periodController.updatePeriodByID(req);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 module.exports = router;

@@ -41,7 +41,7 @@ router.put('/updateddiet', checkMiddleware, async (req, res) => {
   try {
     
     const { goal} = req.body;
-    const updatediettData = { goal, date_diet};
+    const updatediettData = { goal};
 
     
     const result = await dietRouter.updatediet(req, updatediettData);

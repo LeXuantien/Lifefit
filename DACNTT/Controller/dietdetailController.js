@@ -74,7 +74,7 @@ const deletedietdetail = async (req) => {
           console.error(err);      
           reject(new Error('Internal Server Error: ' + err.message));
         }
-        resolve(result);
+        resolve('susscess');
       });
     });
   };

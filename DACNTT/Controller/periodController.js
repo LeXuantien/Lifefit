@@ -82,7 +82,7 @@ cron.schedule('40 0 * * *', () => {
 
 
 
-const getAllPeriod = async (req) => {
+const getAllPeriod= async (req) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
@@ -99,26 +99,45 @@ const getAllPeriod = async (req) => {
     });
   });
 };
-
-
-const updateProfile = async (req, updatedProfileData) => {
-  const userId = req.userId; 
-
+const updatePeriodByID = async (req) => {
+  const userId = req.userId;
+  const id = req.params.id; 
+  const { start_date, end_date, note } = req.body;
+  const updatedPeriodData = { start_date, end_date, note };
+  
+  // Check if user is authenticated
   if (!userId) {
     console.log('Unauthorized: ');
-    throw new Error('Unauthorized ');
+    throw new Error('Unauthorized');
   }
 
+  // Convert start_date and end_date to Date objects
+  const startDate = new Date(start_date);
+  const currentDate = new Date(startDate);
+  let menstrual_days = [];
+  const endDate = new Date(end_date);
+
+  // Generate menstrual days between start_date and end_date
+  while (currentDate <= endDate) { 
+    menstrual_days.push(currentDate.toISOString().slice(0, 10));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  console.log(menstrual_days);
+
+  // Call the model function to update the period by ID
   return new Promise((resolve, reject) => {
-    profileModel.updateProfile(userId, updatedProfileData, (err, result) => {
+    periodModel.updatePeriodByID(userId, id, menstrual_days, updatedPeriodData, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
       console.log('Cập nhật thành công');
-      resolve(updatedProfileData);
+      resolve('Cập nhật thành công');
     });
   });
 };
-module.exports = {createPeriod,updateMenstrualDays, getAllPeriod};
+
+
+
+module.exports = {createPeriod,updateMenstrualDays, getAllPeriod,updatePeriodByID};

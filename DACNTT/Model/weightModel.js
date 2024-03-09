@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
-const creatweight = (account_id, weightData,Date, callback) => {
+const creatweight = (account_id, weightData, callback) => {
   const { goal} = weightData;
-  const sql = "INSERT INTO weight (goal, Date, account_id) VALUES (?, ?, ?)";
+  const sql = "INSERT INTO weight (goal, account_id) VALUES (?, ?)";
 
-  db.query(sql, [goal, Date, account_id], (err, result) => {
+  db.query(sql, [goal,  account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

@@ -87,7 +87,7 @@ const updatedietdetail = (account_id, updateddietData, callback) => {
 })
 };
 const deletedietdetail = (id,account_id, callback) => {
-  const sql = "SELECT id FROM weight WHERE account_id = ?";
+  const sql = "SELECT id FROM diet WHERE account_id = ?";
   db.query(sql, [account_id], (err, rows) => {
     if (err) {
       console.error(err);
@@ -98,10 +98,10 @@ const deletedietdetail = (id,account_id, callback) => {
       return callback(new Error("Không tìm thấy "), null);
     }
 
-    const weight_id = rows[0].id;
-    const sql1 = "DELETE FROM weight_history WHERE weight_id = ?";
+    const diet_id = rows[0].id;
+    const sql1 = "DELETE FROM dietdetail WHERE diet_id = ? and id =?";
 
-    db.query(sql1, [id,weight_id], (err, result) => {
+    db.query(sql1, [diet_id,id], (err, result) => {
       if (err) {
         console.error(err);
         return callback(err, null);
