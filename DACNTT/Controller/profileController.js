@@ -20,29 +20,29 @@ const getProfile = async (req) => {
     });
   });
 };
-
-const updateProfile = async (req, updatedProfileData) => {
+const updatedProfile= async (req, updatedprofileData) => {
   const userId = req.userId; 
 
   if (!userId) {
-    console.log('Unauthorized: ');
+    console.log('Unauthorized');
     throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {
-    profileModel.updateProfile(userId, updatedProfileData, (err, result) => {
+    profileModel.updateProfile(userId, updatedprofileData, (err, result) => {
+      
       if (err) {
-        console.error(err);
+       
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
-      console.log('Cập nhật thành công');
-      resolve(updatedProfileData);
+      resolve('successfully');
     });
   });
 };
 
+
 module.exports = {
   getProfile,
-  updateProfile
+  updatedProfile
 };
