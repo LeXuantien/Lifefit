@@ -2,7 +2,7 @@ const heartModel = require('../Model/heartModel');
 
 const inforheart = async (req) => {
   const userId = req.userId; 
-  const {  goal,date,heartbeat } = req.body;
+  const { date,heartbeat } = req.body;
 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -10,7 +10,7 @@ const inforheart = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    heartModel.createheart(userId, { goal,date,heartbeat}, (err, result) => {
+    heartModel.createheart(userId, {date,heartbeat}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));

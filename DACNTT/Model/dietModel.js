@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 const creatediet = (account_id, dietData, callback) => {
-  const { goal} = dietData;
-  const sql = "INSERT INTO diet (goal, account_id) VALUES (?,  ?)";
+  const { goal,date} = dietData;
+  const sql = "INSERT INTO diet (goal,date, account_id) VALUES (?, ?, ?)";
 
-  db.query(sql, [goal,  account_id], (err, result) => {
+  db.query(sql, [goal, date, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -34,10 +34,10 @@ const getdiet = (account_id, callback) => {
   })
 };
 const updatediet = (account_id, updateddietData, callback) => {
-  const { goal} = updateddietData;
-  const sql = "UPDATE diet SET goal = ? WHERE account_id = ?";
+  const { goal,date} = updateddietData;
+  const sql = "UPDATE diet SET goal = ? , date = ? WHERE account_id = ?";
 
-  db.query(sql, [goal, account_id], (err, result) => {
+  db.query(sql, [goal,date, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

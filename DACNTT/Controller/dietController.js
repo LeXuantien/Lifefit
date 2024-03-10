@@ -2,7 +2,7 @@ const dietModel = require('../Model/dietModel');
 
 const infordiet = async (req) => {
   const userId = req.userId; 
-  const {  goal } = req.body;
+  const {  goal,date } = req.body;
 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -10,7 +10,7 @@ const infordiet = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    dietModel.creatediet(userId, { goal}, (err, result) => {
+    dietModel.creatediet(userId, { goal,date}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));

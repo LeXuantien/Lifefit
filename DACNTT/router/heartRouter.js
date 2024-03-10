@@ -40,8 +40,8 @@ router.get('/getheart', checkMiddleware, async (req, res) => {
 router.put('/updatedheart', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal ,date,heartbeat} = req.body;
-    const updatedheartData = { goal,date,heartbeat};
+    const { date,heartbeat} = req.body;
+    const updatedheartData = { date,heartbeat};
 
     
     const result = await heartRouter.updatedheart(req, updatedheartData);

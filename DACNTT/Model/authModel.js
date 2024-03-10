@@ -3,9 +3,9 @@ const bcrypt = require('bcrypt');
 
 const authModel = {
   
-  login: (email, password, callback) => {
+  login: (email, callback) => {
     const query = 'SELECT * FROM account WHERE email = ? ';
-    db.query(query, [email, password], (err, results) => {
+    db.query(query, [email], (err, results) => {
       if (typeof callback === 'function') {
         if (err) {
           console.error('Error during login:', err);

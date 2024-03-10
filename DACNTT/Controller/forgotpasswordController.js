@@ -18,17 +18,8 @@ const transporter = nodemailer.createTransport({
 let resetPasswordEmail = '';
 let inforotp = {};
 
-async function sendOTP(req, res) {
-  const { email } = req.body;
-
+async function OTP(email) {
   try {
-    const user = await UserModel.getUserByEmail(email);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    resetPasswordEmail = email;
     const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
     console.log(generatedOTP);
     inforotp[email] = {
@@ -43,23 +34,45 @@ async function sendOTP(req, res) {
     };
 
     await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'OTP sent successfully' });
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    return { success: false, message: 'Internal server error' };
+  }
+}
+
+async function sendOTP(req, res) {
+  const { email } = req.body;
+  try {
+    console.log(email);
+    const user = await UserModel.getUserByEmail(email);
+    console.log(user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    resetPasswordEmail = email;
+    await OTP(email);
+    res.status(200).json({ message: 'successfully' });
   } catch (error) {
     console.error('Error sending OTP email:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
+async function resetOTP(req, res) {
+  const email=resetPasswordEmail;
+  try {
+    
+    await OTP(email);
+    res.status(200).json({ message: 'successfully' });
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 async function otpAuthen(req, res) {
   const { otp } = req.body;
   const email = resetPasswordEmail;
   try {
-    const user = await UserModel.getUserByEmail(email);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
     const cachedOTP = inforotp[email];
     if (!cachedOTP || cachedOTP.otp !== otp) {
       return res.status(400).json({ message: 'Invalid OTP' });
@@ -67,7 +80,7 @@ async function otpAuthen(req, res) {
 
     const otpTimestamp = cachedOTP.timestamp;
     const currentTime = Date.now();
-    const otpValidityDuration = 60 * 1000; 
+    const otpValidityDuration = 90 * 1000; 
     if (currentTime - otpTimestamp > otpValidityDuration) {
       return res.status(400).json({ message: 'Error Expired OTP' });
     }
@@ -99,7 +112,7 @@ async function updatePassword(req, res) {
     await UserModel.updatepassword(email, hashedPassword);
 
     delete inforotp[email];
-    res.status(200).json({ message: 'Password updated successfully' });
+    res.status(200).json({ message: 'Password updated successfully'});
   } catch (error) {
     console.error('Error resetting password:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -107,4 +120,4 @@ async function updatePassword(req, res) {
 }
 
 
-module.exports = { sendOTP,otpAuthen,updatePassword };
+module.exports = { resetOTP,sendOTP,otpAuthen,updatePassword };

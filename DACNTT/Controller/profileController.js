@@ -1,6 +1,5 @@
 const profileModel = require('../Model/profileModel');
-
-
+const bcrypt = require('bcrypt');
 
 
 const getProfile = async (req) => {
@@ -40,9 +39,34 @@ const updatedProfile= async (req, updatedprofileData) => {
     });
   });
 };
+const updatedPassword= async (req,res) => {
+  const userId = req.userId; 
+  const {oldpassword,newpassword}=req.body;
+
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+  try {
+    const password = await profileModel.getPassword(userId); 
+    const passwordMatch = await bcrypt.compare(oldpassword, password); 
+    if (!passwordMatch) {
+      return { success: false, message: 'Mật khẩu cũ không đúng' }; 
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newpassword, 10); 
+    await profileModel.updatePassword(userId, { password: hashedNewPassword }); 
+
+    res.status(200).json({ message: 'successfully' });
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw new Error('Internal Server Error');
+  }
+};
 
 
 module.exports = {
   getProfile,
-  updatedProfile
+  updatedProfile,
+  updatedPassword
 };

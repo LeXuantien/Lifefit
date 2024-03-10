@@ -37,11 +37,11 @@ router.get('/getactivity', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updatedactitity', checkMiddleware, async (req, res) => {
+router.put('/updatedactivity', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal} = req.body;
-    const updateactivitytData = { goal};
+    const { goal,date} = req.body;
+    const updateactivitytData = { goal,date};
 
     
     const result = await activityRouter.updateactivity(req, updateactivitytData);

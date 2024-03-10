@@ -2,7 +2,7 @@ const blood_pressureModel = require('../Model/blood_pressureModel');
 
 const inforblood_pressure = async (req) => {
   const userId = req.userId; 
-  const {  goal,date,blood_pressure} = req.body;
+  const { date,blood_pressure} = req.body;
 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -10,7 +10,7 @@ const inforblood_pressure = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    blood_pressureModel.createblood_pressure(userId, { goal,date,blood_pressure}, (err, result) => {
+    blood_pressureModel.createblood_pressure(userId, { date,blood_pressure}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));

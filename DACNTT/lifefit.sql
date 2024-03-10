@@ -14,6 +14,7 @@ CREATE TABLE `account` (
 CREATE TABLE `watertracker` (
   `watergoal` float NOT NULL,
   `dategoal` datetime NOT NULL,
+  `water`    float NULL,
   `account_id` integer(11) NOT NULL
 );
 CREATE TABLE `notification`(
@@ -32,6 +33,7 @@ CREATE TABLE `period` (
 CREATE TABLE `activity` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `goal` float NOT NULL,
+  `date` date NOT NULL,
   `account_id` integer(11) NOT NULL
 );
 CREATE TABLE `activityHistory` (
@@ -70,6 +72,7 @@ CREATE TABLE `weight_history` (
 CREATE TABLE `diet` (
   `id` int NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `goal` integer(15) NOT NULL ,
+  `date` date NOT NULL,
   `account_id` integer(11) NOT NULL
 );
 

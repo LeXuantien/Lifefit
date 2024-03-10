@@ -2,7 +2,7 @@ const activityModel = require('../Model/activityModel');
 
 const inforactivity = async (req) => {
   const userId = req.userId; 
-  const {  goal } = req.body;
+  const {  goal,date } = req.body;
 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -10,7 +10,7 @@ const inforactivity = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    activityModel.create(userId, { goal}, (err, result) => {
+    activityModel.create(userId, { goal,date}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));

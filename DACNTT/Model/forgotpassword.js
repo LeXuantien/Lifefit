@@ -12,7 +12,7 @@ class UserModel {
             }
           });
         });
-      }
+      };
     
       static async updatepassword(email, password) {
         return new Promise((resolve, reject) => {

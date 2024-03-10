@@ -40,8 +40,8 @@ router.get('/getblood_pressure', checkMiddleware, async (req, res) => {
 router.put('/updatedblood_pressure', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal ,date,blood_pressure} = req.body;
-    const updatedblood_pressureData = { goal,date,blood_pressure};
+    const { date,blood_pressure} = req.body;
+    const updatedblood_pressureData = { date,blood_pressure};
 
     
     const result = await blood_pressureRouter.updatedblood_pressure(req, updatedblood_pressureData);

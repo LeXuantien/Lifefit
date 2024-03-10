@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 const create = (account_id, activityData, callback) => {
-  const { goal} = activityData;
-  const sql = "INSERT INTO activity (goal, account_id) VALUES (?,  ?)";
+  const { goal,date} = activityData;
+  const sql = "INSERT INTO activity (goal,date, account_id) VALUES (?, ?, ?)";
 
-  db.query(sql, [goal,  account_id], (err, result) => {
+  db.query(sql, [goal,date , account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -18,7 +18,7 @@ const create = (account_id, activityData, callback) => {
   });
 };
 const getactivity = (account_id, callback) => {
-  const sql = "SELECT * FROM activityWHERE account_id = ?";
+  const sql = "SELECT * FROM activity WHERE account_id = ?";
   
   db.query(sql, [account_id], (err, result) => {
     if (typeof callback === 'function') {
@@ -34,10 +34,10 @@ const getactivity = (account_id, callback) => {
   })
 };
 const updateactivity = (account_id, activityData, callback) => {
-  const { goal} = activityData;
-  const sql = "UPDATE dactivity SET goal = ? WHERE account_id = ?";
+  const { goal,date} = activityData;
+  const sql = "UPDATE activity SET goal = ?, date = ? WHERE account_id = ?";
 
-  db.query(sql, [goal, account_id], (err, result) => {
+  db.query(sql, [goal,date, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

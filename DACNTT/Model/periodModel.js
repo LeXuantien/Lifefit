@@ -35,7 +35,7 @@ const Period = {
   getPeriodByMonthAndYearId: (account_id,month,year) => {
     return new Promise((resolve, reject) => {
 
-      const sql = 'SELECT * FROM period WHERE account_id=?AND MONTH(start_date) = ? AND YEAR(start_date) = ?';
+      const sql = 'SELECT * FROM period WHERE account_id = ? AND MONTH(start_date) = ? AND YEAR(start_date) = ?';
       db.query(sql, [account_id,month, year], (err, results) => {
         if (err) {
           reject(err);
@@ -61,14 +61,26 @@ const Period = {
       });
     });
   },
-  updatePeriodByMonthAndYear: (menstrual_days) => {
+  getPeriodByMonthAndYearPre: (account_id,month,year) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM period WHERE account_id = ? AND MONTH(start_date) = ? AND YEAR(start_date) = ?';
+      db.query(sql, [account_id,month, year], (err, results) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(results);
+      });
+    });
+  },
+  updatePeriodByMonthAndYear: (id,menstrual_days) => {
     return new Promise((resolve, reject) => {
       const today = new Date();
-      const month = today.getMonth() + 1; 
+      const month = today.getMonth(); 
       const year = today.getFullYear();
   
-      const query = 'UPDATE period SET menstrual_days = ? WHERE MONTH(start_date) = ? AND YEAR(start_date) = ?';
-      db.query(query, [menstrual_days.join(','), month, year], (err, results) => {
+      const query = 'UPDATE period SET menstrual_days = ? WHERE id = ? AND MONTH(start_date) = ? AND YEAR(start_date) = ?';
+      db.query(query, [id,menstrual_days.join(','), month, year], (err, results) => {
         if (err) {
           reject(err);
           return;
@@ -92,7 +104,7 @@ const Period = {
         console.error('Callback is not a function');
       }
     });
-  },
+  }
 };
 
 

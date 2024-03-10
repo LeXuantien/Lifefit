@@ -38,8 +38,8 @@ router.get('/getweight', checkMiddleware, async (req, res) => {
 });
 router.put('/updateweight', checkMiddleware, async (req, res) => {
   try {
-    const { goal, Date } = req.body;
-    const updateWeightData = { goal, Date};
+    const { goal } = req.body;
+    const updateWeightData = { goal};
 
     
     const result = await weigthRouter.updateWeight(req, updateWeightData);
@@ -49,20 +49,5 @@ router.put('/updateweight', checkMiddleware, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-router.get('/deleteweight', checkMiddleware, async (req, res) => {
-    try {
-    
-      const result = await weigthRouter.deleteWeight(req);
-  
-      res.json(result);
-    } catch (error) {
-      console.error(error);
-  
-      if (error.message === 'Unauthorized - Session ID is not valid') {
-        res.status(401).send('Unauthorized');
-      } else {
-        res.status(500).send('Internal Server Error');
-      }
-    }
-  });
+
 module.exports = router;

@@ -38,6 +38,27 @@ let inforbirthday='';
 let inforpassword='';
 let inforotp = {};
 
+async function OTP(email) {
+  try {
+    const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+    console.log(generatedOTP);
+    inforotp[email] = {
+      otp: generatedOTP,
+      timestamp: Date.now()
+    };
+    const mailOptions = {
+      from: 'tienle120302@gmail.com', 
+      to: email,
+      subject: 'Your OTP Code',
+      text: `Your OTP code is: ${generatedOTP}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    return { success: false, message: 'Internal server error' };
+  }
+}
 
 async function registerAccount(req, res) {
   const { email, fullname, birthday, password, confirmpassword } = req.body;
@@ -46,22 +67,20 @@ async function registerAccount(req, res) {
   inforbirthday = birthday;
   inforpassword = password;
   try {
-    
-    
-    const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-    
-    inforotp[email] = {
-      otp: generatedOTP,
-      timestamp: Date.now()
-    };
-    const mailOptions = {
-      from: 'tienle120302@gmail.com',
-      to: email,
-      subject: 'Your OTP Code',
-      text: `Your OTP code is: ${generatedOTP}`,
-    };
+   
+    await OTP(email);
+    res.status(200).json({ message: 'OTP sent successfully' });
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+async function resetOTP(req, res) {
+ 
+  try {
+    const email=inforemail;
 
-    await transporter.sendMail(mailOptions);
+    await OTP(email);
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
     console.error('Error sending OTP email:', error);
@@ -115,7 +134,6 @@ const saveInfor = async (req,res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
   
-    
 };
 
-module.exports = { registerAccount, otpAuthen, saveInfor,registerValidator };
+module.exports = { registerAccount, otpAuthen, saveInfor,resetOTP,registerValidator };

@@ -40,8 +40,8 @@ router.get('/getdiet', checkMiddleware, async (req, res) => {
 router.put('/updateddiet', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal} = req.body;
-    const updatediettData = { goal};
+    const { goal,date} = req.body;
+    const updatediettData = { goal,date};
 
     
     const result = await dietRouter.updatediet(req, updatediettData);

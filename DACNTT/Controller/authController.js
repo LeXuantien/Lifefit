@@ -18,7 +18,7 @@ const Login = {
       if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });
       }
-      userModel.login(email, password, async (err, userData) => {
+      userModel.login(email,async (err, userData) => {
         if (err) {
           return res.status(500).json({ error: 'Internal Server Error' });
         }

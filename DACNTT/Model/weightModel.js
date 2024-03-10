@@ -34,8 +34,8 @@ const getweight = (account_id, callback) => {
   })
 };
 const updateweight = (account_id, updatedProfileData, callback) => {
-  const { goal, Date } = updatedProfileData;
-  const sql = "UPDATE weight SET goal = ?, Date = ?  WHERE account_id = ?";
+  const { goal } = updatedProfileData;
+  const sql = "UPDATE weight SET goal = ?  WHERE account_id = ?";
 
   db.query(sql, [goal, Date, account_id], (err, result) => {
     if (typeof callback === 'function') {

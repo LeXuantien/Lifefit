@@ -3,7 +3,8 @@ const router = express.Router();
 const AuthController = require('../Controller/forgotpasswordController');
 
 router.post('/send-otp', AuthController.sendOTP);
+router.post('/reset-otp', AuthController.resetOTP);
 router.post('/otpauthen', AuthController.otpAuthen);
-router.post('/updatepassword', AuthController.updatePassword);
+router.put('/updatepassword', AuthController.updatePassword);
 
 module.exports = router;
