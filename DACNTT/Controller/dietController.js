@@ -38,6 +38,30 @@ const getdiet = async (req) => {
     });
   });
 };
+const getdietBydate = async (req) => {
+  const userId = req.userId; 
+  const { date } = req.body; 
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    return new Promise((resolve, reject) => {
+      dietModel.getdietBydate(userId, date, (err, result) => { 
+        if (err) {
+          console.error(err);      
+          reject(new Error('Internal Server Error: ' + err.message));
+        }
+        resolve(result);
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error: ' + error.message);
+  }
+};
+
 const updatediet= async (req, updateddietData) => {
   const userId = req.userId; 
 
@@ -61,5 +85,5 @@ const updatediet= async (req, updateddietData) => {
 module.exports = {
   infordiet,
   getdiet,
-  updatediet
+  updatediet,getdietBydate
 };

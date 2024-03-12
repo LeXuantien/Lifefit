@@ -121,3 +121,20 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER prevent_dietdetail_creation
+BEFORE INSERT ON dietdetail
+FOR EACH ROW
+BEGIN
+    DECLARE diet_exists INT;
+    
+
+    SELECT COUNT(*) INTO diet_exists FROM diet WHERE date = NEW.diet_date;
+    IF diet_exists = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Chưa có goal cho ngày này';
+    END IF;
+END//
+
+DELIMITER ;

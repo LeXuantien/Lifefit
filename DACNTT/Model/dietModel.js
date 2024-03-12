@@ -33,6 +33,27 @@ const getdiet = (account_id, callback) => {
     }
   })
 };
+
+const getdietBydate = (account_id, date, callback) => {
+  const formattedDate = new Date(date).toISOString().slice(0, 10);
+  console.log(formattedDate);
+  const sql = "SELECT goal FROM diet WHERE DATE(date) = ? AND account_id = ?";
+  
+  db.query(sql, [formattedDate, account_id], (err, result) => {
+    if (typeof callback === 'function') {
+      if (err) {
+        console.error(err);
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    } else {
+      console.error('Callback is not a function');
+    }
+  });
+};
+
+
 const updatediet = (account_id, updateddietData, callback) => {
   const { goal,date} = updateddietData;
   const sql = "UPDATE diet SET goal = ? , date = ? WHERE account_id = ?";
@@ -54,5 +75,7 @@ const updatediet = (account_id, updateddietData, callback) => {
 module.exports = {
   creatediet,
   getdiet,
-  updatediet
+  updatediet,
+  getdietBydate 
+
 };

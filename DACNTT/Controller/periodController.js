@@ -99,7 +99,7 @@ const updateMenstrualDays = async () => {
 };
 
 
-cron.schedule('9 1 * * *', () => {
+cron.schedule('26 14 * * *', () => {
   updateMenstrualDays(); 
 }, {
   timezone: 'Asia/Ho_Chi_Minh'

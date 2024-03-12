@@ -20,6 +20,22 @@ router.post('/diet', checkMiddleware, async (req, res) => {
     }
   }
 });
+router.post('/getdietBydate', checkMiddleware, async (req, res) => {
+  try {
+    
+    const result = await dietRouter.getdietBydate(req);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+
+    
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
 router.get('/getdiet', checkMiddleware, async (req, res) => {
   try {
 
