@@ -52,6 +52,22 @@ router.post('/getdietdetailBydate', checkMiddleware, async (req, res) => {
     }
   }
 });
+router.post('/getdietcaloBydate', checkMiddleware, async (req, res) => {
+  try {
+   
+    const result = await dietRouter.getdietcalo(req);
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
 router.put('/updatedietdetail/:id', checkMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
@@ -86,7 +102,7 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
   router.post('/CalodietByDate', checkMiddleware, async (req, res) => {
     try {
       
-      const result = await dietRouter.getCaloBydate(req);
+      const result = await dietRouter.getCaloBydate(req, res);
   
       res.json(result);
     } catch (error) {

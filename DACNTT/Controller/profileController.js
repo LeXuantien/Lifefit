@@ -57,7 +57,7 @@ const updatedPassword= async (req,res) => {
     const hashedNewPassword = await bcrypt.hash(newpassword, 10); 
     await profileModel.updatePassword(userId, { password: hashedNewPassword }); 
 
-    res.status(200).json({ message: 'successfully' });
+    res.status(200).json({ message: 'Cập nhật thành công' });
   } catch (error) {
     console.error('Error updating password:', error);
     throw new Error('Internal Server Error');

@@ -44,6 +44,29 @@ const getdietBydate = async (req) => {
     throw new Error('Error: ' + error.message);
   }
 };
+const getdietcalo = async (req) => {
+  const { diet_date } = req.body;
+  const userId = req.userId;
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    return new Promise((resolve, reject) => {
+     dietdetailModel.getCaloBydate(userId,  diet_date, (err, result) => {
+        if (err) {
+          console.error(err);
+          reject(new Error('Internal Server Error: ' + err.message));
+        }
+        resolve(result);
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error: ' + error.message);
+  }
+};
 
 const getdietdetail = async (req) => {
   const userId = req.userId; 
@@ -60,6 +83,7 @@ const getdietdetail = async (req) => {
         reject(new Error('Internal Server Error: ' + err.message));
       }
       resolve(result);
+      
     });
   });
 };
@@ -106,38 +130,47 @@ const deletedietdetail = async (req) => {
   };
   
   const getCaloBydate = async (req, res) => {
-    const userId = req.userId;
     const { diet_date } = req.body;
-    const formattedDate = new Date(diet_date).toISOString().slice(0, 10);
+    const userId = req.userId;
+    
     if (!userId) {
-      console.log('Unauthorized');
-      return res.status(401).json({ message: 'Unauthorized' });
+        console.log('Unauthorized');
+        return res.status(401).json({ message: 'Unauthorized' });
     }
-  
+
     try {
-      const dietdetail = await dietdetailModel.getdietdetailBydate(userId, formattedDate);
-      console.log(dietdetail);
-      if (!dietdetail) {
-        console.log('Không có dữ liệu');
-        return res.status(404).json({ message: 'Không có dữ liệu' });
-      }
-  
-      let SumCalo = 0;
-      for (const diet of dietdetail) {
-        SumCalo += diet.calo;
-      }
-  
-      console.log('Calo:', SumCalo);
-      res.status(200).json({ message: 'successfully', SumCalo });
+        const result = await new Promise((resolve, reject) => {
+            dietdetailModel.getCaloBydate(userId, diet_date, (err, result) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        console.log(result);
+        let SumCalo = 0;
+        for (const diet of result) {
+            console.log(diet.calo);
+            SumCalo += diet.calo;
+        }
+
+        console.log('Calo:', SumCalo);
+        res.status(200).json({ message: 'successfully', SumCalo });
+
     } catch (error) {
-      console.error('Lỗi:', error.message);
-      res.status(500).json({ message: 'Internal Server Error' });
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
-  };
+};
+
+  
   
 module.exports = {
   infordietdetail,
   getdietdetail,updatedietdetail,deletedietdetail,
-  getCaloBydate,getdietBydate
+  getCaloBydate,getdietBydate,getdietcalo 
   
 };

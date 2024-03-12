@@ -51,7 +51,6 @@ router.get('/getPeriodPre', checkMiddleware, async (req, res, next) => {
   }
 });
 router.put('/updateperiod/:id', checkMiddleware, async (req, res) => {
-  const id = req.params.id;
   try {
  
     const result = await periodController.updatePeriodByID(req);

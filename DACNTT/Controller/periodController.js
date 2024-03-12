@@ -9,7 +9,6 @@ const createPeriod = async (req) => {
     console.log('Unauthorized ');
     throw new Error('Unauthorized ');
   }
-
   let menstrual_days = [];
   const startDate = new Date(start_date); 
   if(startDate.getMonth()< new Date().getMonth() && !end_date){

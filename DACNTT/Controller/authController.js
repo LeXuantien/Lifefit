@@ -6,7 +6,7 @@ const userModel = require('../Model/authModel');
 const secretKey = process.env.SECRET_KEY; 
 
 function generateToken(userId) {
-  const token = jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
+  const token = jwt.sign({ userId }, secretKey);
   return token;
 }
 

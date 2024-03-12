@@ -8,7 +8,7 @@ CREATE TABLE `account` (
   `weight` float  NULL,
   `height` float  NULL,
   `wakeup_time` datetime DEFAULT Null,
-  `sleeping_time` datetime DEFAULT Null
+  `sleeping_time` datetime DEFAULT Null                                                                                                                                                                                                            
 );
 
 CREATE TABLE `watertracker` (
@@ -27,7 +27,7 @@ CREATE TABLE `period` (
   `end_date` date  NULL,
   `menstrual_days` TEXT NOT NULL, 
   `account_id` INTEGER NOT NULL,
-  `note` VARCHAR(255) NOT NULL
+  `note` VARCHAR(255)  NULL
 );
 
 CREATE TABLE `activity` (
@@ -66,7 +66,7 @@ CREATE TABLE `weight_history` (
   `id` int  PRIMARY KEY AUTO_INCREMENT,
   `weight` float NOT NULL,
   `date_recorded` date NOT NULL,
-  `weight_id` integer(11) NOT NULL
+  `account_id` integer(11) NOT NULL
  
 );
 CREATE TABLE `diet` (
@@ -98,7 +98,7 @@ ALTER TABLE `blood_pressure` ADD FOREIGN KEY (`account_id`) REFERENCES `account`
 
 
 ALTER TABLE `weight` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
-ALTER TABLE `weight_history` ADD  FOREIGN KEY (`weight_id`) REFERENCES `weight` (`id`);
+ALTER TABLE `weight_history` ADD  FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `diet` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
