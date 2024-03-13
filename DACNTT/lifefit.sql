@@ -37,9 +37,9 @@ CREATE TABLE `activity` (
   `account_id` integer(11) NOT NULL
 );
 CREATE TABLE `activityHistory` (
-  `date` datetime NOT NULL,
+   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `date` date NOT NULL,
   `name` varchar(255) NOT NULL,
-  `goal` float NOT NULL,
   `calo` float NOT NULL,
   `activity_id` integer(11) NOT NULL
 );

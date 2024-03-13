@@ -14,6 +14,7 @@ const waterRouter= require('./router/waterRouter');
 const heartRouter= require('./router/heartRouter');
 const blood_pressureRouter= require('./router/blood_pressureRouter');
 const activityRouter= require('./router/activityRouter');
+const activityHistoryRouter= require('./router/activityHistoryRouter');
 const app = express();
 const port = 3000;
 
@@ -42,6 +43,7 @@ app.use('/api',waterRouter);
 app.use('/api',heartRouter);
 app.use('/api',blood_pressureRouter);
 app.use('/api',activityRouter);
+app.use('/api',activityHistoryRouter);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

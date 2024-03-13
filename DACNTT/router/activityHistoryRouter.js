@@ -1,13 +1,13 @@
 const express = require('express');
-const dietRouter = require('../Controller/dietdetailController');
+const activityHistoryRouter = require('../Controller/activityHistoryController');
 const router = express.Router();
 const checkMiddleware = require('../utils/Middleware');
 
 
-router.post('/dietdetail', checkMiddleware, async (req, res) => {
+router.post('/activityHistory', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.infordietdetail(req);
+    const result = await activityHistoryRouter.inforactivityHistory(req);
 
     res.json(result);
   } catch (error) {
@@ -20,10 +20,10 @@ router.post('/dietdetail', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getdietdetail', checkMiddleware, async (req, res) => {
+router.get('/getactivityHistory', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietdetail(req);
+    const result = await activityHistoryRouter.getactivityHistory(req);
 
     res.json(result);
   } catch (error) {
@@ -36,10 +36,10 @@ router.get('/getdietdetail', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getdietdetailBydate/:diet_date', checkMiddleware, async (req, res) => {
+router.get('/getactivityHistoryBydate/:date', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietBydate(req);
+    const result = await activityHistoryRouter.getactivityHistoryBydate(req);
 
     res.json(result);
   } catch (error) {
@@ -52,10 +52,10 @@ router.get('/getdietdetailBydate/:diet_date', checkMiddleware, async (req, res) 
     }
   }
 });
-router.get('/getdietcaloBydate/:diet_date', checkMiddleware, async (req, res) => {
+router.get('/getactivityHistorycaloBydate/:date', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietcalo(req);
+    const result = await activityHistoryRouter.getdietcalo(req);
 
     res.json(result);
   } catch (error) {
@@ -68,25 +68,25 @@ router.get('/getdietcaloBydate/:diet_date', checkMiddleware, async (req, res) =>
     }
   }
 });
-router.put('/updatedietdetail/:id', checkMiddleware, async (req, res) => {
+router.put('/updateactivityHistory/:id', checkMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
-    const { content,diet_date,calo } = req.body;
-    const updatedietdetailData = { content,diet_date,calo};
+    const {date,name,calo } = req.body;
+    const updateactivityHistoryData = { date,name,calo};
 
     
-    const result = await dietRouter.updatedietdetail(req, updatedietdetailData);
+    const result = await activityHistoryRouter.updateactivityHistory(req, updateactivityHistoryData);
     res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
-router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
+router.delete('/deleteactivityHistory/:id', checkMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
     
-      const result = await dietRouter.deletedietdetail(req);
+      const result = await activityHistoryRouter.deleteactivityHistory(req);
   
       res.json(result);
     } catch (error) {
@@ -99,10 +99,10 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
       }
     }
   });
-  router.get('/CalodietByDate/:diet_date', checkMiddleware, async (req, res) => {
+  router.get('/CaloactivityByDate/:date', checkMiddleware, async (req, res) => {
     try {
       
-      const result = await dietRouter.getCaloBydate(req, res);
+      const result = await activityHistoryRouter.getCaloBydate(req, res);
   
       res.json(result);
     } catch (error) {

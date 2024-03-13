@@ -40,7 +40,7 @@ const getactivity = async (req) => {
 };
 const updateactivity= async (req, updatedactivityData) => {
   const userId = req.userId; 
-
+  
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');
