@@ -1,15 +1,15 @@
 const express = require('express');
-const dietRouter = require('../Controller/dietdetailController');
+const watertrackerHistoryRouter = require('../Controller/watertrackerHistoryController');
 const router = express.Router();
 const checkMiddleware = require('../utils/Middleware');
 
 
-router.post('/dietdetail', checkMiddleware, async (req, res) => {
+router.post('/watertrackerHistory', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.infordietdetail(req);
+    const result = await watertrackerHistoryRouter.inforwaterHistory(req,res);
 
-    res.json(result);
+    return (result);
   } catch (error) {
     console.error(error);
 
@@ -99,10 +99,10 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
       }
     }
   });
-  router.get('/CalodietByDate/:diet_date', checkMiddleware, async (req, res) => {
+  router.get('/WaterdietByDate/:dategoal', checkMiddleware, async (req, res) => {
     try {
       
-      const result = await dietRouter.getCaloBydate(req, res);
+      const result = await watertrackerHistoryRouter.getsumwaterBydate(req, res);
   
       return(result);
     } catch (error) {

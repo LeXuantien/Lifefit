@@ -118,7 +118,7 @@ const updateactivityHistory = (account_id,id, updatedactivityHistoryData, callba
     }
 
     const activity_id = rows[0].id;
-  const sql1 = "UPDATE activityHistory SET content =? ,diet_date = ?,calo = ?  WHERE id = ? AND diet_id  = ?";
+  const sql1 = "UPDATE activityHistory SET date = ? , name = ? , calo = ?  WHERE id = ? AND activity_id  = ?";
 
   db.query(sql1, [content,diet_date,calo,id,activity_id ], (err, result) => {
     if (typeof callback === 'function') {
@@ -147,7 +147,7 @@ const deleteactivityHistory = (id,account_id, callback) => {
     }
 
     const activity_id = rows[0].id;
-    const sql1 = "DELETE FROM activityHistory WHERE ACTIVITY_id = ? and id =?";
+    const sql1 = "DELETE FROM activityHistory WHERE activity_id = ? and id =?";
 
     db.query(sql1, [activity_id,id], (err, result) => {
       if (err) {

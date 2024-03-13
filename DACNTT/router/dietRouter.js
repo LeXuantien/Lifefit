@@ -20,7 +20,7 @@ router.post('/diet', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.post('/getdietBydate', checkMiddleware, async (req, res) => {
+router.get('/getdietBydate/:date', checkMiddleware, async (req, res) => {
   try {
     
     const result = await dietRouter.getdietBydate(req);
@@ -53,19 +53,34 @@ router.get('/getdiet', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updateddiet', checkMiddleware, async (req, res) => {
+router.put('/updateddiet/:id', checkMiddleware, async (req, res) => {
   try {
     
     const { goal,date} = req.body;
     const updatediettData = { goal,date};
 
     
-    const result = await dietRouter.updatediet(req, updatediettData);
-    res.json(result);
+    const result = await dietRouter.updatediet(req,res, updatediettData);
+    return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+router.delete('/deletediet/:id', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await dietRouter.deletediet(req,res);
 
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized - Session ID is not valid') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
 module.exports = router;

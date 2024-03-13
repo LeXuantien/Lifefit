@@ -37,18 +37,51 @@ router.get('/getheart', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updatedheart', checkMiddleware, async (req, res) => {
+
+router.get('/getheartBydate/:date', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await heartRouter.getheartBydate(req,res);
+
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+router.put('/updatedheart/:id', checkMiddleware, async (req, res) => {
   try {
     
     const { date,heartbeat} = req.body;
     const updatedheartData = { date,heartbeat};
 
     
-    const result = await heartRouter.updatedheart(req, updatedheartData);
-    res.json(result);
+    const result = await heartRouter.updatedheart(req,res, updatedheartData);
+   return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
+  }
+});
+router.delete('/deleteheart/:id', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await heartRouter.deleteheart(req,res);
+
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized - Session ID is not valid') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
   }
 });
 

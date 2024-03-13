@@ -12,13 +12,21 @@ CREATE TABLE `account` (
 );
 
 CREATE TABLE `watertracker` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `watergoal` float NOT NULL,
   `dategoal` datetime NOT NULL,
-  `water`    float NULL,
   `account_id` integer(11) NOT NULL
 );
+CREATE TABLE `watertrackerHistory` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `water` float NOT NULL,
+  `time` datetime NOT NULL,
+  `watertracker_id` integer(11) NOT NULL
+);
 CREATE TABLE `notification`(
-  `time_noti` TIME,
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `time_noti` datetime NOT NULL,
+  `content` varchar(255),
   `account_id` integer(11) NOT NULL
 );
 CREATE TABLE `period` (

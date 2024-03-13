@@ -39,13 +39,14 @@ const getWeight = async (req) => {
 };
 const updateWeight= async (req, updatedWeigthData) => {
   const userId = req.userId; 
+  const id=req.params.id;
   if (!userId) {
     console.log('Unauthorized: userId is not defined');
     throw new Error('Unauthorized - Session ID is not valid');
   }
 
   return new Promise((resolve, reject) => {
-    weightModel.updateweight(userId, updatedWeigthData, (err, result) => {
+    weightModel.updateweight(id,userId, updatedWeigthData, (err, result) => {
      
 
       if (err) {

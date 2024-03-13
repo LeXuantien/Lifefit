@@ -36,14 +36,14 @@ router.get('/getweight', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updateweight', checkMiddleware, async (req, res) => {
+router.put('/updateweight/:id', checkMiddleware, async (req, res) => {
   try {
     const { goal } = req.body;
     const updateWeightData = { goal};
 
     
-    const result = await weigthRouter.updateWeight(req, updateWeightData);
-    res.json(result);
+    const result = await weigthRouter.updateWeight(req,res, updateWeightData);
+    return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');

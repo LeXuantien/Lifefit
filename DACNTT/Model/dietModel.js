@@ -37,7 +37,7 @@ const getdiet = (account_id, callback) => {
 const getdietBydate = (account_id, date, callback) => {
   const formattedDate = new Date(date).toISOString().slice(0, 10);
   console.log(formattedDate);
-  const sql = "SELECT goal FROM diet WHERE DATE(date) = ? AND account_id = ?";
+  const sql = "SELECT * FROM diet WHERE DATE(date) = ? AND account_id = ?";
   
   db.query(sql, [formattedDate, account_id], (err, result) => {
     if (typeof callback === 'function') {
@@ -54,11 +54,11 @@ const getdietBydate = (account_id, date, callback) => {
 };
 
 
-const updatediet = (account_id, updateddietData, callback) => {
+const updatediet = (id,account_id, updateddietData, callback) => {
   const { goal,date} = updateddietData;
-  const sql = "UPDATE diet SET goal = ? , date = ? WHERE account_id = ?";
+  const sql = "UPDATE diet SET goal = ? , date = ? WHERE account_id = ? AND id= ?";
 
-  db.query(sql, [goal,date, account_id], (err, result) => {
+  db.query(sql, [goal,date, account_id,id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -71,11 +71,53 @@ const updatediet = (account_id, updateddietData, callback) => {
     }
   });
 };
+const deleteddiet = (id, account_id, callback) => {
+  const sql = "SELECT * FROM diet WHERE account_id = ? AND id = ? ";
+  db.query(sql, [account_id, id], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return callback(err, null);
+    }
+
+    const diet_id = rows[0] && rows[0].id;
+
+    if (!diet_id) {
+      const sql1 = "DELETE FROM diet WHERE id = ? AND account_id = ?";
+      db.query(sql1, [id, account_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          return callback(err, null);
+        }
+
+        callback(null, result);
+      });
+    } else {
+      const sql2 = "DELETE FROM dietdetail WHERE diet_id = ?";
+      db.query(sql2, [diet_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          return callback(err, null);
+        }
+
+        callback(null, result);
+      });
+
+      const sql3 = "DELETE FROM diet WHERE id = ? AND account_id = ?" ;
+      db.query(sql3, [id,account_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          return callback(err, null);
+        }
+      });
+    }
+  });
+};
 
 module.exports = {
   creatediet,
   getdiet,
   updatediet,
-  getdietBydate 
+  getdietBydate,
+  deleteddiet  
 
 };

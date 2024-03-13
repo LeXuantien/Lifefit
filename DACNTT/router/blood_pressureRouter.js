@@ -7,8 +7,8 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/blood_pressure', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await blood_pressureRouter.inforblood_pressure(req);
-    res.json(result);
+    const result = await blood_pressureRouter.inforblood_pressure(req,res);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -20,13 +20,13 @@ router.post('/blood_pressure', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getblood_pressure', checkMiddleware, async (req, res) => {
+router.get('/getblood_pressure/:date', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await blood_pressureRouter.getblood_pressure(req);
+    const result = await blood_pressureRouter.getblood_pressureBydate(req,res);
 
   
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -37,19 +37,50 @@ router.get('/getblood_pressure', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updatedblood_pressure', checkMiddleware, async (req, res) => {
+router.put('/updatedblood_pressure/:id', checkMiddleware, async (req, res) => {
   try {
     
     const { date,blood_pressure} = req.body;
     const updatedblood_pressureData = { date,blood_pressure};
 
     
-    const result = await blood_pressureRouter.updatedblood_pressure(req, updatedblood_pressureData);
-    res.json(result);
+    const result = await blood_pressureRouter.updatedblood_pressure(req,res, updatedblood_pressureData);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+router.delete('/deleteblood_pressure/:id', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await blood_pressureRouter.deleteblood_pressure(req,res);
 
+    return result;
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized - Session ID is not valid') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+router.get('/getheartBydate/:date', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await blood_pressureRouter.getblood_pressureBydate(req,res);
+
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
 module.exports = router;

@@ -36,25 +36,25 @@ router.get('/getweightHistory', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.put('/updateweightHistory', checkMiddleware, async (req, res) => {
+router.put('/updateweightHistory/:id', checkMiddleware, async (req, res) => {
   try {
-    const { goal, Date } = req.body;
-    const updateWeightData = { goal, Date};
+    const { weight, date_recorded } = req.body;
+    const updateWeightData = {  weight, date_recorded};
 
     
-    const result = await weigthRouter.updateweighthistory(req, updateWeightData);
-    res.json(result);
+    const result = await weigthRouter.updateweighthistory(req,res, updateWeightData);
+    return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
-router.get('/deleteweight', checkMiddleware, async (req, res) => {
+router.delete('/deleteweightHistory/:id', checkMiddleware, async (req, res) => {
     try {
     
-      const result = await weigthRouter.deleteWeight(req);
+      const result = await weigthRouter.deleteweighthistory(req,res);
   
-      res.json(result);
+      return(result);
     } catch (error) {
       console.error(error);
   

@@ -33,11 +33,11 @@ const getweight = (account_id, callback) => {
     }
   })
 };
-const updateweight = (account_id, updatedProfileData, callback) => {
+const updateweight = (id,account_id, updatedProfileData, callback) => {
   const { goal } = updatedProfileData;
-  const sql = "UPDATE weight SET goal = ?  WHERE account_id = ?";
+  const sql = "UPDATE weight SET goal = ?  WHERE id = ? AND account_id = ?";
 
-  db.query(sql, [goal, Date, account_id], (err, result) => {
+  db.query(sql, [goal, Date, id,account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -50,10 +50,10 @@ const updateweight = (account_id, updatedProfileData, callback) => {
     }
   });
 };
-const deleteweighthistory = (weight_id, callback) => {
-  const sql = "DELETE * FROM weight_history WHERE weight_id = ?";
+const deleteweighthistory = (id,account_id, callback) => {
+  const sql = "DELETE * FROM weight_history WHERE account_id= ? AND id = ?";
   
-  db.query(sql, [account_id], (err, result) => {
+  db.query(sql, [account_id,id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

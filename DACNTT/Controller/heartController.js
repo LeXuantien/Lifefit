@@ -38,28 +38,74 @@ const getheart = async (req) => {
     });
   });
 };
-const updatedheart= async (req, updatedheartData) => {
-  const userId = req.userId; 
 
+const getheartBydate = async (req,res) => {
+  const userId = req.userId; 
+  const date=req.params.date;
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+  return new Promise((resolve, reject) => {
+    heartModel.getheartbydate(date,userId, (err, result) => { 
+      if (err) {     
+        reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({err});
+      }
+      resolve(result);
+      res.status(200).json({result});
+    });
+  });
+};
+
+const updatedheart= async (req,res, updatedheartData) => {
+  const userId = req.userId; 
+  const id = req.params.id;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {
-    heartModel.updateheart(userId, updatedheartData, (err, result) => {
+    heartModel.updateheart(id,userId, updatedheartData, (err, result) => {
       
       if (err) {
        
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Cập nhật không thành công'});
       }
 
       resolve('successfully');
+      res.status(200).json({ message: 'Cập nhật thành công'});
+    });
+  });
+};
+const deleteheart= async (req,res) => {
+  const userId = req.userId; 
+  const id=req.params.id; 
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+
+  return new Promise((resolve, reject) => {
+    heartModel.deleteheart(id,userId, (err, result) => {
+      
+      if (err) {
+       
+        reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
+      }
+
+      resolve('successfully');
+      res.status(200).json({ message: 'Xoá thành công'});
     });
   });
 };
 module.exports = {
   inforheart,
   getheart,
-  updatedheart
+  updatedheart,
+  deleteheart,
+  getheartBydate
 };

@@ -89,7 +89,7 @@ const getdietdetail = async (req) => {
     });
   });
 };
-const updatedietdetail= async (req, updateddietdetailData) => {
+const updatedietdetail= async (req,res, updateddietdetailData) => {
   const userId = req.userId; 
   const id = req.params.id;
   if (!userId) {
@@ -102,16 +102,17 @@ const updatedietdetail= async (req, updateddietdetailData) => {
      
 
       if (err) {
-       
+        res.status(401).json({ message: 'Cậphật không thành công'});
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
    
       resolve('successfully');
+      res.status(200).json({ message: 'Cập nhật thành công'});
     });
   });
 };
-const deletedietdetail = async (req) => {
+const deletedietdetail = async (req,res) => {
     const userId = req.userId;
     const id = req.params.id;
     if (!userId) {
@@ -125,8 +126,10 @@ const deletedietdetail = async (req) => {
         if (err) {
           console.error(err);      
           reject(new Error('Internal Server Error: ' + err.message));
+          res.status(401).json({ message: 'Xoá Không thành công'});
         }
         resolve('susscess');
+        res.status(200).json({ message: 'Xoá thành công'});
       });
     });
   };
