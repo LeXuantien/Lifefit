@@ -45,7 +45,7 @@ const getblood_pressure = async (req) => {
 
 const getblood_pressureBydate = async (req,res) => {
   const userId = req.userId; 
-  const date=req.params.date;
+  const date=req.query.date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');

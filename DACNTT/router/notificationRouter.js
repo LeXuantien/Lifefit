@@ -1,13 +1,13 @@
 const express = require('express');
-const dietRouter = require('../Controller/dietController');
+const notiRouter = require('../Controller/notificationController');
 const router = express.Router();
 const checkMiddleware = require('../utils/Middleware');
 
 
-router.post('/diet', checkMiddleware, async (req, res) => {
+router.post('/noti', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.infordiet(req);
+    const result = await notiRouter.infornoti(req);
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -20,57 +20,45 @@ router.post('/diet', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getdietBydate', checkMiddleware, async (req, res) => {
-  try {
-    
-    const result = await dietRouter.getdietBydate(req);
-    res.json(result);
-  } catch (error) {
-    console.error(error);
-
-    
-    if (error.message === 'Unauthorized ') {
-      res.status(401).send('Unauthorized');
-    } else {
-      res.status(500).send('Internal Server Error');
-    }
-  }
-});
-router.get('/getdiet', checkMiddleware, async (req, res) => {
+router.get('/getnoti', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await dietRouter.getdiet(req);
+    const result = await notiRouter.getnoti(req,res);
 
   
-    res.json(result);
-  } catch (error) {
-    console.error(error);
-
-    if (error.message === 'Unauthorized ') {
-      res.status(401).send('Unauthorized');
-    } else {
-      res.status(500).send('Internal Server Error');
-    }
-  }
-});
-router.put('/updateddiet/:id', checkMiddleware, async (req, res) => {
-  try {
-    
-    const { goal,date} = req.body;
-    const updatediettData = { goal,date};
-
-    
-    const result = await dietRouter.updatediet(req,res, updatediettData);
     return(result);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
   }
 });
-router.delete('/deletediet/:id', checkMiddleware, async (req, res) => {
+
+router.get('/getnotiBydate', checkMiddleware, async (req, res) => {
   try {
   
-    const result = await dietRouter.deletediet(req,res);
+    const result = await notiRouter.getnotiBydate(req,res);
+
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+
+router.delete('/deletenoti/:id', checkMiddleware, async (req, res) => {
+  try {
+  
+    const result = await notiRouter.deletenoti(req,res);
 
     return(result);
   } catch (error) {
@@ -83,4 +71,5 @@ router.delete('/deletediet/:id', checkMiddleware, async (req, res) => {
     }
   }
 });
+
 module.exports = router;

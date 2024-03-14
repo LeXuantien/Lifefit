@@ -22,7 +22,7 @@ router.post('/register', registerValidator, async (req, res) => {
   }
 });
 router.post('/otpaccount', accountController.otpAuthen);
-router.post('/resetotpaccount', accountController.resetOTP);
+router.get('/resetotpaccount', accountController.resetOTP);
 router.put('/saveInfor', checkMiddleware, accountController.saveInfor)
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const weightModel = require('../Model/weightModel');
-const jwt = require('jsonwebtoken');
-const inforweight = async (req) => {
+const inforweight = async (req,res) => {
   const userId = req.userId; 
   const { goal} = req.body;
 
@@ -14,16 +13,18 @@ const inforweight = async (req) => {
       if (err) {
         console.error(err);
         reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
       resolve('successfully');
+      res.status(200).json({ result});
     });
   });
 };
 const getWeight = async (req) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized');
   }
 
  
@@ -32,17 +33,19 @@ const getWeight = async (req) => {
       if (err) {
         console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: ' Không thành công'});
       }
       resolve(result);
+      res.status(200).json({result });
     });
   });
 };
-const updateWeight= async (req, updatedWeigthData) => {
+const updateWeight= async (req,res, updatedWeigthData) => {
   const userId = req.userId; 
   const id=req.params.id;
   if (!userId) {
-    console.log('Unauthorized: userId is not defined');
-    throw new Error('Unauthorized - Session ID is not valid');
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
   }
 
   return new Promise((resolve, reject) => {
@@ -52,10 +55,12 @@ const updateWeight= async (req, updatedWeigthData) => {
       if (err) {
        
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Cập nhật không thành công'});
       }
 
    
       resolve('successfully');
+      res.status(200).json({ message: 'Cập nhật thành công'});
     });
   });
 };

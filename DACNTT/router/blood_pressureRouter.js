@@ -20,7 +20,7 @@ router.post('/blood_pressure', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getblood_pressure/:date', checkMiddleware, async (req, res) => {
+router.get('/getblood_pressure', checkMiddleware, async (req, res) => {
   try {
 
     const result = await blood_pressureRouter.getblood_pressureBydate(req,res);
@@ -67,7 +67,7 @@ router.delete('/deleteblood_pressure/:id', checkMiddleware, async (req, res) => 
     }
   }
 });
-router.get('/getheartBydate/:date', checkMiddleware, async (req, res) => {
+router.get('/getheartBydate', checkMiddleware, async (req, res) => {
   try {
   
     const result = await blood_pressureRouter.getblood_pressureBydate(req,res);

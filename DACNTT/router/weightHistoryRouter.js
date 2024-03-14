@@ -58,7 +58,7 @@ router.delete('/deleteweightHistory/:id', checkMiddleware, async (req, res) => {
     } catch (error) {
       console.error(error);
   
-      if (error.message === 'Unauthorized - Session ID is not valid') {
+      if (error.message === 'Unauthorized ') {
         res.status(401).send('Unauthorized');
       } else {
         res.status(500).send('Internal Server Error');

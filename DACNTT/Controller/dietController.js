@@ -40,7 +40,7 @@ const getdiet = async (req) => {
 };
 const getdietBydate = async (req) => {
   const userId = req.userId; 
-  const date  = req.params.date; 
+  const date  = req.query.date; 
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');

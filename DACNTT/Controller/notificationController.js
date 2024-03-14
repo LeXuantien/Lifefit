@@ -1,8 +1,8 @@
-const heartModel = require('../Model/heartModel');
+const notiModel = require('../Model/notificationModel');
 
-const inforheart = async (req) => {
+const infornoti = async (req) => {
   const userId = req.userId; 
-  const { date,heartbeat } = req.body;
+  const { time_noti,content } = req.body;
 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -10,7 +10,7 @@ const inforheart = async (req) => {
   }
 
   return new Promise((resolve, reject) => {
-    heartModel.createheart(userId, {date,heartbeat}, (err, result) => {
+    notiModel.createnoti(userId, {time_noti,content}, (err, result) => {
       if (err) {
         console.error(err);
         reject(new Error('Internal Server Error: ' + err.message));
@@ -20,7 +20,7 @@ const inforheart = async (req) => {
     });
   });
 };
-const getheart = async (req,res) => {
+const getnoti = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
@@ -29,7 +29,7 @@ const getheart = async (req,res) => {
 
  
   return new Promise((resolve, reject) => {
-    heartModel.getheart(userId, (err, result) => { 
+   notiModel.getnoti(userId, (err, result) => { 
       if (err) {
         console.error(err);
         reject(new Error('Error: ' + err.message));
@@ -41,7 +41,7 @@ const getheart = async (req,res) => {
   });
 };
 
-const getheartBydate = async (req,res) => {
+const getnotiBydate = async (req,res) => {
   const userId = req.userId; 
   const date=req.query.date;
   if (!userId) {
@@ -49,7 +49,7 @@ const getheartBydate = async (req,res) => {
     throw new Error('Unauthorized ');
   }
   return new Promise((resolve, reject) => {
-    heartModel.getheartbydate(date,userId, (err, result) => { 
+    notiModel.getnotibydate(date,userId, (err, result) => { 
       if (err) {     
         reject(new Error('Internal Server Error: ' + err.message));
         res.status(401).json({err});
@@ -60,29 +60,7 @@ const getheartBydate = async (req,res) => {
   });
 };
 
-const updatedheart= async (req,res, updatedheartData) => {
-  const userId = req.userId; 
-  const id = req.params.id;
-  if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
-  }
-
-  return new Promise((resolve, reject) => {
-    heartModel.updateheart(id,userId, updatedheartData, (err, result) => {
-      
-      if (err) {
-       
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Cập nhật không thành công'});
-      }
-
-      resolve('successfully');
-      res.status(200).json({ message: 'Cập nhật thành công'});
-    });
-  });
-};
-const deleteheart= async (req,res) => {
+const deletenoti= async (req,res) => {
   const userId = req.userId; 
   const id=req.params.id; 
   if (!userId) {
@@ -91,7 +69,7 @@ const deleteheart= async (req,res) => {
   }
 
   return new Promise((resolve, reject) => {
-    heartModel.deleteheart(id,userId, (err, result) => {
+    notiModel.deletenoti(id,userId, (err, result) => {
       
       if (err) {
        
@@ -105,9 +83,8 @@ const deleteheart= async (req,res) => {
   });
 };
 module.exports = {
-  inforheart,
-  getheart,
-  updatedheart,
-  deleteheart,
-  getheartBydate
+  infornoti,
+  getnoti,
+  getnotiBydate,
+  deletenoti
 };

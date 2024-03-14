@@ -23,10 +23,10 @@ router.post('/heart', checkMiddleware, async (req, res) => {
 router.get('/getheart', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await heartRouter.getheart(req);
+    const result = await heartRouter.getheart(req,res);
 
   
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -38,7 +38,7 @@ router.get('/getheart', checkMiddleware, async (req, res) => {
   }
 });
 
-router.get('/getheartBydate/:date', checkMiddleware, async (req, res) => {
+router.get('/getheartBydate', checkMiddleware, async (req, res) => {
   try {
   
     const result = await heartRouter.getheartBydate(req,res);

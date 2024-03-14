@@ -23,7 +23,7 @@ const inforactivityHistory = async (req) => {
 const getactivityHistoryBydate = async (req) => {
  
   const userId = req.userId;
-  const date = req.params.date;
+  const date = req.query.date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -47,7 +47,7 @@ const getactivityHistoryBydate = async (req) => {
 const getdietcalo = async (req) => {
   
   const userId = req.userId;
-  const date = req.params.date;
+  const date = req.query.date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -133,7 +133,7 @@ const deleteactivityHistory = async (req) => {
   const getCaloBydate = async (req, res) => {
     
     const userId = req.userId;
-    const date = req.params.date;
+    const date = req.query.date;
     if (!userId) {
         console.log('Unauthorized');
         return res.status(401).json({ message: 'Unauthorized' });

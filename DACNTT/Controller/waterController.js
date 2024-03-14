@@ -1,6 +1,6 @@
 const waterModel = require('../Model/waterModel');
 
-const inforwater = async (req) => {
+const inforwater = async (req,res) => {
   const userId = req.userId; 
   const {watergoal, dategoal } = req.body;
 
@@ -13,10 +13,11 @@ const inforwater = async (req) => {
     waterModel.createwater(userId, { watergoal, dategoal}, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
       resolve('successfully');
-  
+      res.status(200).json({message: 'Thành công'});
     });
   });
 };
@@ -32,16 +33,20 @@ const getwater = async (req,res) => {
   return new Promise((resolve, reject) => {
     waterModel.getwater(userId, (err, result) => { 
       if (err) {
-        console.error(err);      
+       
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({message:'Lỗi'});
       }
-      resolve(result);
+
+     
+      resolve('successfully');
+      res.status(200).json({result});
     });
   });
 };
 const getwaterBydate = async (req,res) => {
   const userId = req.userId; 
-  const dategoal=req.params.date;
+  const date=req.query.dategoal;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');
@@ -49,12 +54,16 @@ const getwaterBydate = async (req,res) => {
 
  
   return new Promise((resolve, reject) => {
-    waterModel.getwaterbydate(dategoal,userId, (err, result) => { 
+    waterModel.getwaterbydate(date,userId, (err, result) => { 
       if (err) {
-        console.error(err);      
+       
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({message:'Lỗi'});
       }
-      resolve(result);
+
+     
+      resolve('successfully');
+      res.status(200).json({result});
     });
   });
 };

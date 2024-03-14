@@ -23,9 +23,9 @@ router.post('/dietdetail', checkMiddleware, async (req, res) => {
 router.get('/getdietdetail', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietdetail(req);
+    const result = await dietRouter.getdietdetail(req,res);
 
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -36,12 +36,12 @@ router.get('/getdietdetail', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getdietdetailBydate/:diet_date', checkMiddleware, async (req, res) => {
+router.get('/getdietdetailBydate', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietBydate(req);
+    const result = await dietRouter.getdietBydate(req,res);
 
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -52,12 +52,12 @@ router.get('/getdietdetailBydate/:diet_date', checkMiddleware, async (req, res) 
     }
   }
 });
-router.get('/getdietcaloBydate/:diet_date', checkMiddleware, async (req, res) => {
+router.get('/getdietcaloBydate', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietcalo(req);
+    const result = await dietRouter.getdietcalo(req,res);
 
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -99,7 +99,7 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
       }
     }
   });
-  router.get('/CalodietByDate/:diet_date', checkMiddleware, async (req, res) => {
+  router.get('/CalodietByDate', checkMiddleware, async (req, res) => {
     try {
       
       const result = await dietRouter.getCaloBydate(req, res);

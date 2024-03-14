@@ -5,9 +5,9 @@ const checkMiddleware = require('../utils/Middleware');
 
 router.post('/createPeriod', checkMiddleware, async (req, res) => {
   try {
-    const result = await periodController.createPeriod(req); 
+    const result = await periodController.createPeriod(req,res); 
 
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -20,8 +20,8 @@ router.post('/createPeriod', checkMiddleware, async (req, res) => {
 });
 router.get('/getPeriod', checkMiddleware, async (req, res, next) => {
   try {
-    const periods = await periodController.getAllPeriod(req);
-    res.json(periods);
+    const periods = await periodController.getAllPeriod(req,res);
+    return(periods);
   } catch (error) {
     next(error);
   }
@@ -29,7 +29,7 @@ router.get('/getPeriod', checkMiddleware, async (req, res, next) => {
 router.get('/getPeriodlengthPre', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getmenstruallength(req,res);
-    res.json(periods);
+    return(periods);
   } catch (error) {
     next(error);
   }
@@ -37,7 +37,7 @@ router.get('/getPeriodlengthPre', checkMiddleware, async (req, res, next) => {
 router.get('/getPeriodlengthCurrent', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getmenstruallength_current(req,res);
-    res.json(periods);
+    return(periods);
   } catch (error) {
     next(error);
   }
@@ -45,7 +45,7 @@ router.get('/getPeriodlengthCurrent', checkMiddleware, async (req, res, next) =>
 router.get('/getPeriodPre', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getperiodlength(req,res);
-    res.json(periods);
+    return(periods);
   } catch (error) {
     next(error);
   }
@@ -53,8 +53,8 @@ router.get('/getPeriodPre', checkMiddleware, async (req, res, next) => {
 router.put('/updateperiod/:id', checkMiddleware, async (req, res) => {
   try {
  
-    const result = await periodController.updatePeriodByID(req);
-    res.json(result);
+    const result = await periodController.updatePeriodByID(req,res);
+    return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');

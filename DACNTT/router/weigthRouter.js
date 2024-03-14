@@ -23,9 +23,9 @@ router.post('/weight', checkMiddleware, async (req, res) => {
 router.get('/getweight', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await weigthRouter.getWeight(req);
+    const result = await weigthRouter.getWeight(req,res);
 
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 

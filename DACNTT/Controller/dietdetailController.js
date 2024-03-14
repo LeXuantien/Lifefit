@@ -21,10 +21,10 @@ const infordietdetail = async (req) => {
   });
 };
 
-const getdietBydate = async (req) => {
+const getdietBydate = async (req,res) => {
 
   const userId = req.userId;
-  const diet_date = req.params.diet_date;
+  const diet_date = req.query.diet_date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -33,22 +33,24 @@ const getdietBydate = async (req) => {
   try {
     return new Promise((resolve, reject) => {
      dietdetailModel.getdietdetailBydate(userId,  diet_date, (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(new Error('Internal Server Error: ' + err.message));
-        }
-        resolve(result);
-      });
+      if (err) {
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
+      }
+      resolve('successfully');
+      res.status(200).json({ result});
+    });
     });
   } catch (error) {
     console.error(error);
     throw new Error('Error: ' + error.message);
   }
 };
-const getdietcalo = async (req) => {
+const getdietcalo = async (req,res) => {
   
   const userId = req.userId;
-  const diet_date = req.params.diet_date;
+  const diet_date = req.query.diet_date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -57,12 +59,14 @@ const getdietcalo = async (req) => {
   try {
     return new Promise((resolve, reject) => {
      dietdetailModel.getCaloBydate(userId,  diet_date, (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(new Error('Internal Server Error: ' + err.message));
-        }
-        resolve(result);
-      });
+      if (err) {
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
+      }
+      resolve('successfully');
+      res.status(200).json({ result});
+    });
     });
   } catch (error) {
     console.error(error);
@@ -70,7 +74,7 @@ const getdietcalo = async (req) => {
   }
 };
 
-const getdietdetail = async (req) => {
+const getdietdetail = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -81,11 +85,12 @@ const getdietdetail = async (req) => {
   return new Promise((resolve, reject) => {
     dietdetailModel.getdietdetail(userId, (err, result) => { 
       if (err) {
-        console.error(err);      
-        reject(new Error('Internal Server Error: ' + err.message));
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
-      resolve(result);
-      
+      resolve('successfully');
+      res.status(200).json({ result});
     });
   });
 };
@@ -137,7 +142,7 @@ const deletedietdetail = async (req,res) => {
   const getCaloBydate = async (req, res) => {
     
     const userId = req.userId;
-    const diet_date = req.params.diet_date;
+    const diet_date = req.query.diet_date;
     if (!userId) {
         console.log('Unauthorized');
         return res.status(401).json({ message: 'Unauthorized' });

@@ -36,7 +36,7 @@ router.get('/getactivityHistory', checkMiddleware, async (req, res) => {
     }
   }
 });
-router.get('/getactivityHistoryBydate/:date', checkMiddleware, async (req, res) => {
+router.get('/getactivityHistoryBydate', checkMiddleware, async (req, res) => {
   try {
    
     const result = await activityHistoryRouter.getactivityHistoryBydate(req);
@@ -52,7 +52,7 @@ router.get('/getactivityHistoryBydate/:date', checkMiddleware, async (req, res) 
     }
   }
 });
-router.get('/getactivityHistorycaloBydate/:date', checkMiddleware, async (req, res) => {
+router.get('/getactivityHistorycaloBydate', checkMiddleware, async (req, res) => {
   try {
    
     const result = await activityHistoryRouter.getdietcalo(req);
@@ -99,7 +99,7 @@ router.delete('/deleteactivityHistory/:id', checkMiddleware, async (req, res) =>
       }
     }
   });
-  router.get('/CaloactivityByDate/:date', checkMiddleware, async (req, res) => {
+  router.get('/CaloactivityByDate', checkMiddleware, async (req, res) => {
     try {
       
       const result = await activityHistoryRouter.getCaloBydate(req, res);

@@ -80,9 +80,35 @@ const deleteactivity= async (req,res) => {
     });
   });
 };
+const getactivityBydate = async (req,res) => {
+  const userId = req.userId; 
+  const date  = req.query.date; 
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    return new Promise((resolve, reject) => {
+      activityModel.getactivityBydate(userId, date, (err, result) => { 
+        if (err) {
+          console.error(err);      
+          reject(new Error('Internal Server Error: ' + err.message));
+          res.status(401).json({ message: 'Lỗi'});
+        }
+        resolve(result);
+        res.status(200).json({ result});
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error: ' + error.message);
+  }
+};
 module.exports = {
   inforactivity,
   getactivity,
   updateactivity,
-  deleteactivity
+  deleteactivity,
+  getactivityBydate
 };

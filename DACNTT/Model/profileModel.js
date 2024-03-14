@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const getProfile = (id, callback) => {
-  const sql = "SELECT * FROM account WHERE id = ?";
+  const sql = "SELECT email, fullname,birthday,gender,weight,height,wakeup_time,sleeping_time FROM account WHERE id = ?";
   
   db.query(sql, [id], (err, result) => {
     if (typeof callback === 'function') {

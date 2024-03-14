@@ -22,11 +22,9 @@ const inforwaterHistory = async (req,res) => {
     });
   });
 };
-
-const getwaterBydate = async (req) => {
+const getwaterHistory = async (req,res) => {
 
   const userId = req.userId;
-  const diet_date = req.params.diet_date;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -34,23 +32,27 @@ const getwaterBydate = async (req) => {
 
   try {
     return new Promise((resolve, reject) => {
-     dietdetailModel.getdietdetailBydate(userId,  diet_date, (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(new Error('Internal Server Error: ' + err.message));
-        }
-        resolve(result);
-      });
+     watertrackerHistorylModel.getdwaterHistory(userId, (err, result) => {
+      if (err) {
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
+      }
+      resolve('successfully');
+      res.status(200).json({ result});
+    });
     });
   } catch (error) {
     console.error(error);
     throw new Error('Error: ' + error.message);
   }
 };
-const getwatercalo = async (req) => {
-  
+
+
+const getwaterBydate = async (req,res) => {
+
   const userId = req.userId;
-  const diet_date = req.params.diet_date;
+  const date = req.query.dategoal;
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
@@ -58,13 +60,15 @@ const getwatercalo = async (req) => {
 
   try {
     return new Promise((resolve, reject) => {
-     dietdetailModel.getCaloBydate(userId,  diet_date, (err, result) => {
-        if (err) {
-          console.error(err);
-          reject(new Error('Internal Server Error: ' + err.message));
-        }
-        resolve(result);
-      });
+     watertrackerHistorylModel.getwaterHistoryBydate(userId,date, (err, result) => {
+      if (err) {
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
+      }
+      resolve('successfully');
+      res.status(200).json({ result});
+    });
     });
   } catch (error) {
     console.error(error);
@@ -77,7 +81,7 @@ const getwatercalo = async (req) => {
   const getsumwaterBydate = async (req, res) => {
     
     const userId = req.userId;
-    const dategoal = req.params.dategoal;
+    const date = req.query.dategoal;
     if (!userId) {
         console.log('Unauthorized');
         return res.status(401).json({ message: 'Unauthorized' });
@@ -85,7 +89,7 @@ const getwatercalo = async (req) => {
 
     try {
         const result = await new Promise((resolve, reject) => {
-            watertrackerHistorylModel.getwaterBydate(userId, dategoal, (err, result) => {
+            watertrackerHistorylModel.getwaterBydate(userId, date, (err, result) => {
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -94,11 +98,8 @@ const getwatercalo = async (req) => {
                 }
             });
         });
-
-        console.log(result);
         let Sumwater = 0;
         for (const water of result) {
-            console.log(water.water);
             Sumwater += water.water;
         }
 
@@ -114,6 +115,8 @@ const getwatercalo = async (req) => {
   
 module.exports = {
   inforwaterHistory ,
-  getsumwaterBydate
+  getsumwaterBydate,
+  getwaterBydate,
+  getwaterHistory
   
 };
