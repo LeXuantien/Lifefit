@@ -23,9 +23,25 @@ router.post('/weightHistory', checkMiddleware, async (req, res) => {
 router.get('/getweightHistory', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await weigthRouter.getweighthistory(req);
+    const result = await weigthRouter.getweighthistory(req,res);
 
-    res.json(result);
+    return(result);
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === 'Unauthorized ') {
+      res.status(401).send('Unauthorized');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+router.get('/getweightHistoryBydate', checkMiddleware, async (req, res) => {
+  try {
+   
+    const result = await weigthRouter.getweightHistoryBydate(req,res);
+
+    return(result);
   } catch (error) {
     console.error(error);
 

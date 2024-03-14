@@ -20,7 +20,7 @@ const inforweighthistory = async (req) => {
     });
   });
 };
-const getweighthistory = async (req) => {
+const getweighthistory = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -30,11 +30,30 @@ const getweighthistory = async (req) => {
  
   return new Promise((resolve, reject) => {
     weightModel.getweighthistory(userId, (err, result) => { 
-      if (err) {
-        console.error(err);      
+      if (err) {     
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({err});
       }
       resolve(result);
+      res.status(200).json({result});
+    });
+  });
+};
+const getweightHistoryBydate = async (req,res) => {
+  const userId = req.userId; 
+  const date=req.query.date;
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+  return new Promise((resolve, reject) => {
+    weightModel.getweigthHistorytbydate(date,userId, (err, result) => { 
+      if (err) {     
+        reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({err});
+      }
+      resolve(result);
+      res.status(200).json({result});
     });
   });
 };
@@ -90,6 +109,7 @@ module.exports = {
   inforweighthistory,
   getweighthistory,
   updateweighthistory,
-  deleteweighthistory
+  deleteweighthistory,
+  getweightHistoryBydate
   
 };

@@ -33,6 +33,25 @@ const getweighthistory = (account_id, callback) => {
     }
   })
 };
+const getweigthHistorytbydate = (date,account_id, callback) => {
+  
+  const formattedDate = new Date(date).toISOString().slice(0, 10);
+
+  const sql = "SELECT * FROM weight_history WHERE account_id = ? AND DATE(date_recorded) = ?";
+  
+  db.query(sql, [account_id,formattedDate], (err, result) => {
+    if (typeof callback === 'function') {
+      if (err) {
+        console.error(err);
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    } else {
+      console.error('Callback is not a function');
+    }
+  })
+};
 const updateweighthistory = (id,account_id, updatedWeightData, callback) => {
   const {weight, date_recorded} = updatedWeightData;
   
@@ -71,5 +90,6 @@ module.exports = {
   creatweighthistory, 
   getweighthistory,
   updateweighthistory,
-  deleteweighthistory
+  deleteweighthistory,
+  getweigthHistorytbydate
 };
