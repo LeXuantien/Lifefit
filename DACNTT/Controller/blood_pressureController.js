@@ -22,7 +22,7 @@ const inforblood_pressure = async (req,res) => {
     });
   });
 };
-const getblood_pressure = async (req) => {
+const getblood_pressure = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');

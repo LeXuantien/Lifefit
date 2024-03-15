@@ -7,7 +7,7 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/diet', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.infordiet(req);
+    const result = await dietRouter.infordiet(req,res);
     return(result);
   } catch (error) {
     console.error(error);

@@ -57,8 +57,8 @@ router.get('/getactivityBydate', checkMiddleware, async (req, res) => {
 router.put('/updatedactivity/:id', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal} = req.body;
-    const updateactivitytData = { goal};
+    const { name,goal} = req.body;
+    const updateactivitytData = {name, goal};
 
     
     const result = await activityRouter.updateactivity(req,res, updateactivitytData);

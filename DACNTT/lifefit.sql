@@ -40,17 +40,13 @@ CREATE TABLE `period` (
 
 CREATE TABLE `activity` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `goal` float NOT NULL,
-  `date` date NOT NULL,
-  `account_id` integer(11) NOT NULL
+  `name` VARCHAR(255) NOT NULL,
+  `goal` BOOLEAN NULL,
+  `date` DATE NOT NULL,
+  `account_id` INT NOT NULL
 );
-CREATE TABLE `activityHistory` (
-   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `date` date NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `calo` float NOT NULL,
-  `activity_id` integer(11) NOT NULL
-);
+
+
 CREATE TABLE `blood_pressure` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `date` datetime NOT NULL,
@@ -87,7 +83,7 @@ CREATE TABLE `diet` (
 CREATE TABLE `dietdetail` (
   `id` int NOT NULL  PRIMARY KEY AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
-  `diet_date` date  NOT NULL,
+  `diet_date` datetime  NOT NULL,
   `calo` float NOT NULL,
   `diet_id` int NOT NULL
 );
@@ -99,7 +95,6 @@ ALTER TABLE `notification` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (
 ALTER TABLE `period` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `activity` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
-ALTER TABLE `activityHistory` ADD FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`);
 
 ALTER TABLE `heart` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `blood_pressure` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
@@ -128,21 +123,13 @@ BEGIN
 END //
 
 DELIMITER ;
-
 DELIMITER //
 
-CREATE TRIGGER prevent_dietdetail_creation
-BEFORE INSERT ON dietdetail
+CREATE TRIGGER check_unique_date
+BEFORE INSERT ON diet
 FOR EACH ROW
 BEGIN
-    DECLARE diet_exists INT;
-    
-
-    SELECT COUNT(*) INTO diet_exists FROM diet WHERE date = NEW.diet_date;
-    IF diet_exists = 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Chưa có goal cho ngày này';
+    IF EXISTS (SELECT 1 FROM diet WHERE date = NEW.date AND account_id = NEW.account_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Đã có mục tiêu cho ngày hôm nay rồi.';
     END IF;
 END//
-
-DELIMITER ;

@@ -160,10 +160,10 @@ const deletedietdetail = async (req,res) => {
             });
         });
 
-        console.log(result);
+       
         let SumCalo = 0;
         for (const diet of result) {
-            console.log(diet.calo);
+           
             SumCalo += diet.calo;
         }
 

@@ -23,7 +23,7 @@ router.post('/blood_pressure', checkMiddleware, async (req, res) => {
 router.get('/getblood_pressure', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await blood_pressureRouter.getblood_pressureBydate(req,res);
+    const result = await blood_pressureRouter.getblood_pressure(req,res);
 
   
     return(result);
@@ -60,14 +60,14 @@ router.delete('/deleteblood_pressure/:id', checkMiddleware, async (req, res) => 
   } catch (error) {
     console.error(error);
 
-    if (error.message === 'Unauthorized - Session ID is not valid') {
+    if (error.message === 'Unauthorized ') {
       res.status(401).send('Unauthorized');
     } else {
       res.status(500).send('Internal Server Error');
     }
   }
 });
-router.get('/getheartBydate', checkMiddleware, async (req, res) => {
+router.get('/getblood_pressureBydate', checkMiddleware, async (req, res) => {
   try {
   
     const result = await blood_pressureRouter.getblood_pressureBydate(req,res);
