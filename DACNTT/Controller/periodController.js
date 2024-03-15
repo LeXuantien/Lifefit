@@ -123,6 +123,22 @@ const getAllPeriod= async (req) => {
     });
   });
 };
+const getPeriodBydate= async (req,res) => {
+  const userId = req.userId; 
+  const date=req.query.date;
+  const today = new Date(date);
+  const month = today.getMonth()+1; 
+  const year = today.getFullYear();
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+  const period= await periodModel.getPeriodByMonthAndYearId(userId,month,year)
+  if(!period){
+    res.status(401).json({message:'Không có chu kỳ'});
+  }
+  res.status(401).json({period});
+};
 const getmenstruallength = async (req,res) => {
   const userId = req.userId;
   if (!userId) {
@@ -204,7 +220,8 @@ const getmenstruallength_current = async (req,res) => {
     
     const period = await periodModel.getPeriodByMonthAndYearPre(userId,month,year);
     if (!period) {
-      throw new Error('Không có dữ liệu');
+      res.status(401).json({ message: 'Không có dữ liệu'});
+      
     }
 
     const menstrualDaysArray = period[0].menstrual_days.split(',');
@@ -254,4 +271,4 @@ const updatePeriodByID = async (req) => {
 
 
 
-module.exports = {createPeriod,updateMenstrualDays, getAllPeriod,getperiodlength,getmenstruallength,getmenstruallength_current,updatePeriodByID};
+module.exports = {createPeriod,updateMenstrualDays, getAllPeriod,getperiodlength,getmenstruallength,getmenstruallength_current,updatePeriodByID,getPeriodBydate};

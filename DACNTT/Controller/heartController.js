@@ -73,12 +73,11 @@ const updatedheart= async (req,res, updatedheartData) => {
       
       if (err) {
        
-        reject(new Error('Internal Server Error: ' + err.message));
+       
         res.status(401).json({ message: 'Cập nhật không thành công'});
       }
 
-      resolve('successfully');
-      res.status(200).json({ message: 'Cập nhật thành công'});
+      res.status(200).json({ message: 'Cập nhật thành công',result});
     });
   });
 };

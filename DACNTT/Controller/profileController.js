@@ -35,7 +35,7 @@ const updatedProfile= async (req, updatedprofileData) => {
         reject(new Error('Internal Server Error: ' + err.message));
       }
 
-      resolve('successfully');
+      resolve('Cập nhật thành công');
     });
   });
 };

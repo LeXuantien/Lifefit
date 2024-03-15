@@ -27,8 +27,8 @@ router.put('/updatedprofile', checkMiddleware, async (req, res) => {
     const updatedprofileData = { email, fullname,birthday, gender,weight, height, wakeup_time, sleeping_time};
 
     
-    const result = await profileRouter.updatedProfile(req,res, updatedprofileData);
-    return(result);
+    const result = await profileRouter.updatedProfile(req, updatedprofileData);
+    res.status(200).json(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');

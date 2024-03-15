@@ -5,9 +5,9 @@ const checkMiddleware = require('../utils/Middleware');
 
 router.post('/createPeriod', checkMiddleware, async (req, res) => {
   try {
-    const result = await periodController.createPeriod(req,res); 
+    const result = await periodController.createPeriod(req); 
 
-    return(result);
+    res.status(200).json(result);
   } catch (error) {
     console.error(error);
 
@@ -20,7 +20,15 @@ router.post('/createPeriod', checkMiddleware, async (req, res) => {
 });
 router.get('/getPeriod', checkMiddleware, async (req, res, next) => {
   try {
-    const periods = await periodController.getAllPeriod(req,res);
+    const periods = await periodController.getAllPeriod(req);
+    res.status(200).json(periods);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/getPeriodBydate', checkMiddleware, async (req, res, next) => {
+  try {
+    const periods = await periodController.getPeriodBydate(req,res);
     return(periods);
   } catch (error) {
     next(error);
@@ -53,8 +61,8 @@ router.get('/getPeriodPre', checkMiddleware, async (req, res, next) => {
 router.put('/updateperiod/:id', checkMiddleware, async (req, res) => {
   try {
  
-    const result = await periodController.updatePeriodByID(req,res);
-    return(result);
+    const result = await periodController.updatePeriodByID(req);
+    res.status(200).send(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');

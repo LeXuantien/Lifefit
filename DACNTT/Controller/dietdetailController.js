@@ -21,7 +21,7 @@ const infordietdetail = async (req) => {
   });
 };
 
-const getdietBydate = async (req,res) => {
+const getdietBydate = async (req) => {
 
   const userId = req.userId;
   const diet_date = req.query.diet_date;
@@ -35,11 +35,11 @@ const getdietBydate = async (req,res) => {
      dietdetailModel.getdietdetailBydate(userId,  diet_date, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+        reject(err);
+    
       }
       resolve('successfully');
-      res.status(200).json({ result});
+ 
     });
     });
   } catch (error) {
@@ -74,7 +74,7 @@ const getdietcalo = async (req,res) => {
   }
 };
 
-const getdietdetail = async (req,res) => {
+const getdietdetail = async (req) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -86,11 +86,11 @@ const getdietdetail = async (req,res) => {
     dietdetailModel.getdietdetail(userId, (err, result) => { 
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
+        reject(err);
         res.status(401).json({ message: 'Lỗi'});
       }
       resolve('successfully');
-      res.status(200).json({ result});
+      
     });
   });
 };
