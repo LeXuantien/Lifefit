@@ -8,7 +8,7 @@ router.post('/diet', checkMiddleware, async (req, res) => {
   try {
     
     const result = await dietRouter.infordiet(req);
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -23,8 +23,8 @@ router.post('/diet', checkMiddleware, async (req, res) => {
 router.get('/getdietBydate', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.getdietBydate(req);
-    res.json(result);
+    const result = await dietRouter.getdietBydate(req,res);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -39,10 +39,10 @@ router.get('/getdietBydate', checkMiddleware, async (req, res) => {
 router.get('/getdiet', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await dietRouter.getdiet(req);
+    const result = await dietRouter.getdiet(req,res);
 
   
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 

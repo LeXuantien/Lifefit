@@ -1,6 +1,6 @@
 const dietModel = require('../Model/dietModel');
 
-const infordiet = async (req) => {
+const infordiet = async (req,res) => {
   const userId = req.userId; 
   const {  goal,date } = req.body;
 
@@ -13,14 +13,15 @@ const infordiet = async (req) => {
     dietModel.creatediet(userId, { goal,date}, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
       resolve('successfully');
-      
+      res.status(200).json({ result});
     });
   });
 };
-const getdiet = async (req) => {
+const getdiet = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
@@ -31,14 +32,16 @@ const getdiet = async (req) => {
   return new Promise((resolve, reject) => {
     dietModel.getdiet(userId, (err, result) => { 
       if (err) {
-        console.error(err);      
-        reject(new Error('Internal Server Error: ' + err.message));
+        console.error(err);
+        reject(new Error('Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
-      resolve(result);
+      resolve('successfully');
+      res.status(200).json({ result});
     });
   });
 };
-const getdietBydate = async (req) => {
+const getdietBydate = async (req,res) => {
   const userId = req.userId; 
   const date  = req.query.date; 
   if (!userId) {
@@ -50,10 +53,12 @@ const getdietBydate = async (req) => {
     return new Promise((resolve, reject) => {
       dietModel.getdietBydate(userId, date, (err, result) => { 
         if (err) {
-          console.error(err);      
-          reject(new Error('Internal Server Error: ' + err.message));
+          console.error(err);
+          reject(new Error('Error: ' + err.message));
+          res.status(401).json({ message: 'Lỗi'});
         }
-        resolve(result);
+        resolve('successfully');
+        res.status(200).json({ result});
       });
     });
   } catch (error) {
