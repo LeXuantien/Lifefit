@@ -51,10 +51,10 @@ const getwaterbydate = (dategoal,account_id, callback) => {
   })
 };
 const updatedwater = (id,account_id, updatedwaterData, callback) => {
-  const { watergoal, dategoal} = updatedwaterData;
-  const sql = "UPDATE watertracker SET watergoal = ? AND dategoal = ? WHERE account_id = ? AND id= ? ";
+  const { watergoal} = updatedwaterData;
+  const sql = "UPDATE watertracker SET watergoal = ?  WHERE account_id = ? AND id= ? ";
 
-  db.query(sql, [watergoal,dategoal, account_id,id], (err, result) => {
+  db.query(sql, [watergoal, account_id,id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

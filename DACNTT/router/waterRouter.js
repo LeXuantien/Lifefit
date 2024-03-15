@@ -55,8 +55,8 @@ router.get('/getwaterBydate', checkMiddleware, async (req, res) => {
 router.put('/updatedwater/:id', checkMiddleware, async (req, res) => {
   try {
     
-    const { watergoal, dategoal} = req.body;
-    const updatedwatertData = { watergoal, dategoal};
+    const { watergoal} = req.body;
+    const updatedwatertData = { watergoal};
 
     
     const result = await waterRouter.updatedwater(req,res, updatedwatertData);
