@@ -71,8 +71,8 @@ router.get('/getactivityHistorycaloBydate', checkMiddleware, async (req, res) =>
 router.put('/updateactivityHistory/:id', checkMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
-    const {date,name,calo } = req.body;
-    const updateactivityHistoryData = { date,name,calo};
+    const {name,calo } = req.body;
+    const updateactivityHistoryData = { name,calo};
 
     
     const result = await activityHistoryRouter.updateactivityHistory(req, updateactivityHistoryData);

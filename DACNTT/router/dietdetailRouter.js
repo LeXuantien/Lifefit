@@ -71,8 +71,8 @@ router.get('/getdietcaloBydate', checkMiddleware, async (req, res) => {
 router.put('/updatedietdetail/:id', checkMiddleware, async (req, res) => {
   const id = req.params.id;
   try {
-    const { content,diet_date,calo } = req.body;
-    const updatedietdetailData = { content,diet_date,calo};
+    const { content,calo } = req.body;
+    const updatedietdetailData = { content,calo};
 
     
     const result = await dietRouter.updatedietdetail(req,res, updatedietdetailData);

@@ -105,7 +105,7 @@ const getactivityHistory= (account_id,callback) => {
 })
 };
 const updateactivityHistory = (account_id,id, updatedactivityHistoryData, callback) => {
-  const {content,diet_date,calo} = updatedactivityHistoryData;
+  const {name,calo} = updatedactivityHistoryData;
   const sql= "SELECT id FROM activity WHERE account_id = ?";
   db.query(sql, [account_id], (err, rows) => {
     if (err) {
@@ -118,9 +118,9 @@ const updateactivityHistory = (account_id,id, updatedactivityHistoryData, callba
     }
 
     const activity_id = rows[0].id;
-  const sql1 = "UPDATE activityHistory SET date = ? , name = ? , calo = ?  WHERE id = ? AND activity_id  = ?";
+  const sql1 = "UPDATE activityHistory SET  name = ? , calo = ?  WHERE id = ? AND activity_id  = ?";
 
-  db.query(sql1, [content,diet_date,calo,id,activity_id ], (err, result) => {
+  db.query(sql1, [name,calo,id,activity_id ], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

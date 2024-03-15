@@ -103,7 +103,7 @@ const updatedietdetail= async (req,res, updateddietdetailData) => {
   }
 
   return new Promise((resolve, reject) => {
-    dietModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {
+    dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {
      
 
       if (err) {
@@ -127,7 +127,7 @@ const deletedietdetail = async (req,res) => {
   
    
     return new Promise((resolve, reject) => {
-      dietModel.deletedietdetail(id,userId, (err, result) => { 
+      dietdetailModel.deletedietdetail(id,userId, (err, result) => { 
         if (err) {
           console.error(err);      
           reject(new Error('Internal Server Error: ' + err.message));
