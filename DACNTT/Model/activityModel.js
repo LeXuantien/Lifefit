@@ -34,10 +34,10 @@ const getactivity = (account_id, callback) => {
   })
 };
 const updateactivity = (id,account_id, activityData, callback) => {
-  const { goal,date} = activityData;
-  const sql = "UPDATE activity SET goal = ?, date = ? WHERE account_id = ? AND id = ? ";
+  const { goal} = activityData;
+  const sql = "UPDATE activity SET goal = ? WHERE account_id = ? AND id = ? ";
 
-  db.query(sql, [goal,date, account_id,id], (err, result) => {
+  db.query(sql, [goal ,account_id,id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

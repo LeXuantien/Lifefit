@@ -55,10 +55,10 @@ const getdietBydate = (account_id, date, callback) => {
 
 
 const updatediet = (id,account_id, updateddietData, callback) => {
-  const { goal,date} = updateddietData;
-  const sql = "UPDATE diet SET goal = ? , date = ? WHERE account_id = ? AND id= ?";
+  const { goal} = updateddietData;
+  const sql = "UPDATE diet SET goal = ?  WHERE account_id = ? AND id= ?";
 
-  db.query(sql, [goal,date, account_id,id], (err, result) => {
+  db.query(sql, [goal, account_id,id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);

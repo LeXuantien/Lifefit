@@ -1,6 +1,6 @@
 const activityModel = require('../Model/activityModel');
 
-const inforactivity = async (req) => {
+const inforactivity = async (req,res) => {
   const userId = req.userId; 
   const {  goal,date } = req.body;
 
@@ -12,15 +12,16 @@ const inforactivity = async (req) => {
   return new Promise((resolve, reject) => {
     activityModel.create(userId, { goal,date}, (err, result) => {
       if (err) {
-        console.error(err);
+        console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
-      resolve('successfully');
-      
+      resolve(result);
+      res.status(200).json({ result});
     });
   });
 };
-const getactivity = async (req) => {
+const getactivity = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
@@ -33,12 +34,14 @@ const getactivity = async (req) => {
       if (err) {
         console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
       resolve(result);
+      res.status(200).json({ result});
     });
   });
 };
-const updateactivity= async (req, updatedactivityData) => {
+const updateactivity= async (req,res, updatedactivityData) => {
   const userId = req.userId; 
   const id = req.params.id;
   if (!userId) {
@@ -50,11 +53,12 @@ const updateactivity= async (req, updatedactivityData) => {
     activityModel.updateactivity(id,userId, updatedactivityData, (err, result) => {
       
       if (err) {
-       
+        console.error(err);      
         reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Lỗi'});
       }
-
-      resolve('successfully');
+      resolve(result);
+      res.status(200).json({ result});
     });
   });
 };

@@ -56,8 +56,8 @@ router.get('/getdiet', checkMiddleware, async (req, res) => {
 router.put('/updateddiet/:id', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal,date} = req.body;
-    const updatediettData = { goal,date};
+    const { goal} = req.body;
+    const updatediettData = { goal};
 
     
     const result = await dietRouter.updatediet(req,res, updatediettData);

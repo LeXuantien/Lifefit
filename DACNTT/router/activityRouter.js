@@ -7,8 +7,8 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/activity', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await activityRouter.inforactivity(req);
-    res.json(result);
+    const result = await activityRouter.inforactivity(req,res);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -23,10 +23,10 @@ router.post('/activity', checkMiddleware, async (req, res) => {
 router.get('/getactivity', checkMiddleware, async (req, res) => {
   try {
 
-    const result = await activityRouter.getactivity(req);
+    const result = await activityRouter.getactivity(req,res);
 
   
-    res.json(result);
+    return(result);
   } catch (error) {
     console.error(error);
 
@@ -57,12 +57,12 @@ router.get('/getactivityBydate', checkMiddleware, async (req, res) => {
 router.put('/updatedactivity/:id', checkMiddleware, async (req, res) => {
   try {
     
-    const { goal,date} = req.body;
-    const updateactivitytData = { goal,date};
+    const { goal} = req.body;
+    const updateactivitytData = { goal};
 
     
-    const result = await activityRouter.updateactivity(req, updateactivitytData);
-    res.json(result);
+    const result = await activityRouter.updateactivity(req,res, updateactivitytData);
+    return(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
