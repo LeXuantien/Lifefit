@@ -34,14 +34,7 @@ router.get('/getPeriodBydate', checkMiddleware, async (req, res, next) => {
     next(error);
   }
 });
-router.get('/getPeriodlengthPre', checkMiddleware, async (req, res, next) => {
-  try {
-    const periods = await periodController.getmenstruallength(req,res);
-    return periods;
-  } catch (error) {
-    next(error);
-  }
-});
+
 router.get('/getPeriodlengthCurrent', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getmenstruallength_current(req,res);
@@ -53,6 +46,14 @@ router.get('/getPeriodlengthCurrent', checkMiddleware, async (req, res, next) =>
 router.get('/getPeriodPre', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getperiodlength(req,res);
+    return periods;
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/getmenstrualPeriodPre', checkMiddleware, async (req, res, next) => {
+  try {
+    const periods = await periodController.getperiodlengthpre(req,res);
     return periods;
   } catch (error) {
     next(error);
