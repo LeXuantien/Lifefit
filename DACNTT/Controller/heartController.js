@@ -1,6 +1,6 @@
 const heartModel = require('../Model/heartModel');
 
-const inforheart = async (req) => {
+const inforheart = async (req,res) => {
   const userId = req.userId; 
   const { date,heartbeat } = req.body;
 
@@ -13,11 +13,12 @@ const inforheart = async (req) => {
     heartModel.createheart(userId, {date,heartbeat}, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      
+      res.status(200).json({ message:'Thành công'});
     });
+    
   });
 };
 const getheart = async (req,res) => {
@@ -32,11 +33,10 @@ const getheart = async (req,res) => {
     heartModel.getheart(userId, (err, result) => { 
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({ result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -50,12 +50,12 @@ const getheartBydate = async (req,res) => {
   }
   return new Promise((resolve, reject) => {
     heartModel.getheartbydate(date,userId, (err, result) => { 
-      if (err) {     
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({err});
+      if (err) {
+        console.error(err);
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -77,7 +77,7 @@ const updatedheart= async (req,res, updatedheartData) => {
         res.status(401).json({ message: 'Cập nhật không thành công'});
       }
 
-      res.status(200).json({ message: 'Cập nhật thành công',result});
+      res.status(200).json({ message: 'Cập nhật thành công'});
     });
   });
 };
@@ -93,12 +93,8 @@ const deleteheart= async (req,res) => {
     heartModel.deleteheart(id,userId, (err, result) => {
       
       if (err) {
-       
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+        res.status(401).json({ message: 'Xóa không thành công'});
       }
-
-      resolve('successfully');
       res.status(200).json({ message: 'Xoá thành công'});
     });
   });

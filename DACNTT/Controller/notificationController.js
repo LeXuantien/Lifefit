@@ -1,6 +1,6 @@
 const notiModel = require('../Model/notificationModel');
 
-const infornoti = async (req) => {
+const infornoti = async (req,res) => {
   const userId = req.userId; 
   const { time_noti,content } = req.body;
 
@@ -13,10 +13,10 @@ const infornoti = async (req) => {
     notiModel.createnoti(userId, {time_noti,content}, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      
+      res.status(200).json({ message:'Thành công'});
     });
   });
 };
@@ -30,14 +30,13 @@ const getnoti = async (req,res) => {
  
   return new Promise((resolve, reject) => {
    notiModel.getnoti(userId, (err, result) => { 
-      if (err) {
-        console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
-      }
-      resolve('successfully');
-      res.status(200).json({ result});
-    });
+    if (err) {
+      console.error(err);
+     
+      res.status(401).json({ message: 'Không thành công'});
+    }
+    res.status(200).json({ message:'Thành công',result});
+  });
   });
 };
 
@@ -50,12 +49,12 @@ const getnotiBydate = async (req,res) => {
   }
   return new Promise((resolve, reject) => {
     notiModel.getnotibydate(date,userId, (err, result) => { 
-      if (err) {     
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({err});
+      if (err) {
+        console.error(err);
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -72,12 +71,8 @@ const deletenoti= async (req,res) => {
     notiModel.deletenoti(id,userId, (err, result) => {
       
       if (err) {
-       
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+        res.status(401).json({ message: 'Xóa không thành công'});
       }
-
-      resolve('successfully');
       res.status(200).json({ message: 'Xoá thành công'});
     });
   });

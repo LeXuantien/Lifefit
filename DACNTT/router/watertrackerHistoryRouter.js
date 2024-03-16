@@ -9,7 +9,7 @@ router.post('/watertrackerHistory', checkMiddleware, async (req, res) => {
     
     const result = await watertrackerHistoryRouter.inforwaterHistory(req,res);
 
-    return (result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -25,7 +25,7 @@ router.get('/getwaterhistory', checkMiddleware, async (req, res) => {
    
     const result = await watertrackerHistoryRouter.getwaterHistory(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -41,7 +41,7 @@ router.get('/getwaterhistoryBydate', checkMiddleware, async (req, res) => {
    
     const result = await watertrackerHistoryRouter.getwaterBydate(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -59,7 +59,7 @@ router.get('/getwaterhistoryBydate', checkMiddleware, async (req, res) => {
       
       const result = await watertrackerHistoryRouter.getsumwaterBydate(req, res);
   
-      return(result);
+      return result;
     } catch (error) {
       console.error(error);
   

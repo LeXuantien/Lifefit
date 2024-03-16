@@ -17,21 +17,25 @@ const getProfile = (id, callback) => {
   })
 };
 const getPassword = (id, callback) => {
-  const sql = "SELECT password FROM account WHERE id = ?";
-  
-  db.query(sql, [id], (err, result) => {
+  const sql = 'SELECT * FROM account WHERE id = ? ';
+  db.query(sql, [id], (err, results) => {
     if (typeof callback === 'function') {
       if (err) {
-        console.error(err);
-        callback(err, null);
+        console.error('Error:', err);
+        return callback(err, null);
       } else {
-        callback(null, result);
+        if (results.length === 1) {
+          callback(null, results[0].password);
+        } else {
+          callback(null, null);
+        }
       }
     } else {
       console.error('Callback is not a function');
     }
-  })
+  });
 };
+
 const updateProfile = (id, updatedProfileData, callback) => {
   const {email, fullname,birthday, gender,weight, height, wakeup_time, sleeping_time } = updatedProfileData;
   const sql = "UPDATE account SET email = ?, fullname = ?,birthday = ?, gender = ?, weight = ?, height = ?, wakeup_time = ?, sleeping_time = ? WHERE id = ?";

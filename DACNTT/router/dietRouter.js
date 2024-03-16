@@ -8,7 +8,7 @@ router.post('/diet', checkMiddleware, async (req, res) => {
   try {
     
     const result = await dietRouter.infordiet(req,res);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -24,7 +24,7 @@ router.get('/getdietBydate', checkMiddleware, async (req, res) => {
   try {
     
     const result = await dietRouter.getdietBydate(req,res);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -42,7 +42,7 @@ router.get('/getdiet', checkMiddleware, async (req, res) => {
     const result = await dietRouter.getdiet(req,res);
 
   
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -61,7 +61,7 @@ router.put('/updateddiet/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await dietRouter.updatediet(req,res, updatediettData);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -72,7 +72,7 @@ router.delete('/deletediet/:id', checkMiddleware, async (req, res) => {
   
     const result = await dietRouter.deletediet(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 

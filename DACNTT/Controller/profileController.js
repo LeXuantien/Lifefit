@@ -2,7 +2,7 @@ const profileModel = require('../Model/profileModel');
 const bcrypt = require('bcrypt');
 
 
-const getProfile = async (req) => {
+const getProfile = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
@@ -13,13 +13,14 @@ const getProfile = async (req) => {
     profileModel.getProfile(userId, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
-const updatedProfile= async (req, updatedprofileData) => {
+const updatedProfile= async (req,res, updatedprofileData) => {
   const userId = req.userId; 
 
   if (!userId) {
@@ -31,36 +32,47 @@ const updatedProfile= async (req, updatedprofileData) => {
     profileModel.updateProfile(userId, updatedprofileData, (err, result) => {
       
       if (err) {
+        console.error(err);
        
-        reject(new Error('Internal Server Error: ' + err.message));
+        res.status(401).json({ message: 'Không thành công'});
       }
-
-      resolve('Cập nhật thành công');
+      res.status(200).json({ message:'Thành công'});
     });
   });
 };
-const updatedPassword= async (req,res) => {
+const updatedPassword = async (req, res) => {
   const userId = req.userId; 
-  const {oldpassword,newpassword}=req.body;
+  const { oldpassword, newpassword } = req.body;
 
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    throw new Error('Unauthorized');
   }
+
   try {
-    const password = await profileModel.getPassword(userId); 
-    const passwordMatch = await bcrypt.compare(oldpassword, password); 
+    profileModel.getPassword(userId, (err, password) => { 
+      if (err) {     
+        res.status(401).json({ message: 'Không thành công'});
+      }
+
+    const passwordMatch =  bcrypt.compare(oldpassword, password); 
     if (!passwordMatch) {
-      return { success: false, message: 'Mật khẩu cũ không đúng' }; 
+      return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
     }
 
-    const hashedNewPassword = await bcrypt.hash(newpassword, 10); 
-    await profileModel.updatePassword(userId, { password: hashedNewPassword }); 
+    if (!newpassword) {
+      return res.status(400).json({ message: 'Vui lòng cung cấp mật khẩu mới' });
+    }
+    const hashedNewPassword =  bcrypt.hash(newpassword, 10); 
+   
+    profileModel.updatePassword(userId, { password: hashedNewPassword }); 
 
-    res.status(200).json({ message: 'Cập nhật thành công' });
+    return res.status(200).json({ message: 'Cập nhật thành công' });
+    });
+    
   } catch (error) {
-    console.error('Error updating password:', error);
-    throw new Error('Internal Server Error');
+    console.error('Cập nhật không thành công:', error);
+    return res.status(500).json({ message: 'Lỗi nội bộ: không thể cập nhật mật khẩu' });
   }
 };
 

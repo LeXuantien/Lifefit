@@ -8,7 +8,7 @@ router.post('/water', checkMiddleware, async (req, res) => {
   try {
     
     const result = await waterRouter.inforwater(req,res);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -25,7 +25,7 @@ router.get('/getwater', checkMiddleware, async (req, res) => {
   
     const result = await waterRouter.getwater(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -41,7 +41,7 @@ router.get('/getwaterBydate', checkMiddleware, async (req, res) => {
   
     const result = await waterRouter.getwaterBydate(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -60,7 +60,7 @@ router.put('/updatedwater/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await waterRouter.updatedwater(req,res, updatedwatertData);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');

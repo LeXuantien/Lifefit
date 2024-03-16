@@ -1,7 +1,7 @@
 const dietdetailModel = require('../Model/dietdetailModel');
 const jwt = require('jsonwebtoken');
 
-const infordietdetail = async (req) => {
+const infordietdetail = async (req,res) => {
   const userId = req.userId; 
   const { content, diet_date, calo} = req.body;
 
@@ -13,15 +13,15 @@ const infordietdetail = async (req) => {
   return new Promise((resolve, reject) => {
     dietdetailModel.creatdietdetail (userId, content,diet_date,calo , (err, result) => {
       if (err) {
-        console.error(err);
-        reject(new Error('Error: ' + err.message));
+        console.error(err);      
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
+      res.status(200).json({message: 'Thành công'});
     });
   });
 };
 
-const getdietBydate = async (req) => {
+const getdietBydate = async (req,res) => {
 
   const userId = req.userId;
   const diet_date = req.query.diet_date;
@@ -34,12 +34,10 @@ const getdietBydate = async (req) => {
     return new Promise((resolve, reject) => {
      dietdetailModel.getdietdetailBydate(userId,  diet_date, (err, result) => {
       if (err) {
-        console.error(err);
-        reject(err);
-    
+        console.error(err);      
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
- 
+      res.status(200).json({message: 'Thành công',result});
     });
     });
   } catch (error) {
@@ -60,12 +58,10 @@ const getdietcalo = async (req,res) => {
     return new Promise((resolve, reject) => {
      dietdetailModel.getCaloBydate(userId,  diet_date, (err, result) => {
       if (err) {
-        console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+        console.error(err);      
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({ result});
+      res.status(200).json({message: 'Thành công',result});
     });
     });
   } catch (error) {
@@ -74,7 +70,7 @@ const getdietcalo = async (req,res) => {
   }
 };
 
-const getdietdetail = async (req) => {
+const getdietdetail = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized: ');
@@ -85,12 +81,10 @@ const getdietdetail = async (req) => {
   return new Promise((resolve, reject) => {
     dietdetailModel.getdietdetail(userId, (err, result) => { 
       if (err) {
-        console.error(err);
-        reject(err);
-        res.status(401).json({ message: 'Lỗi'});
+        console.error(err);      
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      
+      res.status(200).json({message: 'Thành công', result});
     });
   });
 };
@@ -103,16 +97,10 @@ const updatedietdetail= async (req,res, updateddietdetailData) => {
   }
 
   return new Promise((resolve, reject) => {
-    dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {
-     
-
-      if (err) {
-        res.status(401).json({ message: 'Cậphật không thành công'});
-        reject(new Error('Internal Server Error: ' + err.message));
+    dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {     
+    if (err) {
+        res.status(401).json({ message: 'Cậphật không thành công'});     
       }
-
-   
-      resolve('successfully');
       res.status(200).json({ message: 'Cập nhật thành công'});
     });
   });
@@ -130,10 +118,8 @@ const deletedietdetail = async (req,res) => {
       dietdetailModel.deletedietdetail(id,userId, (err, result) => { 
         if (err) {
           console.error(err);      
-          reject(new Error('Internal Server Error: ' + err.message));
           res.status(401).json({ message: 'Xoá Không thành công'});
         }
-        resolve('susscess');
         res.status(200).json({ message: 'Xoá thành công'});
       });
     });
@@ -151,25 +137,20 @@ const deletedietdetail = async (req,res) => {
     try {
         const result = await new Promise((resolve, reject) => {
             dietdetailModel.getCaloBydate(userId, diet_date, (err, result) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
-
-       
-        let SumCalo = 0;
-        for (const diet of result) {
-           
-            SumCalo += diet.calo;
-        }
-
-        console.log('Calo:', SumCalo);
-        res.status(200).json({ message: 'successfully', SumCalo });
-
+              if (err) {
+                console.error(err);      
+                res.status(401).json({ message: 'Không thành công'});
+              }
+              let SumCalo = 0;
+          for (const diet of result) {
+            
+              SumCalo += diet.calo;
+          }
+          console.log('Calo:', SumCalo);
+          res.status(200).json({ message: 'Thành công', SumCalo });
+              });
+          });   
+          
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error' });

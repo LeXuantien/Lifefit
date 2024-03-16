@@ -7,9 +7,9 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/weight', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await weigthRouter.inforweight(req);
+    const result = await weigthRouter.inforweight(req,res);
 
-    res.json(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -25,7 +25,7 @@ router.get('/getweight', checkMiddleware, async (req, res) => {
    
     const result = await weigthRouter.getWeight(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -43,11 +43,12 @@ router.put('/updateweight/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await weigthRouter.updateWeight(req,res, updateWeightData);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 module.exports = router;

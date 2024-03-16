@@ -41,13 +41,12 @@ let inforotp = {};
 async function OTP(email) {
   try {
     const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-    console.log(generatedOTP);
     inforotp[email] = {
       otp: generatedOTP,
       timestamp: Date.now()
     };
     const mailOptions = {
-      from: 'tienle120302@gmail.com', 
+      from: 'LIFEFIT', 
       to: email,
       subject: 'Your OTP Code',
       text: `Your OTP code is: ${generatedOTP}`,

@@ -13,11 +13,10 @@ const inforwater = async (req,res) => {
     waterModel.createwater(userId, { watergoal, dategoal}, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({message: 'Thành công'});
+      res.status(200).json({ message:'Thành công'});
     });
   });
 };
@@ -33,14 +32,11 @@ const getwater = async (req,res) => {
   return new Promise((resolve, reject) => {
     waterModel.getwater(userId, (err, result) => { 
       if (err) {
+        console.error(err);
        
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({message:'Lỗi'});
+        res.status(401).json({ message: 'Không thành công'});
       }
-
-     
-      resolve('successfully');
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -56,14 +52,11 @@ const getwaterBydate = async (req,res) => {
   return new Promise((resolve, reject) => {
     waterModel.getwaterbydate(date,userId, (err, result) => { 
       if (err) {
+        console.error(err);
        
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({message:'Lỗi'});
+        res.status(401).json({ message: 'Không thành công'});
       }
-
-     
-      resolve('successfully');
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -77,18 +70,14 @@ const updatedwater= async (req,res, updatedwaterData) => {
 
   return new Promise((resolve, reject) => {
     waterModel.updatedwater(id,userId, updatedwaterData, (err, result) => {
-   
-
       if (err) {
+        console.error(err);
        
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({message:'Lỗi'});
+        res.status(401).json({ message: 'Không thành công'});
       }
-
-     
-      resolve('successfully');
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công'});
     });
+      
   });
 };
 const deletewater= async (req,res) => {
@@ -102,13 +91,9 @@ const deletewater= async (req,res) => {
   return new Promise((resolve, reject) => {
     waterModel.deletewater(id,userId, (err, result) => {
       
-      if (err) {
-       
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+      if (err) {  
+        res.status(401).json({ message: 'Xóa không thành công'});
       }
-
-      resolve('successfully');
       res.status(200).json({ message: 'Xoá thành công'});
     });
   });

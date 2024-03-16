@@ -13,12 +13,11 @@ const inforwaterHistory = async (req,res) => {
   return new Promise((resolve, reject) => {
     watertrackerHistorylModel.createwaterHistory (userId,time, content,  (err, result) => {
       if (err) {
-        
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({err });
+        console.error(err);
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({message:"Thành công" });
+      res.status(200).json({ message:'Thành công'});
     });
   });
 };
@@ -35,11 +34,10 @@ const getwaterHistory = async (req,res) => {
      watertrackerHistorylModel.getdwaterHistory(userId, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({ result});
+      res.status(200).json({ message:'Thành công',result});
     });
     });
   } catch (error) {
@@ -63,11 +61,10 @@ const getwaterBydate = async (req,res) => {
      watertrackerHistorylModel.getwaterHistoryBydate(userId,date, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
-      res.status(200).json({ result});
+      res.status(200).json({ message:'Thành công',result});
     });
     });
   } catch (error) {
@@ -88,23 +85,21 @@ const getwaterBydate = async (req,res) => {
     }
 
     try {
-        const result = await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             watertrackerHistorylModel.getwaterBydate(userId, date, (err, result) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
+              if (err) {
+                res.status(401).json({ message: 'Không thành công'});
+              }
+              let Sumwater = 0;
+              for (const water of result) {
+                  Sumwater += water.water;
+              }
+      
+              res.status(200).json({ message: 'successfully', Sumwater });
+      
             });
         });
-        let Sumwater = 0;
-        for (const water of result) {
-            Sumwater += water.water;
-        }
-
-        res.status(200).json({ message: 'successfully', Sumwater });
-
+        
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error' });

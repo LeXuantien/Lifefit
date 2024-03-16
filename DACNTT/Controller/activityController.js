@@ -9,37 +9,40 @@ const inforactivity = async (req,res) => {
     throw new Error('Unauthorized ');
   }
 
-  return new Promise((resolve, reject) => {
-    activityModel.create(userId, {name, goal,date}, (err, result) => {
-      if (err) {
-        console.error(err);      
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
-      }
-      resolve(result);
-      res.status(200).json({ result});
-    });
+ try{
+     activityModel.create(userId, {name, goal,date}, (err, result) => {
+    if (err) {
+      console.error(err);      
+      res.status(401).json({ message: 'Không thành công'});
+    }
+    res.status(200).json({message: 'Thành công'});
   });
+ 
+} catch (error) {
+  res.status(401).json({ message: 'Không thành công', error });
+}
+    
 };
 const getactivity = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+   res.status(401).json('Unauthorized ')
+    
   }
  
-  return new Promise((resolve, reject) => {
+  try {
     activityModel.getactivity(userId, (err, result) => { 
       if (err) {
         console.error(err);      
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
-      res.status(200).json({ result});
+      res.status(200).json({message: 'Thành công', result});
     });
     
-  });
+  }catch (error) {
+    res.status(401).json({ message: 'Không thành công', error });
+  }
+    
 
 };
 const updateactivity = async (req, res, updatedactivityData) => {
@@ -52,7 +55,7 @@ const updateactivity = async (req, res, updatedactivityData) => {
     throw new Error('Unauthorized');
   }
 
-  return new Promise((resolve, reject) => {
+  try{
     activityModel.updateactivity(id, userId, updatedactivityData, (err, result) => {
       if (err) {
         reject(new Error('Internal Server Error: ' + err.message));
@@ -62,18 +65,20 @@ const updateactivity = async (req, res, updatedactivityData) => {
       if (updatedactivityData.goal === true) {
         notiModel.createnoti(userId, { time_noti, content }, (err, result) => {
           if (err) {
-            console.error(err);
-            reject(new Error('Internal Server Error: ' + err.message));
-            return; 
+            
+            res.status(401).json({ message: 'Không thành công'});
           }
-          resolve(result);          
+       
         });
-      } else {
-        resolve(result); 
-      }
+      } 
       res.status(200).json({ message: 'Cập nhật thành công'});
     });
-  });
+
+
+  }catch (error) {
+    res.status(401).json({ message: 'Không thành công', error });
+  }
+    
 };
 
 
@@ -84,21 +89,22 @@ const deleteactivity= async (req,res) => {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');
   }
-
-  return new Promise((resolve, reject) => {
-    activityModel.deleteactivity(id,userId, (err, result) => {
+    try{
+      activityModel.deleteactivity(id,userId, (err, result) => {
       
-      if (err) {
+        if (err) {
+         
+          res.status(401).json({ message: 'Xoá không thành công'});
+        }
+  
        
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
-      }
-
-      resolve('successfully');
-      res.status(200).json({ message: 'Xoá thành công'});
-    });
-  });
-};
+        res.status(200).json({ message: 'Xoá thành công'});
+      });
+    }catch (error) {
+    res.status(401).json({ message: 'Không thành công', error });
+  }
+}
+  
 const getactivityBydate = async (req,res) => {
   const userId = req.userId; 
   const date  = req.query.date; 
@@ -112,11 +118,11 @@ const getactivityBydate = async (req,res) => {
       activityModel.getactivityBydate(userId, date, (err, result) => { 
         if (err) {
           console.error(err);      
-          reject(new Error('Internal Server Error: ' + err.message));
-          res.status(401).json({ message: 'Lỗi'});
+          
+          res.status(401).json({ message: 'Thất bại'});
         }
-        resolve(result);
-        res.status(200).json({ result});
+        
+        res.status(200).json({ message: 'Thành công', result});
       });
     });
   } catch (error) {

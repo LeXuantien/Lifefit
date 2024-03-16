@@ -7,9 +7,9 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/dietdetail', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await dietRouter.infordietdetail(req);
+    const result = await dietRouter.infordietdetail(req,res);
 
-    res.json(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -23,9 +23,9 @@ router.post('/dietdetail', checkMiddleware, async (req, res) => {
 router.get('/getdietdetail', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietdetail(req);
+    const result = await dietRouter.getdietdetail(req,res);
 
-    res.status(200).json(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -39,9 +39,9 @@ router.get('/getdietdetail', checkMiddleware, async (req, res) => {
 router.get('/getdietdetailBydate', checkMiddleware, async (req, res) => {
   try {
    
-    const result = await dietRouter.getdietBydate(req);
+    const result = await dietRouter.getdietBydate(req,res);
 
-    res.status(200).json(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -57,7 +57,7 @@ router.get('/getdietcaloBydate', checkMiddleware, async (req, res) => {
    
     const result = await dietRouter.getdietcalo(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -76,7 +76,7 @@ router.put('/updatedietdetail/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await dietRouter.updatedietdetail(req,res, updatedietdetailData);
-    return(result);
+    return result ;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -88,7 +88,7 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
     
       const result = await dietRouter.deletedietdetail(req,res);
   
-      return(result);
+      return result;
     } catch (error) {
       console.error(error);
   
@@ -104,7 +104,7 @@ router.delete('/deletedietdetail/:id', checkMiddleware, async (req, res) => {
       
       const result = await dietRouter.getCaloBydate(req, res);
   
-      return(result);
+      return result ;
     } catch (error) {
       console.error(error);
   

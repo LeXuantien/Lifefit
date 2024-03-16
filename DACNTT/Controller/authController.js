@@ -16,7 +16,7 @@ const Login = {
       const { email, password } = req.body;
    
       if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+        return res.status(400).json({ error: 'Vui lòng nhập đầy đủ ' });
       }
       userModel.login(email,async (err, userData) => {
         if (err) {

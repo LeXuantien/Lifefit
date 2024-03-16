@@ -16,20 +16,17 @@ const Period = {
       }
     });
   },
- getAllPeriod: (id, callback) => {
-    const sql = "SELECT * FROM period WHERE account_id = ?";
+ getAllPeriod: (id) => {
     
-    db.query(sql, [id], (err, result) => {
-      if (typeof callback === 'function') {
-        if (err) {
-          console.error(err);
-          callback(err, null);
-        } else {
-          callback(null, result);
-        }
-      } else {
-        console.error('Callback is not a function');
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM period WHERE account_id = ?";
+      db.query(sql, [id], (err, result) => {
+      if (err) {
+        reject(err);
+        return;
       }
+      resolve(result);
+    });
     })
   },
   getPeriodByMonthAndYearId: (account_id,month,year) => {
@@ -89,21 +86,22 @@ const Period = {
       });
     });
   },
-  updatePeriodByID : (userid,id,menstrual_days, updatedPeriodData, callback) => {
+  updatePeriodByID : (userid,id,menstrual_days, updatedPeriodData,) => {
+  
     const {start_date,end_date,note } = updatedPeriodData;
     const sql = 'UPDATE period SET start_date = ?, end_date = ? ,menstrual_days = ?, note = ? WHERE account_id = ?  AND id= ?';
     db.query(sql, [start_date,end_date,menstrual_days.join(','),note,userid,id], (err, result) => {
       if (typeof callback === 'function') {
         if (err) {
-          console.error(err);
-          callback(err, null);
+            console.error(err);
+            callback(err, null);
         } else {
-          callback(null, result);
+            callback(null, result);
         }
-      } else {
+    } else {
         console.error('Callback is not a function');
-      }
-    });
+    }
+  })
   }
 };
 

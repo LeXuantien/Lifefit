@@ -1,7 +1,7 @@
 const weightModel = require('../Model/weightHistoryModel');
 const jwt = require('jsonwebtoken');
 
-const inforweighthistory = async (req) => {
+const inforweighthistory = async (req,res) => {
   const userId = req.userId; 
   const { weight, date_recorded} = req.body;
 
@@ -14,9 +14,10 @@ const inforweighthistory = async (req) => {
     weightModel.creatweighthistory (userId, {  weight, date_recorded }, (err, result) => {
       if (err) {
         console.error(err);
-        reject(new Error('Error: ' + err.message));
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve('successfully');
+      res.status(200).json({ message:'Thành công'});
     });
   });
 };
@@ -30,12 +31,12 @@ const getweighthistory = async (req,res) => {
  
   return new Promise((resolve, reject) => {
     weightModel.getweighthistory(userId, (err, result) => { 
-      if (err) {     
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({err});
+      if (err) {
+        console.error(err);
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -48,12 +49,12 @@ const getweightHistoryBydate = async (req,res) => {
   }
   return new Promise((resolve, reject) => {
     weightModel.getweigthHistorytbydate(date,userId, (err, result) => { 
-      if (err) {     
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({err});
+      if (err) {
+        console.error(err);
+       
+        res.status(401).json({ message: 'Không thành công'});
       }
-      resolve(result);
-      res.status(200).json({result});
+      res.status(200).json({ message:'Thành công',result});
     });
   });
 };
@@ -69,14 +70,9 @@ const updateweighthistory= async (req,res, updatedWeigthData) => {
     weightModel.updateweighthistory(id,userId, updatedWeigthData, (err, result) => {
      
 
-      if (err) {
-       
-        reject(new Error('Internal Server Error: ' + err.message));
+      if (err) {       
         res.status(401).json({ message: 'Cập nhật không thành công'});
       }
-
-   
-      resolve('successfully');
       res.status(200).json({ message: 'Cập nhật thành công'});
     });
   });
@@ -94,11 +90,9 @@ const deleteweighthistory= async (req,res) => {
       
       if (err) {
        
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(401).json({ message: 'Lỗi'});
+     
+        res.status(401).json({ message: 'Xóa không thành công'});
       }
-
-      resolve('successfully');
       res.status(200).json({ message: 'Xoá thành công'});
     });
   });

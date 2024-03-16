@@ -1,7 +1,7 @@
 
 const periodModel = require('../Model/periodModel');
 const cron = require('node-cron');
-const createPeriod = async (req) => {
+const createPeriod = async (req,res) => {
   const userId = req.userId; 
   const { start_date, end_date, note } = req.body;
 
@@ -42,10 +42,10 @@ const createPeriod = async (req) => {
     const result = await new Promise((resolve, reject) => {
       periodModel.create(userId, start_date, end_date, menstrual_days, note, (err, result) => {
         if (err) {
-          console.error(err);
-          reject(new Error('Internal Server Error: ' + err.message));
+          console.error(err);      
+          res.status(401).json({ message: 'Không thành công'});
         }
-        resolve('successfully');
+        res.status(200).json({message: 'Thành công'});
       });
     });
     return result;
@@ -106,22 +106,22 @@ cron.schedule('26 14 * * *', () => {
 
 
 
-const getAllPeriod= async (req) => {
+const getAllPeriod= async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized ');
   }
 
-  return new Promise((resolve, reject) => {
-    periodModel.getAllPeriod(userId, (err, result) => {
-      if (err) {
-        console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
+ 
+    const period= await periodModel.getAllPeriod(userId);
+      if(!period){
+        res.status(401).json({message:'Không có chu kỳ'});
       }
-      resolve(result);
-    });
-  });
+      res.status(200).json({message:'thành công', period });
+
+    
+
 };
 const getPeriodBydate= async (req,res) => {
   const userId = req.userId; 
@@ -131,19 +131,19 @@ const getPeriodBydate= async (req,res) => {
   const year = today.getFullYear();
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({message:'Unauthorized'});
   }
   const period= await periodModel.getPeriodByMonthAndYearId(userId,month,year)
   if(!period){
     res.status(401).json({message:'Không có chu kỳ'});
   }
-  res.status(401).json({period});
+  res.status(200).json({period});
 };
 const getmenstruallength = async (req,res) => {
   const userId = req.userId;
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized');
+   
   }
   const today = new Date();
   const month = today.getMonth(); 
@@ -235,7 +235,7 @@ const getmenstruallength_current = async (req,res) => {
   }
 };
 
-const updatePeriodByID = async (req) => {
+const updatePeriodByID = async (req, res) => {
   const userId = req.userId;
   const id = req.params.id; 
   const { start_date, end_date, note } = req.body;
@@ -245,29 +245,26 @@ const updatePeriodByID = async (req) => {
     console.log('Unauthorized: ');
     throw new Error('Unauthorized');
   }
+
   const startDate = new Date(start_date);
   const currentDate = new Date(startDate);
   let menstrual_days = [];
   const endDate = new Date(end_date);
+  
   while (currentDate <= endDate) { 
     menstrual_days.push(currentDate.toISOString().slice(0, 10));
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  console.log(menstrual_days);
 
-  
-  return new Promise((resolve, reject) => {
-    periodModel.updatePeriodByID(userId, id, menstrual_days, updatedPeriodData, (err, result) => {
-      if (err) {
-        console.error(err);
-        reject(new Error('Internal Server Error: ' + err.message));
-      }
-
-      console.log('Cập nhật thành công');
-      resolve('Cập nhật thành công');
-    });
-  });
+  try {
+    const period = await periodModel.updatePeriodByID(userId, id, menstrual_days, updatedPeriodData);
+    res.status(200).json({ message: 'Thành công'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Không thành công' });
+  }
 };
+
 
 
 

@@ -7,9 +7,9 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/weightHistory', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await weigthRouter.inforweighthistory(req);
+    const result = await weigthRouter.inforweighthistory(req,res);
 
-    res.json(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -25,7 +25,7 @@ router.get('/getweightHistory', checkMiddleware, async (req, res) => {
    
     const result = await weigthRouter.getweighthistory(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -41,7 +41,7 @@ router.get('/getweightHistoryBydate', checkMiddleware, async (req, res) => {
    
     const result = await weigthRouter.getweightHistoryBydate(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -59,7 +59,7 @@ router.put('/updateweightHistory/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await weigthRouter.updateweighthistory(req,res, updateWeightData);
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -70,7 +70,7 @@ router.delete('/deleteweightHistory/:id', checkMiddleware, async (req, res) => {
     
       const result = await weigthRouter.deleteweighthistory(req,res);
   
-      return(result);
+      return result;
     } catch (error) {
       console.error(error);
   

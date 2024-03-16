@@ -7,8 +7,8 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/heart', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await heartRouter.inforheart(req);
-    res.json(result);
+    const result = await heartRouter.inforheart(req,res);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -26,7 +26,7 @@ router.get('/getheart', checkMiddleware, async (req, res) => {
     const result = await heartRouter.getheart(req,res);
 
   
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -42,8 +42,7 @@ router.get('/getheartBydate', checkMiddleware, async (req, res) => {
   try {
   
     const result = await heartRouter.getheartBydate(req,res);
-
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -62,7 +61,7 @@ router.put('/updatedheart/:id', checkMiddleware, async (req, res) => {
 
     
     const result = await heartRouter.updatedheart(req,res, updatedheartData);
-   return(result);
+    return result;
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -73,7 +72,7 @@ router.delete('/deleteheart/:id', checkMiddleware, async (req, res) => {
   
     const result = await heartRouter.deleteheart(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 

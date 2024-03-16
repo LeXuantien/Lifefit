@@ -7,8 +7,8 @@ const checkMiddleware = require('../utils/Middleware');
 router.post('/noti', checkMiddleware, async (req, res) => {
   try {
     
-    const result = await notiRouter.infornoti(req);
-    res.json(result);
+    const result = await notiRouter.infornoti(req,res);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -26,7 +26,7 @@ router.get('/getnoti', checkMiddleware, async (req, res) => {
     const result = await notiRouter.getnoti(req,res);
 
   
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -43,7 +43,7 @@ router.get('/getnotiBydate', checkMiddleware, async (req, res) => {
   
     const result = await notiRouter.getnotiBydate(req,res);
 
-    return(result);
+    return result;
   } catch (error) {
     console.error(error);
 
@@ -59,8 +59,8 @@ router.delete('/deletenoti/:id', checkMiddleware, async (req, res) => {
   try {
   
     const result = await notiRouter.deletenoti(req,res);
+    return result;
 
-    return(result);
   } catch (error) {
     console.error(error);
 
