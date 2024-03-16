@@ -1,5 +1,6 @@
 const activityModel = require('../Model/activityModel');
 const notiModel= require('../Model/notificationModel');
+const cron = require('node-cron');
 const inforactivity = async (req,res) => {
   const userId = req.userId; 
   const {  name,goal,date } = req.body;
@@ -58,8 +59,7 @@ const updateactivity = async (req, res, updatedactivityData) => {
   try{
     activityModel.updateactivity(id, userId, updatedactivityData, (err, result) => {
       if (err) {
-        reject(new Error('Internal Server Error: ' + err.message));
-        res.status(500).json({ message: 'Lỗi'});
+        res.status(401).json({ message: 'Không thành công'});
         return; 
       }
       if (updatedactivityData.goal === true) {
@@ -130,10 +130,51 @@ const getactivityBydate = async (req,res) => {
     throw new Error('Error: ' + error.message);
   }
 };
+
+
+const updatenoti = async (req, res) => {
+  const time_noti = new Date(); 
+  const date=time_noti.setDate(time_noti.getDate() - 1);
+  try{
+    activityModel.getallactivity( date, (err, result) => {
+      if (err) {
+        return; 
+      }
+      console.log(result);
+     
+      for(act of result){
+        console.log(act.goal);
+        const content = result && result.name ? `Bạn chưa hoàn thành mục tiêu ${act.name}.` : "Bạn chưa hoàn thành mục tiêu.";
+        if (act.goal === true) {
+          console.log( 'Thành công');
+          notiModel.createnoti(userId, { time_noti, content }, (err, result) => {
+            if (err) {
+              console.log( 'Không thành công');
+            }
+            console.log( 'Thành công');
+          });
+        } 
+      }
+      
+     
+    });
+
+
+  }catch (error) {
+    res.status(401).json({ message: 'Không thành công', error });
+  }
+    
+};
+cron.schedule('17 9 * * *', () => {
+  updatenoti(); 
+}, {
+  timezone: 'Asia/Ho_Chi_Minh'
+});
 module.exports = {
   inforactivity,
   getactivity,
   updateactivity,
   deleteactivity,
-  getactivityBydate
+  getactivityBydate,
+  updatenoti
 };

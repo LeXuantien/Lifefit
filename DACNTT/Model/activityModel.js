@@ -83,11 +83,30 @@ const getactivityBydate = (account_id, date, callback) => {
     }
   });
 };
+const getallactivity = (date, callback) => {
+  const formattedDate = new Date(date).toISOString().slice(0, 10);
+  console.log(formattedDate);
+  const sql = "SELECT * FROM activity WHERE DATE(date) = ?";
+  
+  db.query(sql, [formattedDate], (err, result) => {
+    if (typeof callback === 'function') {
+      if (err) {
+        console.error(err);
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    } else {
+      console.error('Callback is not a function');
+    }
+  });
+};
 
 module.exports = {
   create,
   getactivity,
   updateactivity,
   deleteactivity,
-  getactivityBydate
+  getactivityBydate,
+  getallactivity 
 };

@@ -55,24 +55,29 @@ const updatedPassword = async (req, res) => {
         res.status(401).json({ message: 'Không thành công'});
       }
 
-    const passwordMatch =  bcrypt.compare(oldpassword, password); 
-    if (!passwordMatch) {
-      return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
-    }
+      const passwordMatch =  bcrypt.compare(oldpassword, password); 
+      if (!passwordMatch) {
+        return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
+      }
 
-    if (!newpassword) {
-      return res.status(400).json({ message: 'Vui lòng cung cấp mật khẩu mới' });
-    }
-    const hashedNewPassword =  bcrypt.hash(newpassword, 10); 
-   
-    profileModel.updatePassword(userId, { password: hashedNewPassword }); 
+      if (!newpassword) {
+        return res.status(400).json({ message: 'Vui lòng nhập mật khẩu mới' });
+      }
+      const hashedNewPassword =  bcrypt.hash(newpassword, 10); 
+    
+      profileModel.updatePassword(userId, { password: hashedNewPassword },(err, result) => {
+        if(err){
+          return res.status(401).json({ message: 'Cập nhật không thành công' });
+        }
+        return res.status(200).json({ message: 'Cập nhật thành công' });
+      }); 
 
-    return res.status(200).json({ message: 'Cập nhật thành công' });
-    });
+    
+      });
     
   } catch (error) {
     console.error('Cập nhật không thành công:', error);
-    return res.status(500).json({ message: 'Lỗi nội bộ: không thể cập nhật mật khẩu' });
+    return res.status(500).json({ message: 'không thể cập nhật mật khẩu' });
   }
 };
 
