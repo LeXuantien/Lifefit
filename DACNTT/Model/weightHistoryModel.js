@@ -1,12 +1,11 @@
 const db = require('../config/db');
-
+const moment = require('moment-timezone');
 const creatweighthistory = (account_id, weightData, callback) => {
   const { weight, date_recorded } = weightData;
-
-  const sql= "SELECT id FROM weight WHERE account_id = ?";
+  const vietnamDateTime = moment(date_recorded, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
 
     const sql1 = "INSERT INTO weight_history (weight, date_recorded, account_id) VALUES (?, ?, ?)";
-    db.query(sql1, [weight, date_recorded, account_id], (err, result) => {
+    db.query(sql1, [weight, vietnamDateTime, account_id], (err, result) => {
       if (err) {
         console.error(err);
         return callback(err, null);
@@ -26,7 +25,15 @@ const getweighthistory = (account_id, callback) => {
         console.error(err);
         callback(err, null);
       } else {
-        callback(null, result);
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            date_recorded: moment(item.date_recorded).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
+          };
+        });
+  
+        callback(null, vietnamDateTime);
+     
       }
     } else {
       console.error('Callback is not a function');
@@ -45,7 +52,15 @@ const getweigthHistorytbydate = (date,account_id, callback) => {
         console.error(err);
         callback(err, null);
       } else {
-        callback(null, result);
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            date_recorded: moment(item.date_recorded).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
+          };
+        });
+  
+        callback(null, vietnamDateTime);
+     
       }
     } else {
       console.error('Callback is not a function');

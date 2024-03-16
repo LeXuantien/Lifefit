@@ -120,8 +120,6 @@ const getAllPeriod= async (req,res) => {
       }
       res.status(200).json({message:'thành công', period });
 
-    
-
 };
 const getPeriodBydate= async (req,res) => {
   const userId = req.userId; 
@@ -151,61 +149,59 @@ const getmenstruallength = async (req,res) => {
   try {
     
     const period = await periodModel.getPeriodByMonthAndYearPre(userId,month,year);
-    if (!period) {
-      throw new Error('Không có dữ liệu');
-    }
+    if (!period || !period[0]) {
+      res.status(404).json({ message: 'Không có dữ liệu kỳ kinh trước' });
+      return;
+    }  
+    else{
 
     const menstrualDaysArray = period[0].menstrual_days.split(',');
     const lengthperiod = menstrualDaysArray.length;
 
     console.log('Độ dài của chu kỳ kinh nguyệt:', lengthperiod);
     res.status(200).json({ message: 'successfully', lengthperiod});
+    }
   } catch (error) {
     console.error('Lỗi:', error.message);
     throw error;
   }
 };
-const getperiodlength = async (req,res) => {
+const getperiodlength = async (req, res) => {
   const userId = req.userId;
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized');
+    return res.status(401).json({ message: 'Unauthorized' });
   }
+
   const today = new Date();
-  const month = today.getMonth(); 
+  const month = today.getMonth();
   const year = today.getFullYear();
-  const monthPre=month-1;
+  const monthPre = month - 1;
+
   try {
-    const period = await periodModel.getPeriodByMonthAndYearPre(userId,monthPre,year);
-    console.log(period);
-
-    if (!period ) {
-      console.log('K có dữ liệu kỳ kinh trước');
-    }
+    const period = await periodModel.getPeriodByMonthAndYearPre(userId, monthPre, year);
+    const period1 = await periodModel.getPeriodByMonthAndYearPre(userId, month, year);
+    if (!period || !period1 || !period1[0]) {
+      res.status(404).json({ message: 'Không có dữ liệu kỳ kinh trước' });
+      return;
+    }  
     else{
-      const period1 = await periodModel.getPeriodByMonthAndYearPre(userId,month,year);
-      console.log(period1);
-      if(!period1 ){
-        console.log('K có dữ liệu kỳ kinh trước');
-      }
-      
-      else{
-          const date1= new Date(period1[0].end_date);
-          console.log(period1[0].end_date);
-          console.log(period[0].start_date);
-          const date2 =new Date(period[0].start_date);
-          const lenghtPeriod = Math.abs(date2.getTime() - date1.getTime());
-          const lenghtPeriodDay = Math.ceil(lenghtPeriod  / (1000 * 3600 * 24)); 
+    const endDate1 = new Date(period1[0].end_date);
 
-          console.log('Độ dài chu kỳ kinh trước:', lenghtPeriodDay, 'ngày');
-          res.status(200).json({ message: 'successfully', lenghtPeriodDay});
-        }
+    const startDate2 = new Date(period[0].start_date);
+    const periodLength = Math.abs(startDate2.getTime() - endDate1.getTime());
+    const periodLengthDay = Math.ceil(periodLength / (1000 * 3600 * 24));
+
+    console.log('Độ dài chu kỳ kinh trước:', periodLengthDay, 'ngày');
+    res.status(200).json({ message: 'Thành công', periodLengthDay });
     }
+    
   } catch (error) {
     console.error('Lỗi:', error.message);
-    throw error;
+    res.status(500).json({ message: 'Lỗi' });
   }
 };
+
 
 const getmenstruallength_current = async (req,res) => {
   const userId = req.userId;
@@ -219,23 +215,25 @@ const getmenstruallength_current = async (req,res) => {
   try {
     
     const period = await periodModel.getPeriodByMonthAndYearPre(userId,month,year);
-    if (!period) {
+    if (!period|| !period[0]) {
       res.status(401).json({ message: 'Không có dữ liệu'});
       
     }
-
-    const menstrualDaysArray = period[0].menstrual_days.split(',');
+    else{
+      const menstrualDaysArray = period[0].menstrual_days.split(',');
     const lengthperiod = menstrualDaysArray.length;
 
     console.log('Độ dài của chu kỳ kinh nguyệt:', lengthperiod);
     res.status(200).json({ message: 'successfully', lengthperiod});
+    }
+    
   } catch (error) {
     console.error('Lỗi:', error.message);
     throw error;
   }
 };
 
-const updatePeriodByID = async (req, res) => {
+const updatePeriodByID = async (req,res) => {
   const userId = req.userId;
   const id = req.params.id; 
   const { start_date, end_date, note } = req.body;
@@ -245,25 +243,29 @@ const updatePeriodByID = async (req, res) => {
     console.log('Unauthorized: ');
     throw new Error('Unauthorized');
   }
-
   const startDate = new Date(start_date);
   const currentDate = new Date(startDate);
   let menstrual_days = [];
   const endDate = new Date(end_date);
-  
   while (currentDate <= endDate) { 
     menstrual_days.push(currentDate.toISOString().slice(0, 10));
     currentDate.setDate(currentDate.getDate() + 1);
   }
+  console.log(menstrual_days);
 
-  try {
-    const period = await periodModel.updatePeriodByID(userId, id, menstrual_days, updatedPeriodData);
-    res.status(200).json({ message: 'Thành công'});
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Không thành công' });
-  }
+  
+  return new Promise((resolve, reject) => {
+    periodModel.updatePeriodByID(userId, id, menstrual_days, updatedPeriodData, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(401).json({ message: 'Không thành công'});
+      }
+      res.status(200).json({ message: 'Cập nhật thành công'});
+     
+    });
+  });
 };
+
 
 
 

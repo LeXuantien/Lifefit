@@ -1,9 +1,11 @@
 const db = require('../config/db');
-
+const moment = require('moment-timezone');
 const Period = {
   create: (account_id,start_date, end_date, menstrual_days, note, callback) => {
+    const vietnamDateTimeStart_date = moment(start_date, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
+    const vietnamDateTimeEnd_date = moment(end_date, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
     const sql = 'INSERT INTO period (start_date, end_date, menstrual_days, account_id, note) VALUES (?, ?, ?, ?, ?)';
-    db.query(sql, [start_date, end_date, menstrual_days.join(','), account_id, note], (err, results) => {
+    db.query(sql, [vietnamDateTimeStart_date, vietnamDateTimeEnd_date, menstrual_days.join(','), account_id, note], (err, results) => {
       if (err) {
         console.error('Error creating period: ', err);
         if (typeof callback === 'function') {
@@ -21,24 +23,39 @@ const Period = {
     return new Promise((resolve, reject) => {
       const sql = "SELECT * FROM period WHERE account_id = ?";
       db.query(sql, [id], (err, result) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(result);
-    });
+        if (err) {
+          reject(err);
+          return;
+        }
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            start_date: moment(item.start_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+            end_date: moment(item.end_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+          };
+        });
+        resolve(vietnamDateTime);
+      });
+        
     })
   },
   getPeriodByMonthAndYearId: (account_id,month,year) => {
     return new Promise((resolve, reject) => {
 
       const sql = 'SELECT * FROM period WHERE account_id = ? AND MONTH(start_date) = ? AND YEAR(start_date) = ?';
-      db.query(sql, [account_id,month, year], (err, results) => {
+      db.query(sql, [account_id,month, year], (err, result) => {
         if (err) {
           reject(err);
           return;
         }
-        resolve(results);
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            start_date: moment(item.start_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+            end_date: moment(item.end_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+          };
+        });
+        resolve(vietnamDateTime);
       });
     });
   },
@@ -86,24 +103,22 @@ const Period = {
       });
     });
   },
-  updatePeriodByID : (userid,id,menstrual_days, updatedPeriodData,) => {
-  
+  updatePeriodByID : (userid,id,menstrual_days, updatedPeriodData, callback) => {
     const {start_date,end_date,note } = updatedPeriodData;
     const sql = 'UPDATE period SET start_date = ?, end_date = ? ,menstrual_days = ?, note = ? WHERE account_id = ?  AND id= ?';
     db.query(sql, [start_date,end_date,menstrual_days.join(','),note,userid,id], (err, result) => {
       if (typeof callback === 'function') {
         if (err) {
-            console.error(err);
-            callback(err, null);
+          console.error(err);
+          callback(err, null);
         } else {
-            callback(null, result);
+          callback(null, result);
         }
-    } else {
+      } else {
         console.error('Callback is not a function');
-    }
-  })
+      }
+    });
   }
 };
-
 
 module.exports = Period;

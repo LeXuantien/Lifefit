@@ -1,5 +1,4 @@
 const db = require('../config/db');
-
 const creatweight = (account_id, weightData, callback) => {
   const { goal} = weightData;
   const sql = "INSERT INTO weight (goal, account_id) VALUES (?, ?)";

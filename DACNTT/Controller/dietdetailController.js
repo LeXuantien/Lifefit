@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const infordietdetail = async (req,res) => {
   const userId = req.userId; 
   const { content, diet_date, calo} = req.body;
-
+  console.log(diet_date);
   if (!userId) {
     console.log('Unauthorized');
     throw new Error('Unauthorized');

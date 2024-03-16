@@ -9,7 +9,7 @@ const inforactivity = async (req,res) => {
     console.log('Unauthorized: ');
     throw new Error('Unauthorized ');
   }
-
+ 
  try{
      activityModel.create(userId, {name, goal,date}, (err, result) => {
     if (err) {
@@ -140,14 +140,12 @@ const updatenoti = async (req, res) => {
       if (err) {
         return; 
       }
-      console.log(result);
+      
      
       for(act of result){
-        console.log(act.goal);
-        const content = result && result.name ? `Bạn chưa hoàn thành mục tiêu ${act.name}.` : "Bạn chưa hoàn thành mục tiêu.";
-        if (act.goal === true) {
-          console.log( 'Thành công');
-          notiModel.createnoti(userId, { time_noti, content }, (err, result) => {
+        if (act.goal === 0) { 
+          const content = `Bạn chưa hoàn thành mục tiêu ${act.name}.`;
+          notiModel.createnoti(act.account_id, { time_noti, content }, (err, result) => {
             if (err) {
               console.log( 'Không thành công');
             }
@@ -155,17 +153,15 @@ const updatenoti = async (req, res) => {
           });
         } 
       }
-      
-     
+ 
     });
-
 
   }catch (error) {
     res.status(401).json({ message: 'Không thành công', error });
   }
     
 };
-cron.schedule('17 9 * * *', () => {
+cron.schedule('23 18 * * *', () => {
   updatenoti(); 
 }, {
   timezone: 'Asia/Ho_Chi_Minh'

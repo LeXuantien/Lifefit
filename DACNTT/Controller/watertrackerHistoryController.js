@@ -17,7 +17,13 @@ const inforwaterHistory = async (req,res) => {
        
         res.status(401).json({ message: 'Không thành công'});
       }
-      res.status(200).json({ message:'Thành công'});
+      if(!result){
+        res.status(401).json({ message: 'Không thành công'});
+      }
+      else{
+        res.status(200).json({ message:'Thành công'});
+      }
+     
     });
   });
 };

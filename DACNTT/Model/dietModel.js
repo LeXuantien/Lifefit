@@ -1,10 +1,11 @@
 const db = require('../config/db');
-
+const moment = require('moment-timezone');
 const creatediet = (account_id, dietData, callback) => {
   const { goal,date} = dietData;
+  const vietnamDateTime = moment(date, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
   const sql = "INSERT INTO diet (goal,date, account_id) VALUES (?, ?, ?)";
 
-  db.query(sql, [goal, date, account_id], (err, result) => {
+  db.query(sql, [goal, vietnamDateTime, account_id], (err, result) => {
     if (typeof callback === 'function') {
       if (err) {
         console.error(err);
@@ -26,7 +27,15 @@ const getdiet = (account_id, callback) => {
         console.error(err);
         callback(err, null);
       } else {
-        callback(null, result);
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            date: moment(item.date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
+          };
+        });
+  
+        callback(null, vietnamDateTime);
+     
       }
     } else {
       console.error('Callback is not a function');
@@ -45,7 +54,15 @@ const getdietBydate = (account_id, date, callback) => {
         console.error(err);
         callback(err, null);
       } else {
-        callback(null, result);
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            date: moment(item.date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
+          };
+        });
+  
+        callback(null, vietnamDateTime);
+     
       }
     } else {
       console.error('Callback is not a function');
