@@ -92,17 +92,17 @@ const updatedietdetail= async (req,res, updateddietdetailData) => {
   const userId = req.userId; 
   const id = req.params.id;
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized');
+   
+    res.status(401).json({ message: 'Unauthorized'});     
   }
  
  try{
   dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {    
     
   if (err) {
-      res.status(401).json({ message: 'Cập nhật không thành công'});     
+    return  res.status(401).json({ message: 'Cập nhật không thành công'});     
   }else{
-    res.status(200).json({ message: 'Cập nhật thành công'});
+   return res.status(200).json({ message: 'Cập nhật thành công'});
   }
    
   });
@@ -114,25 +114,29 @@ const updatedietdetail= async (req,res, updateddietdetailData) => {
   
   }
 };
-const deletedietdetail = async (req,res) => {
-    const userId = req.userId;
-    const id = req.params.id;
-    if (!userId) {
-      console.log('Unauthorized: ');
-      throw new Error('Unauthorized ');
-    }
+const deletedietdetail = async (req, res) => {
+  const userId = req.userId;
+  const id = req.params.id;
   
-   
-    return new Promise((resolve, reject) => {
-      dietdetailModel.deletedietdetail(id,userId, (err, result) => { 
-        if (err) {
-          console.error(err);      
-          res.status(401).json({ message: 'Xoá Không thành công'});
-        }
-        res.status(200).json({ message: 'Xoá thành công'});
-      });
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized' }); 
+  }
+
+  try {
+    dietdetailModel.deletedietdetail(id, userId, (err, result) => { 
+      if (err) {
+        console.error(err);      
+        return res.status(401).json({ message: 'Xoá Không thành công' });
+      } else {
+        return res.status(200).json({ message: 'Xoá thành công' });
+      }
     });
-  };
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
   
   const getCaloBydate = async (req, res) => {
     

@@ -54,7 +54,7 @@ const updateactivity = (id,account_id, activityData, callback) => {
         console.error(err);
         callback(err, null);
       } else {
-        callback(null, result);
+        callback(null);
       }
     } else {
       console.error('Callback is not a function');
@@ -70,7 +70,7 @@ const deleteactivity = (id, account_id, callback) => {
           return callback(err, null);
         }
         else {
-          callback(null, result);
+          callback(null);
         }
       });
     

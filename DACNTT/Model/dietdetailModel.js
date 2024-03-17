@@ -118,61 +118,73 @@ const getdietdetail= (account_id,callback) => {
   })
 })
 };
-const updatedietdetail = (account_id,id, updateddietData, callback) => {
-  const {content,calo} = updateddietData;
-  const sql= "SELECT id FROM diet WHERE account_id = ?";
+const updatedietdetail = (account_id, id, updateddietData, callback) => {
+  const { content, calo } = updateddietData;
+  const sql = "SELECT id, date FROM diet WHERE account_id = ?";
   db.query(sql, [account_id], (err, rows) => {
     if (err) {
       console.error(err);
       return callback(err, null);
     }
 
-    if (!rows) {
-      return callback( null);
+    if (!rows || rows.length === 0) {
+      return callback(null, { message: 'Không tìm thấy' });
     }
 
-  const diet_id = rows[0].id;
-  const sql1 = "UPDATE dietdetail SET content = ? ,calo = ?  WHERE id = ? AND diet_id  = ?";
-
-  db.query(sql1, [content,calo,id,diet_id ], (err, result) => {
-    if (typeof callback === 'function') {
-      if (err) {
-        console.error(err);
-        callback(err, null);
-      } else {
-        callback(null, result);
-      }
-    } else {
-      console.error('Callback is not a function');
-    }
-  })
-})
-};
-const deletedietdetail = (id,account_id, callback) => {
-  const sql = "SELECT id FROM diet WHERE account_id = ?";
-  db.query(sql, [account_id], (err, rows) => {
-    if (err) {
-      console.error(err);
-      return callback(err, null);
-    }
-
-    if (!rows ) {
-      return callback( null);
-    }
-
-    const diet_id = rows[0].id;
-    const sql1 = "DELETE FROM dietdetail WHERE diet_id = ? and id = ?";
-
-    db.query(sql1, [diet_id,id], (err, result) => {
-      if (err) {
-        console.error(err);
-        return callback(err, null);
-      }
-
-      callback(null, result);
+   
+    rows.forEach(diet => {
+      const diet_id = diet.id;
+      
+      const vietnamDateTime = moment(diet.date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
+      console.log(vietnamDateTime);
+      
+      
+      const sql1 = "UPDATE dietdetail SET content = ?, calo = ? WHERE id = ? AND diet_id = ? AND DATE(diet_date) = ?";
+      
+      db.query(sql1, [content, calo, id, diet_id, vietnamDateTime], (err, result) => {
+        if (err) {
+          console.error(err);
+          return callback(err, null);
+        } 
+      });
     });
+
+    callback(null, { message: 'successfully' });
   });
 };
+
+
+
+const deletedietdetail = (id, account_id, callback) => {
+  const sql = "SELECT id, date FROM diet WHERE account_id = ?";
+  db.query(sql, [account_id], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return callback(err, null);
+    }
+
+    if (!rows || rows.length === 0) {
+      return callback(null, { message: 'Không tìm thấy bản ghi diet' });
+    }
+
+    rows.forEach(diet => {
+      const diet_id = diet.id;
+      const vietnamDateTime = moment(diet.date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD");
+      
+      const sql1 = "DELETE FROM dietdetail WHERE id = ? AND diet_id = ? AND DATE(diet_date) = ?";
+      
+      db.query(sql1, [id, diet_id, vietnamDateTime], (err, result) => {
+        if (err) {
+          console.error(err);
+          return callback(err, null);
+        } 
+      });
+    });
+
+    callback(null, { message: 'Xóa thành công' });
+  });
+};
+
 const getCaloBydate = (account_id, diet_date, callback) => {
   const formattedDate = new Date(diet_date).toISOString().slice(0, 10);
   console.log(formattedDate);
