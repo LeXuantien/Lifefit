@@ -3,6 +3,22 @@ const moment = require('moment-timezone');
 const Period = {
   create: (account_id,start_date, end_date, menstrual_days, note, callback) => {
     const vietnamDateTimeStart_date = moment(start_date, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
+    if(!end_date){
+    const sql = 'INSERT INTO period (start_date, end_date, menstrual_days, account_id, note) VALUES (?, ?, ?, ?, ?)';
+    db.query(sql, [vietnamDateTimeStart_date, end_date, menstrual_days.join(','), account_id, note], (err, results) => {
+      if (err) {
+        console.error('Error creating period: ', err);
+        if (typeof callback === 'function') {
+          return callback(err, null);
+        }
+      }
+      console.log('Period created successfully');
+      if (typeof callback === 'function') {
+        return callback(null, results);
+      }
+    });
+    }
+    else{
     const vietnamDateTimeEnd_date = moment(end_date, "YYYY-MM-DDZ").tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
     const sql = 'INSERT INTO period (start_date, end_date, menstrual_days, account_id, note) VALUES (?, ?, ?, ?, ?)';
     db.query(sql, [vietnamDateTimeStart_date, vietnamDateTimeEnd_date, menstrual_days.join(','), account_id, note], (err, results) => {
@@ -16,7 +32,9 @@ const Period = {
       if (typeof callback === 'function') {
         return callback(null, results);
       }
-    });
+    })
+    }
+    
   },
  getAllPeriod: (id) => {
     

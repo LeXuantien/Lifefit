@@ -245,20 +245,32 @@ const getperiodlengthpre = async (req, res) => {
  
   try {
     const period = await periodModel.getAllPeriod(userId);
-    const period1=period[period.length-1];
+    const period2=period[period.length-1];
+    const period1=period[period.length-2];
   
     if (!period  || !period[0]) {
       res.status(404).json({ message: 'Không có dữ liệu kỳ kinh trước' });
       return;
     }   
     else{
-    const endDate1 = new Date(period1.end_date);
-    const startDate1 = new Date(period1.start_date);
-    const periodLength = Math.abs(startDate1.getTime() - endDate1.getTime());
-    const periodLengthDay = Math.ceil(periodLength / (1000 * 3600 * 24));
+      if(!period2.end_date){
+        const endDate1 = new Date(period2.end_date);
+        const startDate1 = new Date(period2.start_date);
+        const periodLength = Math.abs(startDate1.getTime() - endDate1.getTime());
+        const periodLengthDay = Math.ceil(periodLength / (1000 * 3600 * 24));
 
-    console.log('Độ dài kỳ kinh trước:', periodLengthDay, 'ngày');
-    res.status(200).json({ message: 'Thành công', periodLengthDay });
+        console.log('Độ dài kỳ kinh trước:', periodLengthDay, 'ngày');
+        return res.status(200).json({ message: 'Thành công', periodLengthDay });
+      }
+      else{
+        const endDate2 = new Date(period1.end_date);
+        const startDate2 = new Date(period1.start_date);
+        const periodLength = Math.abs(startDate2.getTime() - endDate2.getTime());
+        const periodLengthDay = Math.ceil(periodLength / (1000 * 3600 * 24));
+
+        console.log('Độ dài kỳ kinh trước:', periodLengthDay, 'ngày');
+        res.status(200).json({ message: 'Thành công', periodLengthDay });
+      }   
     }
     
   } catch (error) {
