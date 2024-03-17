@@ -71,7 +71,7 @@ const getdietdetailBydate = (account_id, diet_date, callback) => {
       });
 
       callback(null, vietnamDateTime);
-    });
+    })
   });
 };
 
@@ -131,8 +131,8 @@ const updatedietdetail = (account_id,id, updateddietData, callback) => {
       return callback( null);
     }
 
-    const diet_id = rows[0].id;
-  const sql1 = "UPDATE dietdetail SET content =? ,calo = ?  WHERE id = ? AND diet_id  = ?";
+  const diet_id = rows[0].id;
+  const sql1 = "UPDATE dietdetail SET content = ? ,calo = ?  WHERE id = ? AND diet_id  = ?";
 
   db.query(sql1, [content,calo,id,diet_id ], (err, result) => {
     if (typeof callback === 'function') {
@@ -161,7 +161,7 @@ const deletedietdetail = (id,account_id, callback) => {
     }
 
     const diet_id = rows[0].id;
-    const sql1 = "DELETE FROM dietdetail WHERE diet_id = ? and id =?";
+    const sql1 = "DELETE FROM dietdetail WHERE diet_id = ? and id = ?";
 
     db.query(sql1, [diet_id,id], (err, result) => {
       if (err) {

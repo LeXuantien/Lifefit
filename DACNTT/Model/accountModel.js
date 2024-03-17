@@ -1,5 +1,5 @@
 const db = require('../config/db');
-
+const moment = require('moment-timezone');
 const Account = {
   create: (accountData) => {
     return new Promise((resolve, reject) => {
@@ -18,8 +18,10 @@ const Account = {
   createProfile: (id,accountData) => {
     return new Promise((resolve, reject) => {
       const {gender,weight, height, wakeup_time, sleeping_time } = accountData;
+      const vietnamDateTimewakeup_time = moment(wakeup_time).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
+      const vietnamDateTimesleeping_time = moment(sleeping_time).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
       const sql = 'UPDATE  account SET gender =? ,weight = ? , height = ? , wakeup_time = ?, sleeping_time =? WHERE id = ?  ';
-      db.query(sql, [gender,weight, height, wakeup_time, sleeping_time,id], (err, result) => {
+      db.query(sql, [gender,weight, height,vietnamDateTimewakeup_time  , vietnamDateTimesleeping_time,id], (err, result) => {
         if (err) {
           reject(err);
         } else {

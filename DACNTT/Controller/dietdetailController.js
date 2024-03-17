@@ -95,15 +95,24 @@ const updatedietdetail= async (req,res, updateddietdetailData) => {
     console.log('Unauthorized');
     throw new Error('Unauthorized');
   }
-
-  return new Promise((resolve, reject) => {
-    dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {     
-    if (err) {
-        res.status(401).json({ message: 'Cậphật không thành công'});     
-      }
-      res.status(200).json({ message: 'Cập nhật thành công'});
-    });
+ 
+ try{
+  dietdetailModel.updatedietdetail(userId,id, updateddietdetailData, (err, result) => {    
+    
+  if (err) {
+      res.status(401).json({ message: 'Cập nhật không thành công'});     
+  }else{
+    res.status(200).json({ message: 'Cập nhật thành công'});
+  }
+   
   });
+ }
+  catch
+    (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+  
+  }
 };
 const deletedietdetail = async (req,res) => {
     const userId = req.userId;

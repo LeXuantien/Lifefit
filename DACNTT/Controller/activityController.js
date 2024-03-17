@@ -87,7 +87,7 @@ const deleteactivity= async (req,res) => {
   const id=req.params.id; 
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized'});
   }
     try{
       activityModel.deleteactivity(id,userId, (err, result) => {

@@ -98,7 +98,7 @@ async function updatePassword(req, res) {
   
  
   if (newPassword !== confirmPassword) {
-    return res.status(400).json({ message: 'New password and confirm password do not match' });
+    return res.status(400).json({ message: 'Mật khẩu không trùng khớp' });
   }
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
