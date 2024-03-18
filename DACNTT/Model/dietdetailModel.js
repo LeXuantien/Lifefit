@@ -119,8 +119,9 @@ const getdietdetail= (account_id,callback) => {
 })
 };
 const updatedietdetail = (account_id, id, updateddietData, callback) => {
-  const { content, calo } = updateddietData;
+  const { content, diet_date, calo } = updateddietData;
   const sql = "SELECT id, date FROM diet WHERE account_id = ?";
+  
   db.query(sql, [account_id], (err, rows) => {
     if (err) {
       console.error(err);
@@ -131,17 +132,14 @@ const updatedietdetail = (account_id, id, updateddietData, callback) => {
       return callback(null, { message: 'Không tìm thấy' });
     }
 
-   
     rows.forEach(diet => {
       const diet_id = diet.id;
+      const vietnamDateTime = moment(diet_date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
+      const date = moment(diet_date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
       
-      const vietnamDateTime = moment(diet.date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD ");
-      console.log(vietnamDateTime);
+      const sql1 = "UPDATE dietdetail SET content = ?, diet_date = ?, calo = ? WHERE id = ? AND diet_id = ? AND DATE(diet_date) = ?";
       
-      
-      const sql1 = "UPDATE dietdetail SET content = ?, calo = ? WHERE id = ? AND diet_id = ? AND DATE(diet_date) = ?";
-      
-      db.query(sql1, [content, calo, id, diet_id, vietnamDateTime], (err, result) => {
+      db.query(sql1, [content, date, calo, id, diet_id, vietnamDateTime], (err, result) => {
         if (err) {
           console.error(err);
           return callback(err, null);
