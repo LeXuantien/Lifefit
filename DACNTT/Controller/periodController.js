@@ -1,6 +1,7 @@
 
 const periodModel = require('../Model/periodModel');
 const cron = require('node-cron');
+const moment = require('moment-timezone');
 const createPeriod = async (req,res) => {
   const userId = req.userId; 
   const { start_date, end_date, note } = req.body;
@@ -22,10 +23,12 @@ const createPeriod = async (req,res) => {
   if (!end_date) {
     let currentDate = new Date(startDate); 
     const today = new Date();
-
-    while (currentDate <= today) { 
+    
+    while (currentDate <=  today ) { 
       menstrual_days.push(currentDate.toISOString().slice(0, 10));
+      console.log(menstrual_days);
       currentDate.setDate(currentDate.getDate() + 1);
+      console.log(currentDate);
     }
     
   } else {
@@ -59,34 +62,23 @@ const updateMenstrualDays = async () => {
   try {
     const period = await periodModel.getPeriodByMonthAndYear(); 
     const today = new Date(); 
-    console.log('tc',today);
     const currentDate= new Date(today);
-    console.log('tc',currentDate);
     const updatedMenstrualDaysArray = [];
     for (const cycle of period) {
-      console.log('tc',cycle.menstrual_days);
-      if (!cycle.end_date ) {
-            console.log('tc',cycle.menstrual_days);
-            const menstrualDaysArray = cycle.menstrual_days.split(',');
-            console.log('tc',cycle.menstrual_days);
-            console.log('tc', menstrualDaysArray);
-            menstrualDaysArray.push(currentDate.toISOString().slice(0, 10)); 
-            console.log('tc', menstrualDaysArray);
-            updatedMenstrualDaysArray.push({ cycleId: cycle.id, menstrualDays: menstrualDaysArray });
-            console.log("tc");
+      if (!cycle.end_date ) {         
+            const menstrualDaysArray = cycle.menstrual_days.split(',');           
+            menstrualDaysArray.push(currentDate.toISOString().slice(0, 10));             
+            updatedMenstrualDaysArray.push({ cycleId: cycle.id, menstrualDays: menstrualDaysArray });        
       }
       else{
         console.log("loi");
       }
     }
     for (const cycleData of updatedMenstrualDaysArray) {
-      console.log("tcong", cycleData.menstrualDays);
-
       try {
         await periodModel.updatePeriodByMonthAndYear(cycleData.cycleId, cycleData.menstrualDays);
-        console.log("tcong");
+        
         const period = await periodModel.getPeriodByMonthAndYear();
-        console.log("tcong",period);
       } catch (error) {
         console.error('Error updating period:', error);
       }
@@ -98,7 +90,7 @@ const updateMenstrualDays = async () => {
 };
 
 
-cron.schedule('26 14 * * *', () => {
+cron.schedule('1 7 * * *', () => {
   updateMenstrualDays(); 
 }, {
   timezone: 'Asia/Ho_Chi_Minh'
@@ -176,7 +168,7 @@ const getmenstruallength_current = async (req,res) => {
   const userId = req.userId;
   if (!userId) {
     console.log('Unauthorized');
-    throw new Error('Unauthorized');
+    res.status(401).json({ message: 'Unauthorized'});
   }
   const today = new Date();
   const month = today.getMonth()+1; 
@@ -189,11 +181,12 @@ const getmenstruallength_current = async (req,res) => {
       
     }
     else{
+      const id = period[0].id;
       const menstrualDaysArray = period[0].menstrual_days.split(',');
     const lengthperiod = menstrualDaysArray.length;
 
     console.log('Độ dài của chu kỳ kinh nguyệt:', lengthperiod);
-    res.status(200).json({ message: 'successfully', lengthperiod});
+    res.status(200).json({ message: 'successfully',id, lengthperiod});
     }
     
   } catch (error) {

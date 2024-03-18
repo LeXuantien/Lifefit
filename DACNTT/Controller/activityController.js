@@ -161,7 +161,7 @@ const updatenoti = async (req, res) => {
   }
     
 };
-cron.schedule('23 18 * * *', () => {
+cron.schedule('1 7 * * *', () => {
   updatenoti(); 
 }, {
   timezone: 'Asia/Ho_Chi_Minh'
