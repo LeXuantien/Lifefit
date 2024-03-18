@@ -26,6 +26,14 @@ router.get('/getPeriod', checkMiddleware, async (req, res, next) => {
     next(error);
   }
 });
+router.get('/getPeriodId/:id', checkMiddleware, async (req, res, next) => {
+  try {
+    const periods = await periodController.getPeriodId(req,res);
+    return periods;
+  } catch (error) {
+    next(error);
+  }
+});
 router.get('/getPeriodBydate', checkMiddleware, async (req, res, next) => {
   try {
     const periods = await periodController.getPeriodBydate(req,res);

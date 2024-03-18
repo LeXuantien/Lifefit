@@ -57,6 +57,27 @@ const Period = {
         
     })
   },
+ getAllPeriodId : (id, account_id) => {
+    return new Promise((resolve, reject) => {
+      console.log(id, account_id); // Logging the values for debugging purposes
+      const sql = "SELECT * FROM period WHERE account_id = ? AND id = ?";
+      db.query(sql, [account_id, id], (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        const vietnamDateTime = result.map(item => {
+          return {
+            ...item,
+            start_date: moment(item.start_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+            end_date: moment(item.end_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD'),
+          };
+        });
+        resolve(vietnamDateTime);
+      });
+    });
+  },
+  
   getPeriodByMonthAndYearId: (account_id,month,year) => {
     return new Promise((resolve, reject) => {
 

@@ -90,13 +90,14 @@ CREATE TABLE `dietdetail` (
 
 
 ALTER TABLE `watertracker` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+ALTER TABLE `watertrackerHistory` ADD FOREIGN KEY (`watertracker_id`) REFERENCES `watertracker` (`id`);
 ALTER TABLE `notification` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `period` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `activity` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
-ALTER TABLE `heart` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+ALTER TABLE `Heart` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 ALTER TABLE `blood_pressure` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 

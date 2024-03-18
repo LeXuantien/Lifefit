@@ -113,6 +113,23 @@ const getAllPeriod= async (req,res) => {
       res.status(200).json({message:'thành công', period });
 
 };
+const getPeriodId= async (req,res) => {
+  const userId = req.userId; 
+  const id = req.params.id;
+
+  if (!userId) {
+    console.log('Unauthorized');
+    throw new Error('Unauthorized ');
+  }
+
+ 
+    const period= await periodModel.getAllPeriodId(id,userId);
+      if(!period){
+        res.status(401).json({message:'Không có chu kỳ'});
+      }
+      res.status(200).json({message:'thành công', period });
+
+};
 const getPeriodBydate= async (req,res) => {
   const userId = req.userId; 
   const date=req.query.date;
@@ -274,4 +291,4 @@ const getperiodlengthpre = async (req, res) => {
 
 
 
-module.exports = {createPeriod,updateMenstrualDays, getAllPeriod,getperiodlength,getmenstruallength_current,updatePeriodByID,getPeriodBydate,getperiodlengthpre};
+module.exports = {createPeriod,updateMenstrualDays, getAllPeriod,getperiodlength,getmenstruallength_current,updatePeriodByID,getPeriodBydate,getperiodlengthpre,getPeriodId};
