@@ -1,7 +1,7 @@
 const db = require('../config/db');
 const moment = require('moment-timezone');
 const creatdietdetail = (account_id, content, diet_date, calo, callback) => {
-  const formattedDate = new Date(diet_date).toISOString().slice(0, 10);
+  const formattedDate = moment(new Date(diet_date)).format('YYYY-MM-DD');
   const vietnamDateTime = moment(diet_date).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
   const sql = "SELECT id FROM diet WHERE account_id = ? AND DATE(date) = ? ";
 
@@ -38,7 +38,7 @@ const creatdietdetail = (account_id, content, diet_date, calo, callback) => {
 
 
 const getdietdetailBydate = (account_id, diet_date, callback) => {
-  const formattedDate = new Date(diet_date).toISOString().slice(0, 10);
+  const formattedDate = moment(new Date(diet_date)).format('YYYY-MM-DD');
   const sql = "SELECT id FROM diet WHERE account_id = ? AND DATE(date) = ? ";
 
   db.query(sql, [account_id, formattedDate], (err, rows) => {
@@ -186,8 +186,7 @@ const deletedietdetail = (id, account_id, callback) => {
 };
 
 const getCaloBydate = (account_id, diet_date, callback) => {
-  const formattedDate = new Date(diet_date).toISOString().slice(0, 10);
-  console.log(formattedDate);
+  const formattedDate = moment(new Date(diet_date)).format('YYYY-MM-DD');
   const sql = "SELECT id FROM diet WHERE account_id = ? AND DATE(date) = ? ";
   db.query(sql, [account_id,formattedDate], (err, rows) => {
     if (err) {

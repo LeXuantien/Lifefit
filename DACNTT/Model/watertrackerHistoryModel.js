@@ -1,7 +1,7 @@
 const db = require('../config/db');
 const moment = require('moment-timezone');
 const createwaterHistory = (account_id, time, content, callback) => {
-    const formattedDate = new Date(time).toISOString().slice(0, 10);
+  const formattedDate = moment(new Date(time)).format('YYYY-MM-DD');
     const vietnamDateTime = moment(time).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
     const sql = "SELECT * FROM watertracker WHERE account_id = ? AND DATE(dategoal) = ? ";
   

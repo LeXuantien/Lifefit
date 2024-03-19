@@ -76,7 +76,7 @@ const deleteactivity = (id, account_id, callback) => {
     
 };
 const getactivityBydate = (account_id, date, callback) => {
-  const formattedDate = new Date(date).toISOString().slice(0, 10);
+  const formattedDate = moment(new Date(date)).format('YYYY-MM-DD');
   console.log(formattedDate);
   const sql = "SELECT * FROM activity WHERE DATE(date) = ? AND account_id = ?";
   
@@ -103,7 +103,7 @@ const getactivityBydate = (account_id, date, callback) => {
   
 };
 const getallactivity = (date, callback) => {
-  const formattedDate = new Date(date).toISOString().slice(0, 10);
+  const formattedDate = moment(new Date(date)).format('YYYY-MM-DD');
   console.log(formattedDate);
   const sql = "SELECT * FROM activity WHERE DATE(date) = ?";
   
