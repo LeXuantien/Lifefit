@@ -46,7 +46,7 @@ const getdietdetailBydate = (account_id, diet_date, callback) => {
     }
 
     if (!rows || rows.length === 0) {
-      return callback('Không có dữ liệu', null);
+      return callback( null);
     }
 
     const diet_id = rows[0] && rows[0].id;
