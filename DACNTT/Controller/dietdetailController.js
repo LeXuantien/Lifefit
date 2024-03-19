@@ -4,20 +4,29 @@ const jwt = require('jsonwebtoken');
 const infordietdetail = async (req,res) => {
   const userId = req.userId; 
   const { content, diet_date, calo} = req.body;
-  console.log(diet_date);
   if (!userId) {
     res.status(401).json({ message: 'Unauthorized '});
   }
 
-  return new Promise((resolve, reject) => {
+  try{
     dietdetailModel.creatdietdetail (userId, content,diet_date,calo , (err, result) => {
       if (err) {
         console.error(err);      
         res.status(401).json({ message: 'Không thành công'});
       }
-      res.status(200).json({message: 'Thành công'});
+      if(!result){
+        res.status(401).json({ message: 'Chưa có mục tiêu'});
+      }
+      else{
+        res.status(200).json({message: 'Thành công'});
+      }
+      
     });
-  });
+  }
+  catch (error) {
+    res.status(401).json({ message: 'Không thành công'});
+  }
+ 
 };
 
 const getdietBydate = async (req,res) => {
@@ -164,7 +173,7 @@ const deletedietdetail = async (req, res) => {
                 res.status(200).json({ message: 'Thành công', SumCalo });
               
               }
-            });  
+            }) 
           
     } catch (error) {
         console.error(error);

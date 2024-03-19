@@ -18,10 +18,10 @@ const creatdietdetail = (account_id, content, diet_date, calo, callback) => {
     const diet_id = rows[0] && rows[0].id;
 
     if (!diet_id) {
-      return callback(new Error("Không tìm thấy id phù hợp"), null);
+      return callback( null);
     }
-
-    const sql1 = "INSERT INTO dietdetail (content, diet_date, calo, diet_id) VALUES (?, ?, ?, ?)";
+    else{
+      const sql1 = "INSERT INTO dietdetail (content, diet_date, calo, diet_id) VALUES (?, ?, ?, ?)";
     db.query(sql1, [content, vietnamDateTime, calo, diet_id], (err, result) => {
       if (err) {
         console.error(err);
@@ -31,6 +31,8 @@ const creatdietdetail = (account_id, content, diet_date, calo, callback) => {
       callback(null, result);
 
     });
+    }
+    
   });
 };
 

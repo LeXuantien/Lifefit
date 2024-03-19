@@ -2,7 +2,6 @@ const db = require('../config/db');
 const moment = require('moment-timezone');
 const createwaterHistory = (account_id, time, content, callback) => {
     const formattedDate = new Date(time).toISOString().slice(0, 10);
-    console.log(formattedDate);
     const vietnamDateTime = moment(time).tz('Asia/Ho_Chi_Minh').format("YYYY-MM-DD HH:mm:ss");
     const sql = "SELECT * FROM watertracker WHERE account_id = ? AND DATE(dategoal) = ? ";
   
@@ -19,28 +18,31 @@ const createwaterHistory = (account_id, time, content, callback) => {
       const watergoal = rows[0] && rows[0].watergoal;
       const water = watergoal / 8;
       const water_id = rows[0] && rows[0].id;
-  
       if (!water_id) {
         return callback( null);
       }
-  
-      const sql1 = "INSERT INTO watertrackerHistory (water, time, watertracker_id) VALUES (?, ?, ?)";
-      db.query(sql1, [water, vietnamDateTime, water_id], (err, result) => {
-        if (err) {
-          console.error(err);
-          return callback(err, null);
-        }
-        
-        const sql2 = "INSERT INTO notification (time_noti, content, account_id) VALUES (?, ?, ?)";
-        db.query(sql2, [vietnamDateTime, content, account_id], (err, result) => {
+      
+      else{
+        const sql1 = "INSERT INTO watertrackerHistory (water, time, watertracker_id) VALUES (?, ?, ?)";
+        db.query(sql1, [water, vietnamDateTime, water_id], (err, result) => {
           if (err) {
             console.error(err);
             return callback(err, null);
           }
           
-          callback(null, result);
+          const sql2 = "INSERT INTO notification (time_noti, content, account_id) VALUES (?, ?, ?)";
+          db.query(sql2, [vietnamDateTime, content, account_id], (err, result) => {
+            if (err) {
+              console.error(err);
+              return callback(err, null);
+            }
+            
+            callback(null, result);
+          });
         });
-      });
+      }
+      
+     
     });
   };
   

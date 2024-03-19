@@ -10,22 +10,26 @@ const inforwaterHistory = async (req,res) => {
     throw new Error('Unauthorized');
   }
 
-  return new Promise((resolve, reject) => {
-    watertrackerHistorylModel.createwaterHistory (userId,time, content,  (err, result) => {
-      if (err) {
-        console.error(err);
-       
-        res.status(401).json({ message: 'Không thành công'});
-      }
-      if(!result){
-        res.status(401).json({ message: 'Không thành công'});
-      }
-      else{
-        res.status(200).json({ message:'Thành công'});
-      }
+ try{
+  watertrackerHistorylModel.createwaterHistory (userId,time, content,  (err, result) => {
+    if (err) {
+      console.error(err);
      
-    });
+      res.status(401).json({ message: 'Không thành công'});
+    }
+    if(!result){
+      res.status(401).json({ message: 'Không tìm thấy mục tiêu'});
+    }
+    else{
+      res.status(200).json({ message:'Thành công'});
+    }
+   
   });
+ }catch (error) {
+  res.status(401).json({ message: 'Không thành công'});
+}
+    
+
 };
 const getwaterHistory = async (req,res) => {
 
