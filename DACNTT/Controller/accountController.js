@@ -1,8 +1,11 @@
+require('dotenv').config();
 const account = require('../Model/accountModel');
 const { check } = require('express-validator');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
 const bcrypt = require('bcrypt');
+
+  
 
 
 
@@ -27,8 +30,8 @@ const transporter = nodemailer.createTransport({
   port:587,
   secure: false,
   auth: {
-    user: 'tienle120302@gmail.com', 
-    pass: 'zswu thej bjal ktzg' 
+    user: process.env.EMAIL, 
+    pass: process.env.EMAIL_PASS
   }
 });
 
@@ -37,7 +40,7 @@ let inforfullname='';
 let inforbirthday='';
 let inforpassword='';
 let inforotp = {};
-
+//send otp
 async function OTP(email) {
   try {
     const generatedOTP = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
@@ -58,7 +61,7 @@ async function OTP(email) {
     return { success: false, message: 'Internal server error' };
   }
 }
-
+//signin
 async function registerAccount(req, res) {
   const { email, fullname, birthday, password, confirmpassword } = req.body;
   inforemail = email;
@@ -74,6 +77,7 @@ async function registerAccount(req, res) {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+//resset otp
 async function resetOTP(req, res) {
  
   try {

@@ -1,6 +1,7 @@
 const activityModel = require('../Model/activityModel');
 const notiModel= require('../Model/notificationModel');
 const cron = require('node-cron');
+//create
 const inforactivity = async (req,res) => {
   const userId = req.userId; 
   const {  name,goal,date } = req.body;
@@ -24,6 +25,7 @@ const inforactivity = async (req,res) => {
 }
     
 };
+//get all
 const getactivity = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
@@ -46,6 +48,7 @@ const getactivity = async (req,res) => {
     
 
 };
+//update
 const updateactivity = async (req, res, updatedactivityData) => {
   const userId = req.userId;
   const id = req.params.id;
@@ -81,7 +84,7 @@ const updateactivity = async (req, res, updatedactivityData) => {
     
 };
 
-
+//delete
 const deleteactivity= async (req,res) => {
   const userId = req.userId; 
   const id=req.params.id; 
@@ -104,7 +107,7 @@ const deleteactivity= async (req,res) => {
     res.status(401).json({ message: 'Không thành công', error });
   }
 }
-  
+//get by date
 const getactivityBydate = async (req,res) => {
   const userId = req.userId; 
   const date  = req.query.date; 
@@ -131,7 +134,7 @@ const getactivityBydate = async (req,res) => {
   }
 };
 
-
+//save noti when goal==true
 const updatenoti = async (req, res) => {
   const time_noti = new Date(); 
   const date=time_noti.setDate(time_noti.getDate() - 1);
