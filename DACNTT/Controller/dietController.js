@@ -5,8 +5,7 @@ const infordiet = async (req,res) => {
   const {  goal,date } = req.body;
 
   if (!userId) {
-    console.log('Unauthorized: ');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {
@@ -21,8 +20,7 @@ const infordiet = async (req,res) => {
 const getdiet = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
  
@@ -64,8 +62,7 @@ const updatediet= async (req,res, updateddietData) => {
   const userId = req.userId; 
   const id=req.params.id;
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {

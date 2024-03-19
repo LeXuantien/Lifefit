@@ -6,7 +6,8 @@ const inforblood_pressure = async (req,res) => {
 
   if (!userId) {
     console.log('Unauthorized: ');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
+   
   }
 
   return new Promise((resolve, reject) => {
@@ -23,8 +24,7 @@ const inforblood_pressure = async (req,res) => {
 const getblood_pressure = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
  
@@ -61,8 +61,7 @@ const updatedblood_pressure= async (req,res, updatedblood_pressureData) => {
   const userId = req.userId; 
   const id=req.params.id; 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {
@@ -79,8 +78,7 @@ const deleteblood_pressure= async (req,res) => {
   const userId = req.userId; 
   const id=req.params.id; 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {

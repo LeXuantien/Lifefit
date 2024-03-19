@@ -6,8 +6,7 @@ const infordietdetail = async (req,res) => {
   const { content, diet_date, calo} = req.body;
   console.log(diet_date);
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {
@@ -50,8 +49,7 @@ const getdietcalo = async (req,res) => {
   const userId = req.userId;
   const diet_date = req.query.diet_date;
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   try {
@@ -73,8 +71,7 @@ const getdietcalo = async (req,res) => {
 const getdietdetail = async (req,res) => {
   const userId = req.userId; 
   if (!userId) {
-    console.log('Unauthorized: ');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
  

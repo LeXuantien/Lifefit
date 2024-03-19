@@ -1,5 +1,5 @@
 const watertrackerHistorylModel = require('../Model/watertrackerHistoryModel');
-const jwt = require('jsonwebtoken');
+
 
 const inforwaterHistory = async (req,res) => {
   const userId = req.userId; 

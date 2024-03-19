@@ -5,8 +5,7 @@ const inforwater = async (req,res) => {
   const {watergoal, dategoal } = req.body;
 
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
   return new Promise((resolve, reject) => {
@@ -24,8 +23,7 @@ const getwater = async (req,res) => {
   const userId = req.userId; 
   
   if (!userId) {
-    console.log('Unauthorized');
-    throw new Error('Unauthorized ');
+    res.status(401).json({ message: 'Unauthorized '});
   }
 
  
