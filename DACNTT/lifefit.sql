@@ -108,22 +108,8 @@ ALTER TABLE `diet` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 ALTER TABLE `dietdetail` ADD FOREIGN KEY (`diet_id`) REFERENCES `diet` (`id`);
 
-DELIMITER //
 
-CREATE TRIGGER before_period_insert
-BEFORE INSERT ON `period`
-FOR EACH ROW
-BEGIN
-    DECLARE existing_count INT;
-    SELECT COUNT(*) INTO existing_count
-    FROM `period`
-    WHERE `account_id` = NEW.account_id AND MONTH(`start_date`) = MONTH(NEW.start_date) AND YEAR(`start_date`) = YEAR(NEW.start_date);
-    IF existing_count > 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Chu kì đã được tạo';
-    END IF;
-END //
 
-DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER check_unique_date
