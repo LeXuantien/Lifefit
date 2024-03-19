@@ -145,21 +145,26 @@ const deletedietdetail = async (req, res) => {
     }
 
     try {
-        const result = await new Promise((resolve, reject) => {
+       
             dietdetailModel.getCaloBydate(userId, diet_date, (err, result) => {
               if (err) {
                 console.error(err);      
                 res.status(401).json({ message: 'Không thành công'});
               }
-              let SumCalo = 0;
-          for (const diet of result) {
-            
-              SumCalo += diet.calo;
-          }
-          console.log('Calo:', SumCalo);
-          res.status(200).json({ message: 'Thành công', SumCalo });
-              });
-          });   
+              if(!result){
+                res.status(401).json({ message: 'Không tìm thấy'});
+              }
+              else{
+                let SumCalo = 0;
+                for (const diet of result) {
+                  
+                    SumCalo += diet.calo;
+                }
+                console.log('Calo:', SumCalo);
+                res.status(200).json({ message: 'Thành công', SumCalo });
+              
+              }
+            });  
           
     } catch (error) {
         console.error(error);
