@@ -59,7 +59,7 @@ const Period = {
   },
  getAllPeriodId : (id, account_id) => {
     return new Promise((resolve, reject) => {
-      console.log(id, account_id); // Logging the values for debugging purposes
+      console.log(id, account_id); 
       const sql = "SELECT * FROM period WHERE account_id = ? AND id = ?";
       db.query(sql, [account_id, id], (err, result) => {
         if (err) {

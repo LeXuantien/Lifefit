@@ -145,13 +145,13 @@ const getwaterBydate = (account_id, time, callback) => {
     }
 
     if (!rows || rows.length === 0) {
-      return callback(new Error("Không tìm thấy "), null);
+      return callback( null);
     }
 
     const water_id = rows[0] && rows[0].id;
 
     if (!water_id) {
-      return callback(new Error("Không tìm thấy id phù hợp"), null);
+      return callback( null);
     }
   const sql1 = "SELECT water FROM watertrackerHistory WHERE watertracker_id  = ?";
   
